@@ -12,10 +12,10 @@ variables:
   azureSubscription: '7e47f8f1-d6ae-4384-b412-28ba8037248a'
 
   # Web app name
-  webAppName: 'bct-minor-project'
+  webAppName: 'online-job-portal'
 
   # Environment name
-  environmentName: 'bct-minor-project'
+  environmentName: 'online-job-portal'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -32,7 +32,7 @@ stages:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '17.1.0'
+        versionSpec: '16.8.0'
       displayName: 'Install Node.js'
 
     - script: |
@@ -74,6 +74,6 @@ stages:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
               appName: $(webAppName)
-              runtimeStack: 'NODE|17.1.0'
+              runtimeStack: 'NODE|16.8.0'
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               startUpCommand: 'npm run start'
