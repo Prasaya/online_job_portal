@@ -5,6 +5,7 @@
 
 trigger:
 - main
+- azure_pipelines
 
 variables:
 
@@ -41,6 +42,12 @@ stages:
         npm run test --if-present
       displayName: 'npm install, build and test'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
+
+    - script: |
+        npm install
+        npm run build --if-present
+      displayName: 'npm install, build and test'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/online_job_portal_frontend
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
