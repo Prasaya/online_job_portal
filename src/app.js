@@ -6,11 +6,11 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "online_job_portal_frontend", "build")));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
-const indexRouter = require('./routes/index');
-app.use('/', indexRouter);
+app.use('/api', require('./routes/api/api'));
 
 app.use(function (req, res, next) {
     res.json({ message: 'Error 404: Page not found.', success: false });
