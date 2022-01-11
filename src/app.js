@@ -12,8 +12,8 @@ app.use(morgan('dev'));
 
 app.use('/api', require('./routes/api/api'));
 
-app.use(function (req, res, next) {
-    res.json({ message: 'Error 404: Page not found.', success: false });
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 module.exports = app;

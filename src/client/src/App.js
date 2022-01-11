@@ -1,4 +1,4 @@
-import DummyComponent from "./Components/DummyComponent"
+import DummyComponent from "./Components/DummyComponent";
 
 function App() {
   return (
