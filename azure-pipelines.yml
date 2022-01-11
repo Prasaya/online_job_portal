@@ -47,7 +47,7 @@ stages:
         npm install
         npm run build --if-present
       displayName: 'npm install, build and test'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/online_job_portal_frontend
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
