@@ -40,14 +40,19 @@ stages:
         npm install
         npm run build --if-present
         npm run test --if-present
-      displayName: 'npm install, build and test'
+      displayName: 'npm install, build and test backend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
 
     - script: |
         npm install
         npm run build --if-present
-      displayName: 'npm install, build and test'
+      displayName: 'npm install and build client'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
+    - script: |
+        rm -rf client
+      displayName: 'Delete client before archive'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
