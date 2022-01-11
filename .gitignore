@@ -114,3 +114,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# ignore files from react
+!/src/public
+src/public/*
+!/src/public/javascript
+!src/public/images
+!src/public/stylesheets
