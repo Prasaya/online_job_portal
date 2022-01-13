@@ -1,0 +1,13 @@
+#header{
+    text-decoration: none;
+    color: black;
+}
+#header::after{
+    color: black;
+}
+#header::before{
+    color: black;
+}
+#header:hover{
+    color: black;
+}
