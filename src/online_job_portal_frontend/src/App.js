@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header"
 import Login from "./Components/Login";
-import RegisterAccount from "./Components/RegisterAccount";
+import RegisterJobSeeker from "./Components/RegisterJobSeeker";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login/>} exact/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<RegisterAccount/>}/>
+        <Route path="/register-jobseeker" element={<RegisterJobSeeker/>}/>
       </Routes>
       
     </BrowserRouter>
