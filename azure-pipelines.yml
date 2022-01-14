@@ -54,6 +54,12 @@ stages:
       displayName: 'Delete client before archive'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
 
+    - script: |
+        npm install
+        npm run build --if-present
+      displayName: 'npm install, build and test'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
