@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node bin/www",
-    "dev": "nodemon bin/www"
+    "client": "npm start --prefix client",
+    "server": "nodemon --ignore ./client bin/www",
+    "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
   "author": "nobody",
   "license": "ISC",
@@ -18,6 +20,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "nodemon": "^2.0.15"
   }
 }

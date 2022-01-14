@@ -9,11 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
-const indexRouter = require('./routes/index');
-app.use('/', indexRouter);
+app.use('/api', require('./routes/api/api'));
 
-app.use(function (req, res, next) {
-    res.json({ message: 'Error 404: Page not found.', success: false });
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 module.exports = app;
