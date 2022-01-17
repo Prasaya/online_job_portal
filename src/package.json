@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "echo \"Error: no build script specified\"",
+    "test": "echo \"Error: no test script specified\"",
     "start": "node bin/www",
     "client": "npm start --prefix client",
     "server": "nodemon --ignore ./client bin/www",
