@@ -6,15 +6,14 @@ import RegisterJobSeeker from "./Components/RegisterJobSeeker";
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App container">
         <Header />
+        <Routes>
+          <Route path="/" element={<Login />} exact />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register-jobseeker" element={<RegisterJobSeeker />} />
+        </Routes>
       </div>
-      <Routes>
-        <Route path="/" element={<Login />} exact />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register-jobseeker" element={<RegisterJobSeeker />} />
-      </Routes>
-
     </BrowserRouter>
 
   );
