@@ -18,6 +18,7 @@ function Login(){
                 <div className="col-lg-4">
                     <form action="#" onSubmit={onSubmit}>
                         <input type="email" 
+                        name="email"
                         id="login-email"
                         className="form-control form-control-lg" 
                         placeholder="Email" 
@@ -26,6 +27,7 @@ function Login(){
                         required/>
 
                         <input type="password" 
+                        name="password"
                         id="login-password"
                         className="form-control form-control-lg my-2" 
                         placeholder="Password" 
