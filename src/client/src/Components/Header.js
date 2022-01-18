@@ -1,8 +1,16 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 function Header(){
-    return(
-        <header className="header text-center my-5"><h1><Link to="/" id="header">Job Portal</Link></h1></header>
-    )
+    const path = useLocation().pathname
+    console.log(path)
+    if (path.startsWith('/jobseeker')){
+        return (
+            <></>
+        )
+    }else{
+        return (
+            <header className="header text-center container my-5"><h3><Link to="/" id="header">Job Portal</Link></h3></header>
+        )
+    }
 }
 export default Header
