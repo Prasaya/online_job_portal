@@ -17,19 +17,41 @@ function Overview() {
         getJobs()
     })
 
+    async function toggleApply(e){
+        const toggleJobID = Number(e.target.id) 
+        var updatedJob = {}
+        const newJobs = jobs.map((job) => {
+            if (job.id === toggleJobID){
+                job.applied = !(job.applied) 
+                updatedJob = job
+            }
+            return job
+        })
+        setJobs(newJobs)
+
+        fetch(`http://localhost:4000/jobs/${toggleJobID}`,{
+                method: "PUT",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(updatedJob)
+            })
+        
+    }
+
     return ( 
         <div className="overview">
             <h1>Overview</h1>
             <div className="jobs container bg-light">
                 {jobs.map((job) => {
                     return (
-                        <div className="job d-flex flex-row justify-content-between align-items-center my-2" id={job.id}>
+                        <div className="job d-flex flex-row justify-content-between align-items-center my-2">
                             <div className="d-flex flex-column">
                                 <h3>{job.title}</h3>
                                 <h6>Deadline: {job.deadline}</h6>
                             </div>
                             <div>
-                                <button className="btn btn-primary">{job.applied?"Unapply":"Apply"}</button>
+                                <button id={job.id} className="btn btn-primary" onClick={toggleApply}>{job.applied?"Unapply":"Apply"}</button>
                             </div>
                         </div>
                     )
