@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-
+//todo:highlight active tab
 function Nav(){
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
