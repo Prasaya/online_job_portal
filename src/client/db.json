@@ -1,0 +1,18 @@
+{
+  "jobs": [
+    {
+      "id": 1,
+      "title": "React Developer",
+      "description": "We are looking for a react developer with 100 years of experience in web development.",
+      "deadline": "2022-10-10", 
+      "applied": false
+    },
+    {
+      "id": 2,
+      "title": "Java Developer",
+      "description": "We are looking for a Java developer with 200 years of experience in web development.",
+      "deadline": "2022-11-11", 
+      "applied": false
+    }
+  ]
+}
