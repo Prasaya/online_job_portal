@@ -11,13 +11,13 @@ function Nav(){
                                 <Link className="nav-link" to="overview">Overview</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/">My Status</Link>
+                                <Link className="nav-link" to="mystatus">My Status</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/">My Profile</Link>
+                                <Link className="nav-link" to="myprofile">My Profile</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/">Settings</Link>
+                                <Link className="nav-link" to="settings">Settings</Link>
                             </li>
                         </ul>
                 </div>
