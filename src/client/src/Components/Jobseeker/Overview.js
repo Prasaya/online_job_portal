@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react"
+import Job from "./Job"
 
 function Overview() {
     const [jobs, setJobs] = useState([])
@@ -45,15 +46,7 @@ function Overview() {
             <div className="jobs container bg-light">
                 {jobs.map((job) => {
                     return (
-                        <div className="job d-flex flex-row justify-content-between align-items-center my-2">
-                            <div className="d-flex flex-column">
-                                <h3>{job.title}</h3>
-                                <h6>Deadline: {job.deadline}</h6>
-                            </div>
-                            <div>
-                                <button id={job.id} className="btn btn-primary" onClick={toggleApply}>{job.applied?"Unapply":"Apply"}</button>
-                            </div>
-                        </div>
+                        <Job job={job} OnClick={toggleApply} />
                     )
                 })}
             </div>
