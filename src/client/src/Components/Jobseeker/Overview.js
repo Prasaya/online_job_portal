@@ -15,7 +15,7 @@ function Overview() {
             setJobs(overviewJobs) 
         }
         getJobs()
-    })
+    }, [])
 
     async function toggleApply(e){
         const toggleJobID = Number(e.target.id) 
