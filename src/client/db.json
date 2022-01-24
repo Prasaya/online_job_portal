@@ -21,7 +21,7 @@
       "lastname": "Doe", 
       "email": "johndoe@email.com",
       "phone": "0123456789",
-      "birthday": "01/01/1995",
+      "birthday": "1995-01-11",
       "faculty": "BCT"
     },
     "skills": ["HTML", "CSS", "JS"],
