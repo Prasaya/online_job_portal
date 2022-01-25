@@ -22,12 +22,18 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
+  - job: Checkout
+    displayName: Checkout source from git
+    pool: Pool
+    steps:
+      - checkout: self
+        clean: false
+
   - job: Backend
     displayName: Build backend
     pool: Pool
     steps:
-    - checkout: self
-      clean: false
+    - checkout: none
 
     - script: |
         yarn
@@ -50,7 +56,6 @@ stages:
       displayName: 'npm build frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
@@ -65,6 +70,6 @@ stages:
         deploy:
           steps:
           - script: |
-              yarn run start
+              pm2 start npm --name "WebApp" -- start
             displayName: 'Run express application'
             workingDirectory: $(System.DefaultWorkingDirectory)/src
