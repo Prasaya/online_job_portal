@@ -61,5 +61,4 @@ stages:
           steps:
           - script: |
             yarn run start
-          displayName: 'Run express application'
           workingDirectory: $(System.DefaultWorkingDirectory)/src
