@@ -26,6 +26,9 @@ stages:
     displayName: Build backend
     pool: Pool
     steps:
+    - checkout: self
+      clean: false
+
     - script: |
         yarn
       displayName: 'yarn install dependencies for backend'
