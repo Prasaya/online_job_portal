@@ -59,5 +59,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: yarn run start
-          workingDirectory: $(System.DefaultWorkingDirectory)/src
+          - script: |
+              yarn run start
+            displayName: 'Run express application'
+            workingDirectory: $(System.DefaultWorkingDirectory)/src
