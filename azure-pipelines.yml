@@ -22,7 +22,7 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Build backend
+  - job: Backend
     displayName: Build backend
     pool: Pool
     steps:
@@ -31,7 +31,7 @@ stages:
       displayName: 'yarn install dependencies for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
 
-  - job: Build frontend
+  - job: Frontend
     displayName: Build frontend
     pool: Pool
     steps:
