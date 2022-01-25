@@ -29,5 +29,23 @@ stages:
     steps:
     - script: |
         yarn
+      displayName: 'Install backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src
+
+    - script: |
+        npm install
+      displayName: 'Install frontend'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
+- stage: Deploy
+  displayName: Deploy stage
+  jobs:
+  - job: Start
+    displayName: Start Application
+    pool: Pool
+
+    steps:
+    - script: |
+        yarn start
       displayName: 'Test Script'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
