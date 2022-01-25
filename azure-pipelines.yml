@@ -34,7 +34,8 @@ stages:
 
     - script: |
         npm install
-      displayName: 'Install frontend'
+        npm run build
+      displayName: 'Install and build frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
 - stage: Deploy
@@ -44,7 +45,7 @@ stages:
     displayName: Start Application
     pool: Pool
 
-    steps:
+
     - script: |
         yarn start
       displayName: 'Test Script'
