@@ -28,12 +28,6 @@ stages:
 
     steps:
     - script: |
-        echo "Hello World"
-        pwd
-        yarn --version
-        node --version
-        npm --version
-        git --version
-        ls
+        yarn
       displayName: 'Test Script'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
