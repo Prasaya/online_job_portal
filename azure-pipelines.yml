@@ -27,28 +27,7 @@ stages:
     pool: Pool
 
     steps:
-
     - script: |
-        yarn install
-        yarn run build
-        yarn run test
-      displayName: 'npm install, build and test backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
-
-    - script: |
-        yarn install
-        yarn run build
-      displayName: 'npm install and build client'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
-
-- stage: Start
-  displayName: Start application
-  jobs:
-  - job: Start
-    displayName: Run express application
-    pool: Pool
-
-    steps:
-    - script: |
-        yarn run start
+        echo "Hello World"
+      displayName: 'Test Script'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
