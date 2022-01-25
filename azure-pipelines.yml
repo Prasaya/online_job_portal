@@ -38,6 +38,8 @@ stages:
     displayName: Build frontend
     pool: Pool
     steps:
+    - checkout: none
+
     - script: |
         npm install
       displayName: 'npm install dependencies for frontend'
