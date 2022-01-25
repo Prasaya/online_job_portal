@@ -22,31 +22,34 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Build
-    displayName: Build
+  - job: Build backend
+    displayName: Build backend
     pool: Pool
-
     steps:
     - script: |
         yarn
-      displayName: 'Install backend'
+      displayName: 'yarn install dependencies for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src
 
+  - job: Build frontend
+    displayName: Build frontend
+    pool: Pool
+    steps:
     - script: |
         npm install
-        npm run build
-      displayName: 'Install and build frontend'
+      displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-- stage: Deploy
-  displayName: Deploy stage
-  jobs:
-  - job: Start
-    displayName: Start Application
-    pool: Pool
-
-
     - script: |
-        yarn start
-      displayName: 'Test Script'
+        npm run build
+      displayName: 'npm build frontend'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
+
+  - deployment: Deploy
+    displayName: Run express application
+    pool: Pool
+    steps:
+    - script: |
+        yarn run start
       workingDirectory: $(System.DefaultWorkingDirectory)/src
