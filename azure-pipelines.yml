@@ -16,10 +16,7 @@ variables:
   webAppName: 'online-job-portal'
 
   # Environment name
-  environmentName: 'online-job-portal'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  environmentName: prasaya
 
 stages:
 - stage: Build
@@ -27,14 +24,9 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(vmImageName)
+    pool: Pool
 
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '16.8.0'
-      displayName: 'Install Node.js'
 
     - script: |
         yarn install
@@ -49,43 +41,14 @@ stages:
       displayName: 'npm install and build client'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-    - script: |
-        rm -rf client
-      displayName: 'Delete client before archive'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/src'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
-
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
+- stage: Start
+  displayName: Start application
   jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: $(environmentName)
-    pool:
-      vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: online-job-portal'
-            inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              appName: $(webAppName)
-              runtimeStack: 'NODE|16.8.0'
-              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-              startUpCommand: 'npm run start'
+  - job: Start
+    displayName: Run express application
+    pool: Pool
+
+    steps:
+    - script: |
+        yarn run start
+      workingDirectory: $(System.DefaultWorkingDirectory)/src
