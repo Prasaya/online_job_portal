@@ -59,6 +59,5 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: |
-            yarn run start
+          - script: yarn run start
           workingDirectory: $(System.DefaultWorkingDirectory)/src
