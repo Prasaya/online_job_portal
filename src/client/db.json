@@ -24,7 +24,7 @@
       "birthday": "1995-01-11",
       "faculty": "BCT"
     },
-    "skills": ["HTML", "CSS", "JS"],
+    "skills": "HTML,CSS,JS",
     "socials":{
       "facebook": "facebook.com/johndoe",
       "twitter": "twitter.com/johndoe",
