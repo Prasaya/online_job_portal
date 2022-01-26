@@ -7,6 +7,7 @@ import JobseekerOverview from "./Components/Jobseeker/Overview";
 import JobseekerMyStatus from "./Components/Jobseeker/MyStatus";
 import JobseekerMyProfile from "./Components/Jobseeker/MyProfile";
 import JobseekerSettings from "./Components/Jobseeker/Settings";
+import JobseekerEditProfile from "./Components/Jobseeker/EditProfile";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="overview" element={<JobseekerOverview/>} />
             <Route path="mystatus" element={<JobseekerMyStatus/>} />
             <Route path="myprofile" element={<JobseekerMyProfile/>} />
+            <Route path="editprofile" element={<JobseekerEditProfile/>} />
             <Route path="settings" element={<JobseekerSettings/>} />
           </Route> 
         </Routes>
