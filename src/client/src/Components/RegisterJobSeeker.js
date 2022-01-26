@@ -13,7 +13,7 @@ function RegisterJobSeeker(){
                         <input {...register("firstname", {required:true})} type="text" className="form-control form-control-lg" placeholder="Firstname" />
                         <input {...register("lastname", {required:true})} type="text" className="form-control form-control-lg my-2" placeholder="Lastname" />
                         <input {...register("email", {required:true})} type="email"  className="form-control form-control-lg my-2" placeholder="Email" />
-                        <input {...register("phone",{})} type="text" defaultValue={""} className="form-control form-control-lg my-2" placeholder="Phone Number"  />
+                        <input {...register("phone",{})} type="tel" defaultValue={""} className="form-control form-control-lg my-2" placeholder="Phone Number"  />
                         <input {...register("birthday", {required:true})} type="date" className="form-control form-control-lg my-2" placeholder="Birthday" />
                         <select {...register("faculty", {required:true})} className="form-select form-select-lg my-2" >
                             <option value="bct">BCT</option>
