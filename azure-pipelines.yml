@@ -22,33 +22,65 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Build
-    displayName: Build
+  - job: Checkout
+    displayName: Checkout source from git
     pool: Pool
-
     steps:
+      - checkout: self
+        clean: false
+
+  - job: Backend
+    displayName: Build backend
+    dependsOn: Checkout
+    condition: succeeded()
+    pool: Pool
+    steps:
+    - checkout: none
 
     - script: |
-        yarn install
-        yarn run build
+        yarn
         yarn run test
-      displayName: 'npm install, build and test backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
+      displayName: 'yarn install dependencies for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - job: Frontend
+    displayName: Build frontend
+    dependsOn: Checkout
+    condition: succeeded()
+    pool: Pool
+    steps:
+    - checkout: none
 
     - script: |
-        yarn install
-        yarn run build
-      displayName: 'npm install and build client'
+        npm install
+      displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-- stage: Start
-  displayName: Start application
-  jobs:
-  - job: Start
-    displayName: Run express application
-    pool: Pool
-
-    steps:
     - script: |
-        yarn run start
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
+        npm run build
+      displayName: 'npm build frontend'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: $(environmentName)
+    pool: Pool
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              pm2 describe WebApp > /dev/null
+              RUNNING=$?
+              if [ "${RUNNING}" -ne 0 ]; then
+                  pm2 start yarn --name WebApp -- start
+              else
+                pm2 reload WebApp
+              fi;
+            displayName: 'Run express application'
+            workingDirectory: $(System.DefaultWorkingDirectory)

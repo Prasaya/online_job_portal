@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "src/typings"
+        ],
+        "outDir": "./dist",
+        "allowJs": true,
+        "checkJs": false,
+        "baseUrl": ".",
+        "paths": {
+            "@root/*": [
+                "./src/*"
+            ],
+            "@middleware/*": [
+                "./src/middleware/*"
+            ],
+            "@models/*": [
+                "./src/models/*"
+            ],
+            "@routes/*": [
+                "./src/routes/*"
+            ],
+            "@utils/*": [
+                "./src/utils/*"
+            ],
+            "@typings/*": [
+                "./src/typings/*"
+            ],
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "./src/client/*",
+        "./src/public/*",
+        "./dist/*"
+    ]
+}
