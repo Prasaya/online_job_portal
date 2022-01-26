@@ -31,10 +31,10 @@ function MyProfile() {
     }, [])
     basicEntries = Object.entries(basicInfo)
     socialsEntries = Object.entries(socials)
-    skillsEntries = [...skills]
+    skillsEntries = skills.split(",")
     return ( 
         <div className="myprofile">
-            <h1>My Profile <span><Link className="btn btn-secondary" to="#">Edit</Link></span></h1>
+            <h1>My Profile <span><Link className="btn btn-secondary" to="/jobseeker/editprofile">Edit</Link></span></h1>
             <div className="container bg-light profile">
                 <div className="row">
                     <div className="col-4">
