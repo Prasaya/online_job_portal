@@ -1,5 +1,5 @@
 import express, { Request } from 'express';
-import isLoggedIn from '../../middleware/isLoggedIn';
+import isLoggedIn from '@middleware/isLoggedIn';
 import authRoute from './auth/auth';
 
 const router = express.Router();
@@ -20,4 +20,4 @@ router.get('*', (req, res) => {
     res.status(404).json({ message: 'Could not find page!', success: false });
 });
 
-module.exports = router;
+export default router;
