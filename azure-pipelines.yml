@@ -74,6 +74,12 @@ stages:
         deploy:
           steps:
           - script: |
-              pm2 start npm --name "WebApp" -- start
+              pm2 describe appname > /dev/null
+              RUNNING=$?
+              if [ "${RUNNING}" -ne 0 ]; then
+                pm2 start yarn --name "WebApp" -- start
+              else
+                pm2 reload "Webapp"
+              fi;
             displayName: 'Run express application'
             workingDirectory: $(System.DefaultWorkingDirectory)/src
