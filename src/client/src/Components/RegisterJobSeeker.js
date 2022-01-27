@@ -12,14 +12,14 @@ function RegisterJobSeeker(){
                     <form action="#" onSubmit={handleSubmit(onSubmitForm)}>
                         <input {...register("firstname", {required:true})} type="text" className="form-control form-control-lg" placeholder="Firstname" />
                         <input {...register("lastname", {required:true})} type="text" className="form-control form-control-lg my-2" placeholder="Lastname" />
-                        <input {...register("email", {required:true})} type="email"  className="form-control form-control-lg my-2" placeholder="Email" />
+                        <input {...register("email", {required:true})} type="email" className="form-control form-control-lg my-2" placeholder="Email" />
                         <input {...register("phone",{})} type="tel" defaultValue={""} className="form-control form-control-lg my-2" placeholder="Phone Number"  />
                         <input {...register("birthday", {required:true})} type="date" className="form-control form-control-lg my-2" placeholder="Birthday" />
                         <select {...register("faculty", {required:true})} className="form-select form-select-lg my-2" >
-                            <option value="bct">BCT</option>
-                            <option value="bme">BME</option>
-                            <option value="bce">BCE</option>
-                            <option value="bei">BEI</option>
+                            <option value="BCT">BCT</option>
+                            <option value="BME">BME</option>
+                            <option value="BCE">BCE</option>
+                            <option value="BEI">BEI</option>
                         </select>
                         <input {...register("password", {required:true, pattern:/(?=.*)(?=.*[a-z])(?=.*[A-Z]).{8,}/})} type="password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" className="form-control form-control-lg my-2" placeholder="Password" ></input>
                         <div className="d-grid gap-2">
