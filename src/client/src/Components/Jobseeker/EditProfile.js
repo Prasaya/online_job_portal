@@ -17,7 +17,6 @@ function MyProfile() {
         data.socials.facebook? console.log() :data.socials.facebook = socials.facebook
         data.socials.github? console.log() :data.socials.github = socials.github
         data.socials.twitter? console.log() :data.socials.twitter = socials.twitter
-        console.log(skills, data.skills)
         data.skills? console.log() :data.skills = skills
 
         fetch(`http://localhost:4000/profile`,{
@@ -66,7 +65,7 @@ function MyProfile() {
                             <input className="form-control form-control-lg my-2" {...register("basics.lastname",{})} type="text" id="lastname" defaultValue={basicInfo["lastname"]}/>
                             
                             <label htmlFor="email">Email</label>
-                            <input className="form-control form-control-lg my-2" {...register("basics.email",{})} type="email" id="email" defaultValue={basicInfo["email"]}/>
+                            <input className="form-control form-control-lg my-2" {...register("basics.email",{disabled:true})} type="email" id="email" defaultValue={basicInfo["email"]}/>
                             
                             <label htmlFor="Phone">Phone</label>
                             <input className="form-control form-control-lg my-2" {...register("basics.phone",{})} type="tel" id="phone" defaultValue={basicInfo["phone"]}/>
