@@ -31,7 +31,7 @@ router.get(
 
 router.post(
     '/',
-    body('title').isEmail().isLength({ max: 100 }),
+    body('title').isString().isLength({ max: 100 }),
     body('jobDescription').isString(),
     body('experience').isString().isLength({ max: 1000 }).optional(),
     body('education').isString().isLength({ max: 1000 }).optional(),
@@ -46,7 +46,7 @@ router.post(
             console.log('here');
 
             const jobPostData: NewJobPost = {
-                title: req.body.email,
+                title: req.body.title,
                 jobDescription: req.body.jobDescription,
                 experience: req.body.experience,
                 education: req.body.education,
