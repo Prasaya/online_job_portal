@@ -16,55 +16,50 @@ variables:
   webAppName: 'online-job-portal'
 
   # Environment name
-  environmentName: 'online-job-portal'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  environmentName: prasaya
 
 stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-
+  - job: Checkout
+    displayName: Checkout source from git
+    pool: Pool
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '16.8.0'
-      displayName: 'Install Node.js'
+      - checkout: self
+        clean: false
+
+  - job: Backend
+    displayName: Build backend
+    dependsOn: Checkout
+    condition: succeeded()
+    pool: Pool
+    steps:
+    - checkout: none
+
+    - script: |
+        yarn
+        yarn run test
+      displayName: 'yarn install dependencies for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - job: Frontend
+    displayName: Build frontend
+    dependsOn: Checkout
+    condition: succeeded()
+    pool: Pool
+    steps:
+    - checkout: none
 
     - script: |
         npm install
-        npm run build --if-present
-        npm run test --if-present
-      displayName: 'npm install, build and test backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
-
-    - script: |
-        npm install
-        npm run build --if-present
-      displayName: 'npm install and build client'
+      displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
     - script: |
-        rm -rf client
-      displayName: 'Delete client before archive'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/src'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
+        npm run build
+      displayName: 'npm build frontend'
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
 - stage: Deploy
   displayName: Deploy stage
@@ -74,18 +69,18 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     environment: $(environmentName)
-    pool:
-      vmImage: $(vmImageName)
+    pool: Pool
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: online-job-portal'
-            inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              appName: $(webAppName)
-              runtimeStack: 'NODE|16.8.0'
-              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-              startUpCommand: 'npm run start'
+          - script: |
+              pm2 describe WebApp > /dev/null
+              RUNNING=$?
+              if [ "${RUNNING}" -ne 0 ]; then
+                  pm2 start yarn --name WebApp -- start
+              else
+                pm2 reload WebApp
+              fi;
+            displayName: 'Run express application'
+            workingDirectory: $(System.DefaultWorkingDirectory)
