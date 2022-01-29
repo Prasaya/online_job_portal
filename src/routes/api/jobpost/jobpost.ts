@@ -66,10 +66,10 @@ router.put('/:id', async (req, res) => {
         const [result] =  await connection.query(
             'UPDATE jobPost ' +
             'SET title = ?, jobDescription = ?, experience = ?,'+
-            'education = ? + skills = ?' + 
+            'education = ?, skills = ?' + 
             'WHERE jid = ?',
             [
-                req.body.title, req.body.jobDescriptions, req.body.experience,
+                req.body.title, req.body.jobDescription, req.body.experience,
                 req.body.education, req.body.skills, req.params.id
             ]
         );
@@ -77,6 +77,7 @@ router.put('/:id', async (req, res) => {
         console.log('Error in job put operation', err);
         res.status(500).json({ message: 'Something went wrong!', success: false });
     }
+    res.json({ message: 'Job Put Operation successful!', success: true });
 });
 
 
@@ -95,11 +96,17 @@ router.patch('/',
 router.delete('/:id', 
     async (req, res) => {
         const jobID = req.params.id;
-        await connection.query(
-            'DELETE * FROM jobPost ' + 
-            'WHERE jid = ?',
-            [jobID]
-        );
+        try {
+            await connection.query(
+                'DELETE FROM jobPost ' + 
+                'WHERE jid = ?',
+                [jobID]
+            );
+        }catch (err) {
+            console.log('Error in job delete operation', err);
+            res.status(500).json({ message: 'Something went wrong!', success: false });
+        }
+        res.status(200).json({ message: 'Job deleted', success: true });
 });
 
 export default router;
