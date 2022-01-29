@@ -52,4 +52,4 @@ const appSetup = (app: express.Application) => {
     app.use(logger);
 };
 
-module.exports = appSetup;
+export default appSetup;
