@@ -48,7 +48,7 @@ export const getUserByUid = async (uid: string, includePassword: boolean = false
     const [result] = await connection.query(
         'SELECT * ' +
         'FROM vwAuth ' +
-        'WHERE users.uid = ?',
+        'WHERE uid = ?',
         [uid]
     );
     if ((result as RowDataPacket[]).length === 0) {
