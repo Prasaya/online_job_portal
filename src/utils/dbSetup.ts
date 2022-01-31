@@ -8,11 +8,4 @@ const connection = createPool({
     database: process.env.DB_NAME,
 });
 
-connection.getConnection()
-    .then(() => {
-        console.log('Connected to database');
-    })
-    .catch(console.error);
-
 export default connection;
-module.exports = connection;

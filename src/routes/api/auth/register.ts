@@ -7,11 +7,12 @@ const router = express.Router();
 
 router.post(
     '/',
+    body('role').isString().default('applicant'),
     body('email').isEmail().isLength({ max: 50 }),
     body('password').isLength({ min: 8 }),
-    body('firstName').isString().isLength({ max: 50 }).optional(),
-    body('middleName').isString().isLength({ max: 50 }).optional(),
-    body('lastName').isString().isLength({ max: 50 }).optional(),
+    body('firstName').optional().isString().isLength({ max: 50 }),
+    body('middleName').optional().isString().isLength({ max: 50 }),
+    body('lastName').optional().isString().isLength({ max: 50 }),
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -19,7 +20,6 @@ router.post(
                 return res.status(400).json({ message: errors.array(), success: false });
             }
 
-            console.log('here');
             if (await verifyEmail(req.body.email)) {
                 return res
                     .status(400)
@@ -28,6 +28,7 @@ router.post(
 
             const userData: NewUserInput = {
                 email: req.body.email,
+                roleName: req.body.role,
                 password: req.body.password,
                 firstName: req.body.firstName,
                 middleName: req.body.middleName,
@@ -35,9 +36,9 @@ router.post(
                 picture: req.body.picture,
             };
             const user = await createNewUser(userData);
-            res.json({ ...user, password: '' });
+            return res.json(user);
         } catch (err) {
-            console.log('Error in registration', err);
+            console.error('Error in registration', err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
         }
     }

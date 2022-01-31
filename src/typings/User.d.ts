@@ -3,6 +3,7 @@ import { PartialExcept } from '@typings/utils';
 export default interface User {
     uid: string;
     email: string;
+    roleName: string;
     password: string | null;
     firstName: string | null;
     middleName: string | null;
@@ -10,5 +11,11 @@ export default interface User {
     picture: string | null;
 }
 
-export type NewUserInput = PartialExcept<Omit<User, "uid">, "email">;
-export type DBUser = PartialExcept<Omit<User, "email">, "uid">;
+export type NewUserInput = PartialExcept<Omit<User, "uid">, "email" | "roleName">;
+export interface DBUser extends User {
+    roleId: number;
+}
+
+
+
+

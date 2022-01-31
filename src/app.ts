@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './config/.env' });
+import './env';
 import express from 'express';
 import path from 'path';
 import appSetup from '@utils/appSetup';
@@ -20,4 +20,4 @@ app.use((err, req, res, next) => {
     }
 });
 
-module.exports = app;
+export default app;

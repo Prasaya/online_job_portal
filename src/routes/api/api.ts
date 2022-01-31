@@ -1,10 +1,12 @@
 import express, { Request } from 'express';
 import isLoggedIn from '@middleware/isLoggedIn';
 import authRoute from './auth/auth';
+import userRoute from './user/user';
 
 const router = express.Router();
 
 router.use('/auth', authRoute);
+router.use('/user', userRoute);
 
 router.get('/userinfo', isLoggedIn, (req: Request, res) => {
     res.json({
