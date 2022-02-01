@@ -4,7 +4,7 @@ drop table if exists webapp.emails;
 drop table if exists webapp.users;
 drop table if exists webapp.roles;
 drop view if exists vwAuth;
-truncate webapp.sessions;
+/*truncate webapp.sessions;*/
 
 CREATE TABLE webapp.roles (
     roleId int auto_increment,
@@ -24,8 +24,7 @@ CREATE TABLE webapp.users (
     birthday datetime,
     phone varchar(20),
     gender varchar(10),
-    primary key (uid),
-    foreign key (roleId) references roles(roleId)
+    primary key (uid)
 );
 
 CREATE TABLE webapp.federated_credentials_provider (
@@ -44,9 +43,8 @@ CREATE TABLE webapp.federated_credentials (
 );
 
 CREATE OR REPLACE VIEW vwAuth AS
-    SELECT users.uid, email, password, users.roleId, roleName, firstName, middleName, lastName, picture
+    SELECT users.uid, email, password, firstName, lastName, picture
     FROM users
-    INNER JOIN roles ON roles.roleId = users.roleId
     LEFT JOIN federated_credentials as fc on fc.uid = users.uid
     LEFT JOIN federated_credentials_provider as fcp on fcp.providerId = fc.providerId;
 
