@@ -22,7 +22,7 @@ function MyStatus() {
     }, [])
 
     async function toggleApply(e){
-        const toggleJobID = Number(e.target.id) 
+        const toggleJobID = Number(e.target.dataset.jobId) 
         var updatedJob = {}
         const newJobs = jobs.map((job) => {
             if (job.id === toggleJobID){
