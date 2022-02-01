@@ -31,8 +31,12 @@ stages:
 
     - script: |
         yarn
-        yarn run test
       displayName: 'yarn install dependencies for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - script: |
+        yarn test
+      displayName: 'yarn test for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
 
     - script: |
