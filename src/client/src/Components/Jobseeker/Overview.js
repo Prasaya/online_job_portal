@@ -5,7 +5,7 @@ function Overview() {
     const [jobs, setJobs] = useState([])
 
     async function fetchJobs(){
-        const res = await fetch("http://localhost:4000/jobs")
+        const res = await fetch("/jobs")
         const data = await res.json()
         return data
     }
