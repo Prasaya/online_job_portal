@@ -19,7 +19,7 @@ function MyProfile() {
         data.socials.twitter? console.log() :data.socials.twitter = socials.twitter
         data.skills? console.log() :data.skills = skills
 
-        fetch(`http://localhost:4000/profile`,{
+        fetch(`/api/user/uid`,{
                 method: "PUT",
                 headers: {
                     'Content-type': 'application/json'
@@ -36,7 +36,7 @@ function MyProfile() {
 
 
     const fetchInfo = async () => {
-        const res = await fetch("http://localhost:4000/profile")
+        const res = await fetch("/api/user/uid")
         const data = await res.json()
         return data
     }
@@ -58,11 +58,14 @@ function MyProfile() {
                     <form className="col-lg-4" action="#" onSubmit={handleSubmit(onSubmitForm)}>
                         <fieldset>
                             <legend>Basic Information</legend>
-                            <label htmlFor="basics.firstname">Firstname</label>
-                            <input className="form-control form-control-lg my-2" {...register("basics.firstname", {})} type="text" id="firstname" defaultValue={basicInfo["firstname"]}/>
+                            <label htmlFor="firstName">Firstname</label>
+                            <input className="form-control form-control-lg my-2" {...register("basics.firstName", {})} type="text" id="firstname" defaultValue={basicInfo["firstName"]}/>
                             
-                            <label htmlFor="basics.lastname">Lastname</label>
-                            <input className="form-control form-control-lg my-2" {...register("basics.lastname",{})} type="text" id="lastname" defaultValue={basicInfo["lastname"]}/>
+                            <label htmlFor="middleName">Middlename</label>
+                            <input className="form-control form-control-lg my-2" {...register("basics.middleName", {})} type="text" id="middleName" defaultValue={basicInfo["middleName"]}/>
+                            
+                            <label htmlFor="lastName">Lastname</label>
+                            <input className="form-control form-control-lg my-2" {...register("basics.lastName",{})} type="text" id="lastName" defaultValue={basicInfo["lastName"]}/>
                             
                             <label htmlFor="email">Email</label>
                             <input className="form-control form-control-lg my-2" {...register("basics.email",{disabled:true})} type="email" id="email" defaultValue={basicInfo["email"]}/>

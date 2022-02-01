@@ -14,8 +14,10 @@ function MyProfile() {
     let socialsEntries = []
 
     const fetchInfo = async () => {
-        const res = await fetch("http://localhost:4000/profile")
+        const res = await fetch("/api/user/dbd1525e-a410-47bf-af10-84e56ae67edf")
         const data = await res.json()
+        console.log(data)
+        console.log(res)
         return data
     }
     
