@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "start": "gulp start",
     "client": "gulp client",
     "server": "gulp server",
