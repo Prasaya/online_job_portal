@@ -18,14 +18,15 @@
   "profile": {
     "basics": {
       "firstname": "John",
-      "lastname": "Doe", 
+      "lastname": "Doe",
       "email": "johndoe@email.com",
       "phone": "0123456789",
       "birthday": "1995-01-11",
-      "faculty": "BCT"
+      "faculty": "BCT",
+      "gender": "M"
     },
     "skills": "HTML,CSS,JS",
-    "socials":{
+    "socials": {
       "facebook": "facebook.com/johndoe",
       "twitter": "twitter.com/johndoe",
       "github": "github.com/johndoe"

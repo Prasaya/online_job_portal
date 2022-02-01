@@ -19,7 +19,7 @@ function Overview() {
     }, [])
 
     async function toggleApply(e){
-        const toggleJobID = Number(e.target.id) 
+        const toggleJobID = Number(e.target.dataset.jobId) 
         var updatedJob = {}
         const newJobs = jobs.map((job) => {
             if (job.id === toggleJobID){
@@ -41,7 +41,7 @@ function Overview() {
     }
 
     return ( 
-        <div className="overview">
+        <div className="overview ">
             <h1>Overview</h1>
             <div className="jobs container bg-light">
                 {jobs.map((job) => {
