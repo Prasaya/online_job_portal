@@ -14,20 +14,19 @@ export const createNewUser = async (userData: NewUserInput): Promise<User> => {
     const user = {
         uid: uuidv4(),
         email: userData.email,
-        roleId: getRoleByName(userData.roleName).rId,
         password: await hashPassword(userData.password),
         firstName: userData.firstName || null,
         middleName: userData.middleName || null,
         lastName: userData.lastName || null,
         picture: userData.picture || null,
     };
-    await connection.execute(
+    await connection.execute( 
         'INSERT INTO users ' +
-        '(uid, email, roleId, password, firstname, middlename, lastname, picture) ' +
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        '(uid, email, password, firstname, middlename, lastname, picture) ' +
+        'VALUES (?, ?, ?, ?, ?, ?, ?)',
         [...Object.values(user)]
     );
-    return { ...user, roleName: userData.roleName, password: null };
+    return { ...user, password: null }; 
 };
 
 export const getUserByEmail = async (email: string, includePassword: boolean = false): Promise<DBUser | null> => {

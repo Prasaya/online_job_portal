@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.post(
     '/',
-    body('role').isString().default('applicant'),
     body('email').isEmail().isLength({ max: 50 }),
     body('password').isLength({ min: 8 }),
     body('firstName').optional().isString().isLength({ max: 50 }),
@@ -28,10 +27,8 @@ router.post(
 
             const userData: NewUserInput = {
                 email: req.body.email,
-                roleName: req.body.role,
                 password: req.body.password,
                 firstName: req.body.firstName,
-                middleName: req.body.middleName,
                 lastName: req.body.lastName,
                 picture: req.body.picture,
             };

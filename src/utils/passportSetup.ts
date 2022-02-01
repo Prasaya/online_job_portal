@@ -25,9 +25,7 @@ const passportConfigure = (passport) => {
                     if (userData === null) {
                         const newUser: NewUserInput = {
                             email: profile.emails[0].value,
-                            roleName: 'user',
                             firstName: profile.name.givenName,
-                            middleName: profile.name.middleName,
                             lastName: profile.name.familyName,
                             picture: profile.photos[0].value,
                         };
