@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import {useState} from "react"
 function Login(){
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit, setError, formState:{errors}} = useForm()
     const [authStatus, setauthStatus] = useState(false);
     const [uid, setUid] = useState("");
 
@@ -15,9 +15,12 @@ function Login(){
             body: JSON.stringify(data)
         });
         const jsonVal = await res.json()
+        console.log(jsonVal)
         const isAuth = jsonVal.success
         if (isAuth) {
             setauthStatus(true)
+        }else{
+            setError("loginError", {message:"Incorrect Username or Password"})
         }
     }
 
@@ -25,10 +28,11 @@ function Login(){
         <div className="container log-in">
             <div className="row justify-content-center my-5">
                 <div className="col-lg-4">
-                    <form action="#" onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                     <input {...register("username", {required:true})} type="email" className="form-control form-control-lg my-2" placeholder="Email" />
 
                     <input {...register("password", {required:true})} type="password" className="form-control form-control-lg my-2" placeholder="Password" ></input>
+                    {errors.loginError && <div className="my-2">{errors.loginError.message}</div>}
                         <div className="d-grid gap-2">
                             <button className="btn btn-primary btn-lg" type="submit">Log In</button>
                         </div>
