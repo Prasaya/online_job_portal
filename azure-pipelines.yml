@@ -73,8 +73,6 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy application
-    pool:
-      vmImage: 'ubuntu-latest'
     environment:
       name: prasaya
       resourceType: VirtualMachine
