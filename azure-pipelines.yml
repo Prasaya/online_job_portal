@@ -35,7 +35,7 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
 
     - script: |
-        npm install
+        yarn
       displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
