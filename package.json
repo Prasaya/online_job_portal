@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "gulp build",
     "test": "jest",
     "start": "gulp start",
     "client": "gulp client",

@@ -101,6 +101,7 @@ function watch (cb) {
     );
 }
 
+exports.build = parallel(backendBuild, clientBuild);
 exports.server = server;
 exports.client = client;
 exports.start = parallel(server, client);
