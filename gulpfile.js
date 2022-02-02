@@ -5,6 +5,7 @@ const webpackConfig = require('./webpack.config');
 const spawn = require('child_process').spawn;
 
 const env = process.env.NODE_ENV || 'development';
+console.log(`Using environment: ${env}`);
 
 function backendBuild (cb) {
     return new Promise((resolve, reject) => {
@@ -45,13 +46,8 @@ const server = env === 'production'
     ? series(backendBuild, backendStart)
     : series(backendBuild, parallel(backendStart, watch));
 
-async function client (cb) {
-    let command = '';
-    if (env === 'production') {
-        command = 'cd ./src/client && yarn run build && cd ../..';
-    } else {
-        command = 'cd ./src/client && yarn run start && cd ../..';
-    }
+async function clientBuild (cb) {
+    const command = 'cd src/client && yarn build  && cp -rf build/. ../../dist/public/ && cd ../..';
     const child = spawn(command, { shell: true });
     child.on('error', (err) => {
         process.stderr.write(`Could not start client: ${err}`);
@@ -68,6 +64,26 @@ async function client (cb) {
         process.stderr.write(`client-err: ${data}`);
     });
 }
+async function clientStart (cb) {
+    const command = 'cd ./src/client && yarn run start && cd ../..';
+    const child = spawn(command, { shell: true });
+    child.on('error', (err) => {
+        process.stderr.write(`Could not start client: ${err}`);
+        cb(err);
+    });
+    child.on('exit', (code, signal) => {
+        process.stdout.write(`Client exited with code ${code} and signal ${signal}`);
+        cb();
+    });
+    child.stdout.on('data', (data) => {
+        process.stdout.write(`client: ${data}`);
+    });
+    child.stderr.on('data', (data) => {
+        process.stderr.write(`client-err: ${data}`);
+    });
+}
+
+const client = env === 'production' ? clientBuild : clientStart;
 
 function watch (cb) {
     process.stdout.write('Starting watch');
