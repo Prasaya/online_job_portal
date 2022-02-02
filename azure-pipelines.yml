@@ -42,8 +42,8 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
     - script: yarn build
-
-    - script: ls dist
+      displayName: 'yarn build for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
     - task: CopyFiles@2
       inputs:
