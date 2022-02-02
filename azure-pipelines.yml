@@ -85,13 +85,6 @@ stages:
           - download: current
             artifact: drop
 
-  # jobs:
-  # - deployment: Deploy
-  #   displayName: Deploy
-  #   environment: $(environmentName)
-  #   pool: Pool
-  #   strategy:
-  #     runOnce:
         deploy:
           steps:
           - script: |
