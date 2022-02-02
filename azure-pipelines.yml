@@ -80,13 +80,11 @@ stages:
       resourceType: VirtualMachine
     strategy:
       runOnce:
-        preDeploy:
+        deploy:
           steps:
           - download: current
             artifact: drop
 
-        deploy:
-          steps:
           - script: |
               pm2 describe WebApp > /dev/null
               RUNNING=$?
