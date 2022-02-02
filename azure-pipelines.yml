@@ -92,4 +92,4 @@ stages:
                 pm2 reload WebApp
               fi;
             displayName: 'Run express application'
-            workingDirectory: $(System.DefaultWorkingDirectory)
+            workingDirectory: $(Build.ArtifactStagingDirectory)
