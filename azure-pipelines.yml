@@ -44,11 +44,6 @@ stages:
       displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-    - script: |
-        npm run build
-      displayName: 'npm build frontend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
-
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
