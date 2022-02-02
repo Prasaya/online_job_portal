@@ -27,7 +27,7 @@ stages:
     pool: Pool
     steps:
     - checkout: self
-      clean: false
+      clean: true
 
     - script: |
         yarn
