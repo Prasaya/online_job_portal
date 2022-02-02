@@ -50,6 +50,7 @@ stages:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: |
           dist/**
+          node_modules/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
