@@ -59,6 +59,8 @@ stages:
     displayName: Prepare for deployment
     dependsOn: Build
     steps:
+    - checkout: none
+
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
