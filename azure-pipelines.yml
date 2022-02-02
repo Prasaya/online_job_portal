@@ -41,6 +41,7 @@ stages:
 
   - job: Test
     displayName: Test code
+    dependsOn: Build
     pool: Pool
     steps:
     - checkout: none
