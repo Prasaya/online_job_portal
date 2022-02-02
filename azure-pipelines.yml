@@ -22,33 +22,22 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Checkout
-    displayName: Checkout source from git
+  - job: Build
+    displayName: Build job
     pool: Pool
     steps:
-      - checkout: self
-        clean: false
-
-  - job: Backend
-    displayName: Build backend
-    dependsOn: Checkout
-    condition: succeeded()
-    pool: Pool
-    steps:
-    - checkout: none
+    - checkout: self
+      clean: true
 
     - script: |
         yarn
       displayName: 'yarn install dependencies for backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
-  - job: Frontend
-    displayName: Build frontend
-    dependsOn: Checkout
-    condition: succeeded()
-    pool: Pool
-    steps:
-    - checkout: none
+    - script: |
+        yarn test
+      displayName: 'yarn test for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
     - script: |
         npm install
@@ -82,4 +71,4 @@ stages:
                 pm2 reload WebApp
               fi;
             displayName: 'Run express application'
-            workingDirectory: $(System.DefaultWorkingDirectory)/src
+            workingDirectory: $(System.DefaultWorkingDirectory)

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const app = require('../app');
-const http = require('http');
+import app from '../app';
+import http from 'http';
 
 const port = parseInt((process.env.PORT || '8080'), 10);
 app.set('port', port);
@@ -10,7 +10,9 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('listening', () => {
     const addr = server.address();
-    const formatted = typeof (addr) === 'string' ? addr : `${addr.address}:${addr.port}`;
+    const formatted = typeof (addr) === 'string'
+        ? addr
+        : `${addr.address}:${addr.port}`;
     console.log(`Listening on ${formatted}`);
 });
 server.on('error', console.error);

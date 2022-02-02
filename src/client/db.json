@@ -1,0 +1,35 @@
+{
+  "jobs": [
+    {
+      "id": 1,
+      "title": "React Developer",
+      "description": "We are looking for a react developer with 100 years of experience in web development.",
+      "deadline": "2022-10-10",
+      "applied": true
+    },
+    {
+      "id": 2,
+      "title": "Java Developer",
+      "description": "We are looking for a Java developer with 200 years of experience in web development.",
+      "deadline": "2022-11-11",
+      "applied": false
+    }
+  ],
+  "profile": {
+    "basics": {
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "johndoe@email.com",
+      "phone": "0123456789",
+      "birthday": "1995-01-11",
+      "faculty": "BCT",
+      "gender": "M"
+    },
+    "skills": "HTML,CSS,JS",
+    "socials": {
+      "facebook": "facebook.com/johndoe",
+      "twitter": "twitter.com/johndoe",
+      "github": "github.com/johndoe"
+    }
+  }
+}
