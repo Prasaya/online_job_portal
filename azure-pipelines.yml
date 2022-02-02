@@ -35,6 +35,11 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
 
     - script: |
+        yarn test
+      displayName: 'yarn test for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - script: |
         npm install
       displayName: 'npm install dependencies for frontend'
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
