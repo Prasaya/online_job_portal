@@ -98,7 +98,7 @@ stages:
               pm2 describe WebApp > /dev/null
               RUNNING=$?
               if [ "${RUNNING}" -ne 0 ]; then
-                  pm2 start yarn --name WebApp -- start
+                  pm2 start node --name WebApp -- dist/backend.cjs
               else
                 pm2 reload WebApp
               fi;
