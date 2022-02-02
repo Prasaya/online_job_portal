@@ -5,7 +5,7 @@ module.exports = {
     /**
      * @type {("none" | "development" | "production")}
      */
-    mode: 'development',
+    mode: process.env.NODE_ENV || 'development',
     entry: './src/bin/www',
     output: {
         path: path.join(__dirname, 'dist'),
