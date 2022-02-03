@@ -21,8 +21,7 @@ variables:
 stages:
 - stage: Build
   displayName: Build and Test stage
-  pool:
-    vmImage: 'ubuntu-latest'
+  pool: Pool
 
   jobs:
   - job: Build
@@ -64,9 +63,7 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy application
-    environment:
-      name: prasaya
-      resourceType: VirtualMachine
+    pool: Pool
     strategy:
       runOnce:
         deploy:
