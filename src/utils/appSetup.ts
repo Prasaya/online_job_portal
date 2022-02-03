@@ -24,7 +24,7 @@ const appSetup = (app: express.Application) => {
     const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
     const sess = {
         name: 'sessionId',
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET!,
         resave: false,
         saveUninitialized: true,
         store: sessionStore,
