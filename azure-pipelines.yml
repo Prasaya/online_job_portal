@@ -29,8 +29,11 @@ stages:
     steps:
     - checkout: self
 
+    - script: yarn
+      displayName: Install required dependencies
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
     - script: |
-        yarn
         yarn client
       displayName: Build React App
       workingDirectory: $(System.DefaultWorkingDirectory)
