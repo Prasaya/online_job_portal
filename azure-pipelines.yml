@@ -19,56 +19,158 @@ variables:
   environmentName: prasaya
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build job
+  - stage: Build
+    displayName: Build frontend and backend'
     pool: Pool
-    steps:
-    - checkout: self
-      clean: true
+    jobs:
+    - job: Install
+      displayName: Install dependencies
+      steps:
+      - checkout: self
+        clean: false
+      - script: yarn
+        displayName: Install backend dependencies
+      - script: yarn
+        displayName: Install frontend dependencies
+        workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-    - script: |
-        yarn
-      displayName: 'yarn install dependencies for backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)
+    - job: Test
+      dependsOn: Install
+      displayName: Test backend
+      steps:
+      - checkout: none
+      - script: yarn test
+        displayName: Test Backend
 
-    - script: |
-        yarn test
-      displayName: 'yarn test for backend'
-      workingDirectory: $(System.DefaultWorkingDirectory)
+    - job: Build
+      dependsOn: Install
+      displayName: Build frontend and backend
+      steps:
+      - checkout: none
+      - script: yarn build
+        displayName: Build frontend and backend
 
-    - script: |
-        npm install
-      displayName: 'npm install dependencies for frontend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy application
+      pool: Pool
+      environment: $(environmentName)
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: |
+                pm2 describe WebApp > /dev/null
+                RUNNING=$?
+                if [ "${RUNNING}" -ne 0 ]; then
+                    pm2 start dist/backend.cjs --name WebApp
+                else
+                  pm2 reload WebApp
+                fi;
+              displayName: 'Run express application'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-    - script: |
-        npm run build
-      displayName: 'npm build frontend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: $(environmentName)
-    pool: Pool
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: |
-              pm2 describe WebApp > /dev/null
-              RUNNING=$?
-              if [ "${RUNNING}" -ne 0 ]; then
-                  pm2 start yarn --name WebApp -- start
-              else
-                pm2 reload WebApp
-              fi;
-            displayName: 'Run express application'
-            workingDirectory: $(System.DefaultWorkingDirectory)
+
+# - stage: Build_frontend
+#   displayName: Build Frontend
+#   pool:
+#     vmImage: 'ubuntu-latest'
+  # jobs:
+  # - job: Build_frontend
+  #   displayName: Build React App
+  #   steps:
+  #   - checkout: self
+
+  #   - script: yarn
+  #     displayName: Install required frontend dependencies
+  #     workingDirectory: $(System.DefaultWorkingDirectory)/src/client
+
+#     - script: yarn
+#       displayName: Install required build dependencies
+#       workingDirectory: $(System.DefaultWorkingDirectory)
+
+#     - script: NODE_ENV=production yarn client
+#       displayName: Build React App
+#       workingDirectory: $(System.DefaultWorkingDirectory)
+
+#     - task: CopyFiles@2
+#       displayName: 'Copy required files'
+#       inputs:
+#         SourceFolder: '$(System.DefaultWorkingDirectory)'
+#         Contents: |
+#           dist/public/**
+#         TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+#     - publish: '$(Build.ArtifactStagingDirectory)'
+#       displayName: 'Publish build artifacts'
+#       artifact: Frontend
+
+# - stage: Build_backend
+#   displayName: Build and Test stage
+#   pool: Pool
+
+#   jobs:
+#   - job: Build
+#     displayName: Build Backend
+#     steps:
+#     - checkout: self
+#       clean: false
+
+#     - script: |
+#         yarn
+#       displayName: 'yarn install dependencies for backend'
+#       workingDirectory: $(System.DefaultWorkingDirectory)
+
+#     - script: yarn buildServer
+#       displayName: 'yarn build for backend'
+#       workingDirectory: $(System.DefaultWorkingDirectory)
+
+#   - job: Test
+#     displayName: Test code
+#     dependsOn: Build
+#     pool: Pool
+#     steps:
+#     - checkout: none
+
+#     - script: |
+#         yarn test
+#       displayName: 'yarn test for backend'
+#       workingDirectory: $(System.DefaultWorkingDirectory)
+
+# - stage: Deploy
+#   displayName: Deploy stage
+#   dependsOn: [Build_backend, Build_frontend]
+#   condition: succeeded()
+#   jobs:
+#   - deployment: Deploy
+#     displayName: Deploy application
+#     pool: Pool
+#     environment: $(environmentName)
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: Frontend
+
+#           - task: CopyFiles@2
+#             displayName: 'Copy required files'
+#             inputs:
+#               SourceFolder: '$(Pipeline.Workspace)/Frontend/'
+#               TargetFolder: '$(System.DefaultWorkingDirectory)'
+
+#           - script: |
+#               pm2 describe WebApp > /dev/null
+#               RUNNING=$?
+#               if [ "${RUNNING}" -ne 0 ]; then
+#                   pm2 start dist/backend.cjs --name WebApp
+#               else
+#                 pm2 reload WebApp
+#               fi;
+#             displayName: 'Run express application'
+#             workingDirectory: '$(System.DefaultWorkingDirectory)'
