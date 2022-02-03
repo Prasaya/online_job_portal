@@ -45,16 +45,6 @@ stages:
       displayName: 'yarn build for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
 
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: |
-          dist/**
-          node_modules/**
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-    - task: PublishBuildArtifacts@1
-
   # - job: Test
   #   displayName: Test code
   #   dependsOn: Build
@@ -85,9 +75,9 @@ stages:
               pm2 describe WebApp > /dev/null
               RUNNING=$?
               if [ "${RUNNING}" -ne 0 ]; then
-                  pm2 start node --name WebApp -- dist/backend.cjs
+                  pm2 start dist/backend.cjs --name WebApp
               else
                 pm2 reload WebApp
               fi;
             displayName: 'Run express application'
-            workingDirectory: $(Build.ArtifactStagingDirectory)
+            workingDirectory: $(System.DefaultWorkingDirectory)
