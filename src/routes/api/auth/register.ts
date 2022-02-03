@@ -2,6 +2,7 @@ import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { createNewUser, getUserByEmail, verifyEmail } from '@root/models/User';
 import { NewUserInput } from '@typings/User';
+import logger from '@root/utils/logger';
 
 const router = express.Router();
 
@@ -35,7 +36,7 @@ router.post(
             const user = await createNewUser(userData);
             return res.json(user);
         } catch (err) {
-            console.error('Error in registration', err);
+            logger.error(`Error in registration: ${err}`);
             res.status(500).json({ message: 'Something went wrong!', success: false });
         }
     }

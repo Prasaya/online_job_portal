@@ -3,7 +3,7 @@ import session from 'express-session';
 import morgan from 'morgan';
 import passport from 'passport';
 import path from 'path';
-import logger from '../middleware/logger';
+import logger from '@utils/logger';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
 
@@ -16,9 +16,9 @@ const appSetup = (app: express.Application) => {
 
     const sessionStore = new MySQLStore({}, dbConnection, (err) => {
         if (err) {
-            console.error('Error setting up sessionStore', err);
+            logger.error(`Error setting up sessionStore: ${err}`);
         } else {
-            console.log('Session store connected!');
+            logger.info('Session store connected!');
         }
     });
     const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
@@ -38,7 +38,7 @@ const appSetup = (app: express.Application) => {
     };
     app.set('trust proxy', 1);
     if (!process.env.SESSION_SECRET) {
-        console.error('No session secret set!');
+        logger.error('No session secret set!');
         process.exit(1);
     }
 
@@ -49,7 +49,7 @@ const appSetup = (app: express.Application) => {
     app.use(passport.session());
 
     app.use(morgan('combined'));
-    app.use(logger);
+    app.use(viewCounter);
 };
 
 export default appSetup;

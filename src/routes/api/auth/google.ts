@@ -1,3 +1,4 @@
+import logger from '@utils/logger';
 import express from 'express';
 import passport from 'passport';
 
@@ -12,13 +13,13 @@ router.get(
     (req, res, next) => {
         passport.authenticate('google', (err, user, info) => {
             if (err || !user) {
-                console.error(`Error while logging in. Error: ${err} Info: ${info}`);
+                logger.error(`Error while logging in. Error: ${err} Info: ${info}`);
                 req.session.messages = info;
                 return res.redirect('/failed');
             }
             req.login(user, (err) => {
                 if (err) {
-                    console.error('Error while logging in user', err);
+                    logger.error(`Error while logging in user: ${err}`);
                     return next(err);
                 }
                 return res.redirect('/api/userinfo');

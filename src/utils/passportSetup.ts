@@ -7,6 +7,7 @@ import { createNewUser, getFederatedCredentials, getUserByEmail, getUserByUid } 
 import { verifyPassword } from './password';
 
 import connection from '@utils/dbSetup';
+import logger from '@utils/logger';
 
 const passportConfigure = (passport) => {
     passport.use(new GoogleStrategy(
@@ -48,7 +49,7 @@ const passportConfigure = (passport) => {
                 }
                 return cb(null, user);
             } catch (err) {
-                console.error('Error in quering database', err);
+                logger.error(`Error in quering database: ${err}`);
                 return cb(err, null);
             }
         }
@@ -68,7 +69,7 @@ const passportConfigure = (passport) => {
             }
             return cb(null, user);
         } catch (err) {
-            console.error('Error in local login: ', err);
+            logger.error(`Error in local login: ${err}`);
             return cb(err, null);
         }
     }));
@@ -83,7 +84,7 @@ const passportConfigure = (passport) => {
             const userData = await getUserByUid(obj);
             cb(null, userData);
         } catch (err) {
-            console.error('Error in quering database: deserializeUser', err);
+            logger.error(`Error in quering database: deserializeUser: ${err}`);
             return cb(err, null);
         }
     });

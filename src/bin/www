@@ -2,6 +2,7 @@
 
 import app from '../app';
 import http from 'http';
+import logger from '@utils/logger';
 
 const port = parseInt((process.env.PORT || '8080'), 10);
 app.set('port', port);
@@ -13,6 +14,6 @@ server.on('listening', () => {
     const formatted = typeof (addr) === 'string'
         ? addr
         : `${addr.address}:${addr.port}`;
-    console.log(`Listening on ${formatted}`);
+    logger.info(`Listening on ${formatted}`);
 });
-server.on('error', console.error);
+server.on('error', logger.error);

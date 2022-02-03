@@ -1,6 +1,6 @@
 import { Handler, Request } from 'express';
 
-const logger: Handler = (req: Request, res, next) => {
+const viewCounter: Handler = (req: Request, res, next) => {
     if (req.session.views) {
         req.session.views++;
     } else {
@@ -9,4 +9,4 @@ const logger: Handler = (req: Request, res, next) => {
     return next();
 };
 
-export default logger;
+export default viewCounter;

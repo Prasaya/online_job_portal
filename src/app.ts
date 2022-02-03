@@ -1,8 +1,8 @@
 import './env';
 import express from 'express';
-import path from 'path';
 import appSetup from '@utils/appSetup';
 import apiRoute from '@routes/api/api';
+import logger from '@utils/logger';
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use('*', (req, res) => {
 
 app.use((err, req, res, next) => {
     if (err) {
-        console.log(err);
+        logger.error(err);
     }
 });
 
