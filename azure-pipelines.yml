@@ -73,17 +73,17 @@ stages:
       displayName: 'yarn build for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
 
-  # - job: Test
-  #   displayName: Test code
-  #   dependsOn: Build
-  #   pool: Pool
-  #   steps:
-  #   - checkout: none
+  - job: Test
+    displayName: Test code
+    dependsOn: Build
+    pool: Pool
+    steps:
+    - checkout: none
 
-  #   - script: |
-  #       yarn test
-  #     displayName: 'yarn test for backend'
-  #     workingDirectory: $(System.DefaultWorkingDirectory)
+    - script: |
+        yarn test
+      displayName: 'yarn test for backend'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
 - stage: Deploy
   displayName: Deploy stage
