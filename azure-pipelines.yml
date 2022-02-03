@@ -30,12 +30,14 @@ stages:
     - checkout: self
 
     - script: yarn
-      displayName: Install required dependencies
+      displayName: Install required frontend dependencies
       workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
-    - script: |
-        yarn
-        yarn client
+    - script: yarn
+      displayName: Install required build dependencies
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - script: NODE_ENV=production yarn client
       displayName: Build React App
       workingDirectory: $(System.DefaultWorkingDirectory)
 
