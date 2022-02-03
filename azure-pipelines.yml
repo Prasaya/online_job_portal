@@ -81,9 +81,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: drop
-
           - script: |
               pm2 describe WebApp > /dev/null
               RUNNING=$?
