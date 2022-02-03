@@ -9,6 +9,10 @@ import JobseekerMyStatus from "./Components/Jobseeker/MyStatus";
 import JobseekerMyProfile from "./Components/Jobseeker/MyProfile";
 import JobseekerSettings from "./Components/Jobseeker/Settings";
 import JobseekerEditProfile from "./Components/Jobseeker/EditProfile";
+import CompanyHome from "./Components/Company/Home";
+import CompanyOverview from "./Components/Company/Overview";
+import CompanyProfile from "./Components/Company/Profile";
+import CompanySettings from "./Components/Company/Settings";
 
 function App() {
   return (
@@ -26,6 +30,11 @@ function App() {
             <Route path="myprofile" element={<JobseekerMyProfile/>} />
             <Route path="editprofile" element={<JobseekerEditProfile/>} />
             <Route path="settings" element={<JobseekerSettings/>} />
+          </Route>
+          <Route path="/company" element={<CompanyHome />}>
+            <Route path="overview" element={<CompanyOverview/>} />
+            <Route path="profile" element={<CompanyProfile/>} />
+            <Route path="settings" element={<CompanySettings/>} />
           </Route> 
         </Routes>
       </div>
