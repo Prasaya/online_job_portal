@@ -21,7 +21,8 @@ variables:
 stages:
 - stage: Build
   displayName: Build and Test stage
-  pool: Pool
+  pool:
+    vmImage: 'ubuntu-latest'
 
   jobs:
   - job: Build
@@ -43,6 +44,19 @@ stages:
     - script: yarn build
       displayName: 'yarn build for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - task: CopyFiles@2
+      displayName: 'Copy required files'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          node_modules/**
+          dist/**
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish build artifacts'
+      artifact: WebApp
 
   # - job: Test
   #   displayName: Test code
@@ -69,6 +83,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: WebApp
           - script: |
               pm2 describe WebApp > /dev/null
               RUNNING=$?
@@ -78,4 +94,4 @@ stages:
                 pm2 reload WebApp
               fi;
             displayName: 'Run express application'
-            workingDirectory: $(System.DefaultWorkingDirectory)
+            workingDirectory: '$(Pipeline.Workspace)/drop
