@@ -96,6 +96,15 @@ function clientBuild (cb) {
         });
     };
     runCommand(
+        'mkdir',
+        ['-p', 'dist'],
+        {
+            name: 'mkdir',
+            closeCallback: () => {},
+            errorCallback: cb,
+        }
+    );
+    runCommand(
         'yarn',
         ['build'],
         {
