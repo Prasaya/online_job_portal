@@ -1,41 +1,34 @@
 import { Link } from "react-router-dom"
-import { useState } from "react"
-
+import { useForm } from "react-hook-form"
+import {useState} from "react"
 function Login(){
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const {register, handleSubmit} = useForm()
+    const [authStatus, setauthStatus] = useState(false);
+    const [uid, setUid] = useState("");
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        console.log(email, password)
-        setEmail('')
-        setPassword('')
+    const onSubmit = async (data) => {
+        const res = await fetch('/api/auth/login',{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const jsonVal = await res.json()
+        const isAuth = jsonVal.success
+        if (isAuth) {
+            setauthStatus(true)
+        }
     }
 
     return (
         <div className="container log-in">
             <div className="row justify-content-center my-5">
                 <div className="col-lg-4">
-                    <form action="#" onSubmit={onSubmit}>
-                        <input type="email" 
-                        name="email"
-                        id="login-email"
-                        className="form-control form-control-lg" 
-                        placeholder="Email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required/>
+                    <form action="#" onSubmit={handleSubmit(onSubmit)}>
+                    <input {...register("username", {required:true})} type="email" className="form-control form-control-lg my-2" placeholder="Email" />
 
-                        <input type="password" 
-                        name="password"
-                        id="login-password"
-                        className="form-control form-control-lg my-2" 
-                        placeholder="Password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        minLength={7}
-                        maxLength={20}
-                        required/>
+                    <input {...register("password", {required:true})} type="password" className="form-control form-control-lg my-2" placeholder="Password" ></input>
                         <div className="d-grid gap-2">
                             <button className="btn btn-primary btn-lg" type="submit">Log In</button>
                         </div>

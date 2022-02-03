@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const app = require('../app');
-const http = require('http');
+import app from '../app';
+import http from 'http';
 
 const port = parseInt((process.env.PORT || '8080'), 10);
 app.set('port', port);

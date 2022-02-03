@@ -3,53 +3,63 @@ import User, { NewUserInput, DBUser } from '@typings/User';
 import hashPassword from '../utils/password';
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
+import { getRoleByName } from '@root/utils/authorization';
+
+const userDataJoin = '' +
+    'users u ' +
+    'INNER JOIN emails e ON u.uid = e.uid' +
+    'INNER JOIN roles r ON u.role = r.role';
 
 export const createNewUser = async (userData: NewUserInput): Promise<User> => {
-    const user: DBUser = {
+    const user = {
         uid: uuidv4(),
+        email: userData.email,
         password: await hashPassword(userData.password),
         firstName: userData.firstName || null,
         middleName: userData.middleName || null,
         lastName: userData.lastName || null,
         picture: userData.picture || null,
     };
-    await connection.execute(
+    await connection.execute( 
         'INSERT INTO users ' +
-        '(uid, password, firstname, middlename, lastname, picture) ' +
-        'VALUES (?, ?, ?, ?, ?, ?)',
+        '(uid, email, password, firstname, middlename, lastname, picture) ' +
+        'VALUES (?, ?, ?, ?, ?, ?, ?)',
         [...Object.values(user)]
     );
-    await connection.execute(
-        'INSERT INTO emails ' +
-        '(uid, email) ' +
-        'VALUES (?, ?)',
-        [user.uid, userData.email]
-    );
-    return { ...<User>user, email: userData.email };
+    return { ...user, password: null }; 
 };
 
-export const getUserByEmail = async (email: string): Promise<Array<User>> => {
-    'SELECT * ';
-    const [result] = await connection.query(
-        'SELECT * FROM users INNER JOIN emails on emails.uid = users.uid ' +
+export const getUserByEmail = async (email: string, includePassword: boolean = false): Promise<DBUser | null> => {
+    const [result] = await connection.execute(
+        'SELECT * ' +
+        'FROM vwAuth ' +
         'WHERE email = ?',
         [email]
     );
-    return result as Array<User>;
+    if ((result as RowDataPacket[]).length === 0) {
+        return null;
+    }
+    const password = includePassword ? (result as RowDataPacket[])[0].password : null;
+    return { ...(result[0] as DBUser), password };
 };
 
-export const getUserByUid = async (uid: string): Promise<Array<User>> => {
+export const getUserByUid = async (uid: string, includePassword: boolean = false): Promise<DBUser | null> => {
     const [result] = await connection.query(
-        'SELECT * FROM users INNER JOIN emails on emails.uid = users.uid ' +
-        'WHERE users.uid = ?',
+        'SELECT * ' +
+        'FROM vwAuth ' +
+        'WHERE uid = ?',
         [uid]
     );
-    return result as Array<User>;
+    if ((result as RowDataPacket[]).length === 0) {
+        return null;
+    }
+    const password = includePassword ? (result as RowDataPacket[])[0].password : null;
+    return { ...(result[0] as DBUser), password };
 };
 
 export const verifyEmail = async (email: string): Promise<Boolean> => {
     const [result] = await connection.execute(
-        'SELECT uid from emails WHERE email = ?',
+        'SELECT uid from vwAuth WHERE email = ?',
         [email]
     );
     return (result as RowDataPacket[]).length > 0;

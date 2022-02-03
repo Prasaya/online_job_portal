@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './config/.env' });
+import './env';
 import express from 'express';
 import path from 'path';
 import appSetup from '@utils/appSetup';
@@ -11,7 +11,7 @@ appSetup(app);
 app.use('/api', apiRoute);
 
 app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile('index.html', { root: './dist/public' });
 });
 
 app.use((err, req, res, next) => {
@@ -20,4 +20,4 @@ app.use((err, req, res, next) => {
     }
 });
 
-module.exports = app;
+export default app;

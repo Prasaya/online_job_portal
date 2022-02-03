@@ -2,14 +2,15 @@ import {useForm} from "react-hook-form"
 
 function RegisterJobSeeker(){
     const {register, handleSubmit} = useForm()
-    const onSubmitForm = (data) => {
-        fetch('/api/auth/register',{
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
+    const onSubmitForm = async (data) => {
+        const res = await fetch('/api/auth/register',{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        console.log(await res.json());
     }
 
     return (
@@ -17,8 +18,9 @@ function RegisterJobSeeker(){
             <div className="row justify-content-center my-5 center-text">
                 <header className="text-center"><h3>Job Seeker Account Registration</h3></header>
                 <div className="col-lg-4">
-                    <form action="/api/auth/register" onSubmit={handleSubmit(onSubmitForm)}>
+                    <form action="#" onSubmit={handleSubmit(onSubmitForm)}>
                         <input {...register("firstName", {required:true})} type="text" className="form-control form-control-lg" placeholder="Firstname" />
+                        <input {...register("middleName", {required:true})} type="text" className="form-control form-control-lg" placeholder="Middlename" />
                         <input {...register("lastName", {required:true})} type="text" className="form-control form-control-lg my-2" placeholder="Lastname" />
                         <input {...register("email", {required:true})} type="email" className="form-control form-control-lg my-2" placeholder="Email" />
                         <input {...register("phone",{})} type="tel" defaultValue={""} className="form-control form-control-lg my-2" placeholder="Phone Number"  />

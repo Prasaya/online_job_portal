@@ -5,7 +5,7 @@ module.exports = {
     /**
      * @type {("none" | "development" | "production")}
      */
-    mode: 'development',
+    mode: process.env.NODE_ENV || 'development',
     entry: './src/bin/www',
     output: {
         path: path.join(__dirname, 'dist'),
@@ -15,7 +15,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                loader: 'babel-loader',
                 exclude: /node_modules/,
             },
         ],

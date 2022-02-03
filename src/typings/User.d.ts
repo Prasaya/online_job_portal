@@ -11,4 +11,9 @@ export default interface User {
 }
 
 export type NewUserInput = PartialExcept<Omit<User, "uid">, "email">;
-export type DBUser = PartialExcept<Omit<User, "email">, "uid">;
+export interface DBUser extends User {
+}
+
+
+
+

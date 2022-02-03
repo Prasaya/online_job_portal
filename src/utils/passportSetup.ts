@@ -22,11 +22,10 @@ const passportConfigure = (passport) => {
                 let user: User;
                 if (providerData.length === 0) {
                     const userData = await getUserByEmail(profile.emails[0].value);
-                    if (userData.length === 0) {
+                    if (userData === null) {
                         const newUser: NewUserInput = {
                             email: profile.emails[0].value,
                             firstName: profile.name.givenName,
-                            middleName: profile.name.middleName,
                             lastName: profile.name.familyName,
                             picture: profile.photos[0].value,
                         };
@@ -45,8 +44,7 @@ const passportConfigure = (passport) => {
                         ]
                     );
                 } else {
-                    const [userData] = await getUserByUid(providerData[0].uid);
-                    user = userData[0];
+                    user = await getUserByUid(providerData[0].uid);
                 }
                 return cb(null, user);
             } catch (err) {
@@ -59,14 +57,14 @@ const passportConfigure = (passport) => {
     passport.use(new LocalStrategy(async (email, password, cb) => {
         try {
             const invalidDataPrompt = 'Incorrect username or password';
-            const userData = await getUserByEmail(email);
-            if (userData.length === 0) {
-                return cb(null, false, { message: invalidDataPrompt });
+            const userData = await getUserByEmail(email, true);
+            if (userData === null) {
+                return cb(null, false, { message: invalidDataPrompt, success: false });
             }
-            const user: User = userData[0];
-            const passwordMatches = verifyPassword(password, user.password);
+            const user: User = userData;
+            const passwordMatches = await verifyPassword(password, user.password);
             if (!passwordMatches) {
-                return cb(null, false, { message: invalidDataPrompt });
+                return cb(null, false, { message: invalidDataPrompt, success: false });
             }
             return cb(null, user);
         } catch (err) {
@@ -83,8 +81,7 @@ const passportConfigure = (passport) => {
         try {
             if (!obj) return cb(null, null);
             const userData = await getUserByUid(obj);
-            if (userData.length === 0) return cb(null, null);
-            cb(null, userData[0]);
+            cb(null, userData);
         } catch (err) {
             console.error('Error in quering database: deserializeUser', err);
             return cb(err, null);
