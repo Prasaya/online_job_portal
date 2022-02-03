@@ -34,6 +34,14 @@ stages:
         displayName: Install frontend dependencies
         workingDirectory: $(System.DefaultWorkingDirectory)/src/client
 
+    - job: Test
+      dependsOn: Install
+      displayName: Test backend
+      steps:
+      - checkout: none
+      - script: yarn test
+        displayName: Test Backend
+
     - job: Build
       dependsOn: Install
       displayName: Build frontend and backend
