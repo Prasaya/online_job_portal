@@ -19,14 +19,41 @@ variables:
   environmentName: prasaya
 
 stages:
-- stage: Build
-  displayName: Build and Test stage
+- stage: Build_frontend
+  displayName: Build Frontend
   pool:
     vmImage: 'ubuntu-latest'
+  jobs:
+  - job: Build_frontend
+    displayName: Build React App
+    steps:
+    - checkout: self
+
+    - script: |
+        yarn
+        yarn client
+      displayName: Build React App
+      workingDirectory: $(System.DefaultWorkingDirectory)
+
+    - task: CopyFiles@2
+      displayName: 'Copy required files'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          dist/public/**
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      displayName: 'Publish build artifacts'
+      artifact: Frontend
+
+- stage: Build_backend
+  displayName: Build and Test stage
+  pool: Pool
 
   jobs:
   - job: Build
-    displayName: Build job
+    displayName: Build Backend
     steps:
     - checkout: self
       clean: false
@@ -36,27 +63,9 @@ stages:
       displayName: 'yarn install dependencies for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
 
-    - script: |
-        yarn
-      displayName: 'yarn install dependencies for frontend'
-      workingDirectory: $(System.DefaultWorkingDirectory)/src/client
-
-    - script: yarn build
+    - script: yarn buildServer
       displayName: 'yarn build for backend'
       workingDirectory: $(System.DefaultWorkingDirectory)
-
-    - task: CopyFiles@2
-      displayName: 'Copy required files'
-      inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: |
-          node_modules/**
-          dist/**
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-    - publish: '$(Build.ArtifactStagingDirectory)'
-      displayName: 'Publish build artifacts'
-      artifact: WebApp
 
   # - job: Test
   #   displayName: Test code
@@ -83,8 +92,11 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: WebApp
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              source: Current
+              artifact: Frontend
+              path: $(System.DefaultWorkingDirectory)/dist
           - script: |
               pm2 describe WebApp > /dev/null
               RUNNING=$?
@@ -94,4 +106,4 @@ stages:
                 pm2 reload WebApp
               fi;
             displayName: 'Run express application'
-            workingDirectory: '$(Pipeline.Workspace)/drop'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'

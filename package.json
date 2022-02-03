@@ -5,6 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "gulp build",
+    "buildServer": "gulp buildServer",
+    "buildClient": "gulp buildClient",
     "test": "jest",
     "start": "gulp start",
     "client": "gulp client",
