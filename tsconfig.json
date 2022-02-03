@@ -5,6 +5,7 @@
         "esModuleInterop": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
+        "strict": true,
         "typeRoots": [
             "node_modules/@types",
             "src/typings"
