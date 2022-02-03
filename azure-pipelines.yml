@@ -64,6 +64,7 @@ stages:
   - deployment: Deploy
     displayName: Deploy application
     pool: Pool
+    environment: $(environmentName)
     strategy:
       runOnce:
         deploy:
