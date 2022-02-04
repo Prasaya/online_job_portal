@@ -2,12 +2,14 @@ import express, { Request } from 'express';
 import isLoggedIn from '@middleware/isLoggedIn';
 import authRoute from './auth/auth';
 import userRoute from './user/user';
-import jobPostRoute from './jobpost/jobpost';
+import jobPostRoute from './jobs/jobpost';
+import jobs from './jobs/jobs';
 
 const router = express.Router();
 
 router.use('/auth', authRoute);
 router.use('/user', userRoute);
+router.use('/jobs', jobs);
 router.use('/jobpost', jobPostRoute);
 
 router.get('/userinfo', isLoggedIn, (req: Request, res) => {
