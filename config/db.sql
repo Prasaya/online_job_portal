@@ -4,7 +4,7 @@ drop table if exists webapp.emails;
 drop table if exists webapp.users;
 drop table if exists webapp.roles;
 drop view if exists vwAuth;
-/*truncate webapp.sessions;*/
+truncate webapp.sessions;
 
 CREATE TABLE webapp.roles (
     roleId int auto_increment,
@@ -19,6 +19,7 @@ CREATE TABLE webapp.users (
     email varchar(250) unique not null,
     password char(60),
     firstName varchar(50),
+    middleName varchar(50),
     lastName varchar(50),
     picture varchar(200),
     birthday datetime,
@@ -43,11 +44,16 @@ CREATE TABLE webapp.federated_credentials (
 );
 
 CREATE OR REPLACE VIEW vwAuth AS
-    SELECT users.uid, email, password, firstName, lastName, picture
-    FROM users
-    LEFT JOIN federated_credentials as fc on fc.uid = users.uid
-    LEFT JOIN federated_credentials_provider as fcp on fcp.providerId = fc.providerId;
+    SELECT u.uid, email, password, providerName, identifier
+    FROM users AS u
+    LEFT JOIN federated_credentials AS fc ON fc.uid = u.uid
+    LEFT JOIN federated_credentials_provider AS fcp ON fcp.providerID = fc.providerID;
 
+CREATE OR REPLACE VIEW vwUser AS
+	SELECT u.uid, email, firstName, middleName, lastName, picture, birthday, phone, gender, providerName, identifier
+    FROM users AS u
+    LEFT JOIN federated_credentials AS fc ON fc.uid = u.uid
+    LEFT JOIN federated_credentials_provider AS fcp ON fcp.providerID = fc.providerID;
 
 select * from vwAuth where email = 'yednapnevus2@gmail.com';
 select * from vwAuth where uid = '97bfb1d5-1cac-4943-8f5f-f8639dfbfabe';

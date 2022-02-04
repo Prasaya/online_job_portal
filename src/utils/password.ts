@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-const hashPassword = async (password: string): Promise<string | null> => {
+const hashPassword = async (password: string | null): Promise<string | null> => {
     if (!password || password.length === 0) {
         return null;
     }
@@ -9,7 +9,10 @@ const hashPassword = async (password: string): Promise<string | null> => {
     return computedHash;
 };
 
-export const verifyPassword = async (enteredPassword: string, storedPassword: string): Promise<Boolean> => {
+export const verifyPassword = async (enteredPassword: string, storedPassword: string | null): Promise<Boolean> => {
+    if (!storedPassword) {
+        return false;
+    }
     return await bcrypt.compare(enteredPassword, storedPassword);
 };
 

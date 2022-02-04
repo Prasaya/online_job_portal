@@ -1,18 +1,21 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
 import { createNewUser, getUserByEmail, verifyEmail } from '@root/models/User';
-import { NewUserInput } from '@typings/User';
+import { NewUserInput, User } from '@typings/User';
 import logger from '@root/utils/logger';
 
 const router = express.Router();
 
 router.post(
     '/',
-    body('email').isEmail().isLength({ max: 50 }),
+    body('email').isEmail().isLength({ max: 250 }),
     body('password').isLength({ min: 8 }),
-    body('firstName').optional().isString().isLength({ max: 50 }),
-    body('middleName').optional().isString().isLength({ max: 50 }),
-    body('lastName').optional().isString().isLength({ max: 50 }),
+    body('firstName').optional().default(null).isString().isLength({ max: 50 }),
+    body('middleName').optional().default(null).isString().isLength({ max: 50 }),
+    body('lastName').optional().default(null).isString().isLength({ max: 50 }),
+    body('birthday').optional().default(null).isDate(),
+    body('phone').optional().default(null).isString().isLength({ max: 20 }),
+    body('gender').optional().default(null).isString().isLength({ max: 10 }),
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -30,10 +33,14 @@ router.post(
                 email: req.body.email,
                 password: req.body.password,
                 firstName: req.body.firstName,
+                middleName: req.body.middleName,
                 lastName: req.body.lastName,
                 picture: req.body.picture,
+                birthday: req.body.birthday,
+                phone: req.body.phone,
+                gender: req.body.gender,
             };
-            const user = await createNewUser(userData);
+            const user: User = await createNewUser(userData);
             return res.json(user);
         } catch (err) {
             logger.error(`Error in registration: ${err}`);

@@ -6,8 +6,10 @@ import path from 'path';
 import logger from '@utils/logger';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
+import mysqlSession from 'express-mysql-session';
+import viewCounter from '@root/middleware/viewCounter';
 
-var MySQLStore = require('express-mysql-session')(session);
+var MySQLStore = mysqlSession(session);
 
 const appSetup = (app: express.Application) => {
     app.use(express.static('./dist/public'));

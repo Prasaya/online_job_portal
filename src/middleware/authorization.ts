@@ -1,10 +1,14 @@
 import { Role } from '@typings/authorization';
 import roles from '@utils/authorization';
+import { Handler } from 'express';
 
-export function roleCallback(cb: (role: Role) => boolean) {
+export function roleCallback(cb: (role: Role) => boolean): Handler {
     return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({ message: 'Authorization missing', success: false });
+        }
         const userRoles = req.user.roles;
-        userRoles.forEach(r => {
+        userRoles?.forEach(r => {
             if (cb(r)) {
                 return next();
             }
