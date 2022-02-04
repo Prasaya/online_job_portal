@@ -1,36 +1,43 @@
 import express, { query } from 'express';
 import { body, validationResult } from 'express-validator';
-import { createNewUser, getUserByEmail, verifyEmail } from '@root/models/User';
 import { createNewJobPost } from '@root/models/JobPost';
 import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
+import DBJob, { Job, JobInput } from '@typings/Jobs'
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
+import isLoggedIn from '@middleware/isLoggedIn';
 
 const router = express.Router();
 
-router.get(
-    '/:id',
+//router.get('/', isLoggedIn,
+router.get('/',
     async (req, res) => {
-        console.log("HI");
-        const jobID = req.params.id;
         const [result] = await connection.query(
-            'SELECT * FROM jobPost ' +
-            'WHERE jid = ?',
-            [jobID]
+            'SELECT * FROM jobs '
         );
-        console.log(result);
-        res.send(JSON.parse(JSON.stringify(result)));
+        const [result2] = await connection.query(
+            'SELECT * FROM skills '
+        );
+        let job_list: any = {};
+        (result as RowDataPacket[]).forEach(job => {
+            job_list[job.jobId] = { ...job, skills: [] };
+        }
+        );
+        (result2 as RowDataPacket[]).forEach(skill => {
+            job_list[skill.jobId].skills.push(skill);
+        });
+        res.json(Object.values(job_list));
     }
 );
-
 
 router.post(
     '/',
     body('title').isString().isLength({ max: 100 }),
-    body('jobDescription').isString(),
-    body('experience').isString().isLength({ max: 1000 }).optional(),
-    body('education').isString().isLength({ max: 1000 }).optional(),
-    body('skills').isString().isLength({ max: 1000 }).optional(),
+    body('description').isString().optional(),
+    body('vacancies').isNumeric().optional(),
+    body('experience').isNumeric().optional(),
+    body('address').isString().isLength({ max: 1000 }).optional(),
+    body('district').isString().isLength({ max: 1000 }).optional(),
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -38,17 +45,16 @@ router.post(
                 return res.status(400).json({ message: errors.array(), success: false });
             }
 
-            console.log('here');
-
-            const jobPostData: NewJobPost = {
+            const jobPostData: JobInput = {
                 title: req.body.title,
-                jobDescription: req.body.jobDescription,
+                description: req.body.description,
+                vacancies: req.body.vacancies,
                 experience: req.body.experience,
-                education: req.body.education,
-                skills: req.body.skills,
+                address: req.body.address,
+                district: req.body.district,
             };
-            const user = await createNewJobPost(jobPostData);
-            res.json({ ...user });
+            //          const user = await createNewJobPost(jobPostData);
+            //          res.json({ ...user });
         } catch (err) {
             console.log('Error in job post creation', err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
@@ -57,44 +63,26 @@ router.post(
 );
 
 router.put('/:id', async (req, res) => {
-    try {
-        const [result] = await connection.query(
-            'UPDATE jobPost ' +
-            'SET title = ?, jobDescription = ?, experience = ?,' +
-            'education = ?, skills = ?' +
-            'WHERE jid = ?',
-            [
-                req.body.title, req.body.jobDescription, req.body.experience,
-                req.body.education, req.body.skills, req.params.id
-            ]
-        );
-    } catch (err) {
-        console.log('Error in job put operation', err);
-        res.status(500).json({ message: 'Something went wrong!', success: false });
-    }
-    res.json({ message: 'Job Put Operation successful!', success: true });
+
 });
 
 
-router.patch('/',
-    (req, res) => {
+router.patch('/', async (req, res) => {
 
-    }
-)
-
-router.patch('/',
-    (req, res) => {
-
-    }
-)
+});
 
 router.delete('/:id',
     async (req, res) => {
         const jobID = req.params.id;
         try {
             await connection.query(
-                'DELETE FROM jobPost ' +
-                'WHERE jid = ?',
+                'DELETE FROM skills ' +
+                'WHERE jobId = ?',
+                [jobID]
+            );
+            await connection.query(
+                'DELETE FROM jobs ' +
+                'WHERE jobId = ?',
                 [jobID]
             );
         } catch (err) {

@@ -7,14 +7,14 @@ import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
 
 const router = express.Router();
- 
+
 router.get(
     '/:id',
     async (req, res) => {
         console.log("HI");
         const jobID = req.params.id;
-        const [result] =  await connection.query(
-            'SELECT * FROM jobPost ' + 
+        const [result] = await connection.query(
+            'SELECT * FROM jobPost ' +
             'WHERE jid = ?',
             [jobID]
         );
@@ -24,7 +24,7 @@ router.get(
         //     [j]
         // )
         console.log(result);
-        res.send( JSON.parse( JSON.stringify(result) ) );
+        res.send(JSON.parse(JSON.stringify(result)));
     }
 );
 
@@ -53,7 +53,7 @@ router.post(
                 skills: req.body.skills,
             };
             const user = await createNewJobPost(jobPostData);
-            res.json({ ...user});
+            res.json({ ...user });
         } catch (err) {
             console.log('Error in job post creation', err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
@@ -63,10 +63,10 @@ router.post(
 
 router.put('/:id', async (req, res) => {
     try {
-        const [result] =  await connection.query(
+        const [result] = await connection.query(
             'UPDATE jobPost ' +
-            'SET title = ?, jobDescription = ?, experience = ?,'+
-            'education = ?, skills = ?' + 
+            'SET title = ?, jobDescription = ?, experience = ?,' +
+            'education = ?, skills = ?' +
             'WHERE jid = ?',
             [
                 req.body.title, req.body.jobDescription, req.body.experience,
@@ -93,20 +93,20 @@ router.patch('/',
     }
 )
 
-router.delete('/:id', 
+router.delete('/:id',
     async (req, res) => {
         const jobID = req.params.id;
         try {
             await connection.query(
-                'DELETE FROM jobPost ' + 
+                'DELETE FROM jobPost ' +
                 'WHERE jid = ?',
                 [jobID]
             );
-        }catch (err) {
+        } catch (err) {
             console.log('Error in job delete operation', err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
         }
         res.status(200).json({ message: 'Job deleted', success: true });
-});
+    });
 
 export default router;

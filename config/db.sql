@@ -3,6 +3,10 @@ drop table if exists webapp.federated_credentials_provider;
 drop table if exists webapp.emails;
 drop table if exists webapp.users;
 drop table if exists webapp.roles;
+drop table if exists webapp.jobs;
+drop table if exists webapp.skills;
+drop table if exists webapp.jobQualifications;
+drop table if exists webapp.academicQualifications;
 drop view if exists vwAuth;
 truncate webapp.sessions;
 
@@ -41,6 +45,42 @@ CREATE TABLE webapp.federated_credentials (
     primary key (providerId, identifier),
     foreign key (uid) references users(uid),
     foreign key (providerId) references federated_credentials_provider(providerId)
+);
+
+CREATE TABLE webapp.jobs (
+    jobId char(36),
+    companyId char(36) not null, 
+    title varchar(100) not null,
+    description varchar(1000),
+    vacancies int not null,
+    experience int,
+    address varchar(1000),
+    district varchar(1000),
+    primary key (jobId)
+);
+
+CREATE TABLE webapp.skills (
+    skillName varchar(100) not null,
+    jobId char(36) not null,
+    proficiency ENUM('Beginner', 'Intermediate', 'Advanced') not null,
+    primary key (skillName, jobId),
+    foreign key (jobId) references jobs(jobId)
+);
+
+CREATE TABLE webapp.academicQualifications (
+    qId char(36),
+    level varchar(100) not null,
+    discipline varchar(100) not null,
+    degree varchar(100) not null,
+    primary key (qid)
+);
+
+CREATE TABLE webapp.jobQualifications (
+    jobId char(36) not null,
+    qId varchar(36) not null,
+    primary key (jobId, qId),
+    foreign key (jobId) references jobs(jobId),
+    foreign key (qId) references academicQualifications(qId)
 );
 
 CREATE OR REPLACE VIEW vwAuth AS
