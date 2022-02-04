@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import User, { NewUserInput, DBUser } from '@typings/User';
 import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
+import DBJob, { Job, JobInput } from '@typings/Jobs'
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
 
