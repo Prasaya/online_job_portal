@@ -22,7 +22,7 @@ function RegisterCompany(){
                             <label htmlFor="companyPassword">Password</label>
                         </div>
                         <div className="form-floating mb-3">
-                            <input type="text" className="form-control form-control-lg" placeholder="Website" id="website" required />
+                            <input type="url" className="form-control form-control-lg" placeholder="Website" id="website" required />
                             <label htmlFor="website">Website</label>
                         </div>
                         <div className="form-floating mb-3">
