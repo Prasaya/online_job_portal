@@ -20,7 +20,7 @@ function RegisterJobSeeker(){
                 <div className="col-lg-4">
                     <form action="#" onSubmit={handleSubmit(onSubmitForm)}>
                         <input {...register("firstName", {required:true})} type="text" className="form-control form-control-lg" placeholder="Firstname" />
-                        <input {...register("middleName", {required:true})} type="text" className="form-control form-control-lg" placeholder="Middlename" />
+                        <input {...register("middleName")} type="text" className="form-control form-control-lg" placeholder="Middlename" />
                         <input {...register("lastName", {required:true})} type="text" className="form-control form-control-lg my-2" placeholder="Lastname" />
                         <input {...register("email", {required:true})} type="email" className="form-control form-control-lg my-2" placeholder="Email" />
                         <input {...register("phone",{})} type="tel" defaultValue={""} className="form-control form-control-lg my-2" placeholder="Phone Number"  />
