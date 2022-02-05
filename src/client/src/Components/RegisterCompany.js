@@ -7,19 +7,36 @@ function RegisterCompany(){
                     <form action="#">
                         <div className="form-floating mb-3">
                             <input type="text" className="form-control form-control-lg" placeholder="Company Name" id="companyName" required />
-                            <label for="companyName">Company Name</label>
+                            <label htmlFor="companyName">Company Name</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input type="email" className="form-control form-control-lg" placeholder="Company Name" id="companyName" required />
-                            <label for="companyEmail">Company Email</label>
+                            <label htmlFor="companyEmail">Company Email</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input type="number" className="form-control form-control-lg" placeholder="Phone Number" id="companyName" required />
-                            <label for="phoneNumber">Phone Number</label>
+                            <label htmlFor="phoneNumber">Phone Number</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input type="password" className="form-control form-control-lg" placeholder="Password" id="companyPassword" required />
-                            <label for="companyPassword">Password</label>
+                            <label htmlFor="companyPassword">Password</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <input type="text" className="form-control form-control-lg" placeholder="Website" id="website" required />
+                            <label htmlFor="website">Website</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <input type="text" className="form-control form-control-lg" placeholder="Address" id="address" required />
+                            <label htmlFor="address">Address</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <select className="form-select" id="district" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="bhaktapur">Bhaktapur</option>
+                                <option value="kathmandu">Kathmandu</option>
+                                <option value="lalitpur">Lalitpur</option>
+                            </select>
+                            <label htmlFor="district">District</label>
                         </div>
                         <div className="d-grid gap-2">
                             <button className="btn btn-success btn-lg" type="submit">Sign Up</button>
