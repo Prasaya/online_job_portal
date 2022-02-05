@@ -32,13 +32,13 @@ router.post(
             const userData: NewUserInput = {
                 email: req.body.email,
                 password: req.body.password,
-                firstName: req.body.firstName,
-                middleName: req.body.middleName,
-                lastName: req.body.lastName,
-                picture: req.body.picture,
-                birthday: req.body.birthday,
-                phone: req.body.phone,
-                gender: req.body.gender,
+                firstName: req.body.firstName || null,
+                middleName: req.body.middleName || null,
+                lastName: req.body.lastName || null,
+                picture: req.body.picture || null,
+                birthday: req.body.birthday || null,
+                phone: req.body.phone || null,
+                gender: req.body.gender || null,
             };
             const user: User = await createNewUser(userData);
             return res.json(user);
