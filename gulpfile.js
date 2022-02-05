@@ -10,7 +10,7 @@ console.log(`Using environment: ${env}`);
 function runCommand (command, args, {
     errorCallback, closeCallback, name, cwd,
 }) {
-    const child = spawn(command, args, { cwd: cwd || '.' });
+    const child = spawn(command, args, { cwd: cwd || '.', shell: true });
     child.on('error', (err) => {
         process.stderr.write(`Error in ${name}: ${err}\n`);
         errorCallback(err);
@@ -59,8 +59,10 @@ function backendStart (cb) {
         );
     } else {
         runCommand(
-            'nodemon',
+            'yarn',
             [
+                'run',
+                'nodemon',
                 '--watch',
                 './dist/backend.cjs',
                 './dist/backend.cjs',
@@ -87,7 +89,7 @@ function clientBuild (cb) {
             'build/.',
             '../../dist/public',
         ], {
-            name: 'Client-copy',
+            name: 'Client-copy', 
             errorCallback,
             closeCallback: (code, signal) => {
                 return cb();
