@@ -1,14 +1,73 @@
-import { v4 as uuidv4 } from "uuid";
-import {
-  User,
-  NewUserInput,
-  DBUser,
-  AuthUserParameters,
-  AuthUser,
-} from "@typings/User";
-import hashPassword from "../utils/password";
-import connection from "@utils/dbSetup";
-import { FieldPacket, RowDataPacket } from "mysql2";
+import { v4 as uuidv4 } from 'uuid';
+import { User, NewUserInput, DBUser, AuthUserParameters, AuthUser } from '@typings/User';
+import hashPassword from '../utils/password';
+import connection from '@utils/dbSetup';
+import { FieldPacket, RowDataPacket } from 'mysql2';
+import { Schema } from 'express-validator';
+
+export const registerSchema: Schema = {
+    email: {
+        in: ['body'],
+        isEmail: true,
+        normalizeEmail: true,
+        isLength: {
+            options: [{ min: 1, max: 250 }],
+        }
+    },
+    password: {
+        in: ['body'],
+        isStrongPassword: {
+            options: {
+                minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1, returnScore: false, pointsPerUnique: 1, pointsPerRepeat: 0.5, pointsForContainingLower: 10, pointsForContainingUpper: 10, pointsForContainingNumber: 10, pointsForContainingSymbol: 10
+            }
+        }
+    },
+    firstName: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        isLength: {
+            options: [{ max: 50 }],
+        }
+    },
+    middleName: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        isLength: {
+            options: [{ max: 50 }],
+        }
+    },
+    lastName: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        isLength: {
+            options: [{ max: 50 }],
+        }
+    },
+    birthday: {
+        in: ['body'],
+        optional: true,
+        isDate: true
+    },
+    phone: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        isLength: {
+            options: [{ max: 20 }],
+        }
+    },
+    gender: {
+        in: ['body'],
+        optional: true,
+        isString: true,
+        isLength: {
+            options: [{ max: 10 }],
+        }
+    },
+};
 
 export const createNewUser = async (userData: NewUserInput): Promise<User> => {
   const user: DBUser = {
@@ -21,7 +80,7 @@ export const createNewUser = async (userData: NewUserInput): Promise<User> => {
     picture: userData.picture,
     birthday: userData.birthday,
     phone: userData.phone,
-    gender: userData.gender    
+    gender: userData.gender
    };
   console.log(user);
   await connection.execute(
