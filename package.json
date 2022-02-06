@@ -11,7 +11,8 @@
     "start": "gulp start",
     "client": "gulp client",
     "server": "gulp server",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "eslint": "eslint ."
   },
   "author": "nobody",
   "license": "ISC",
@@ -61,7 +62,9 @@
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-local": "^1.0.34",
     "@types/uuid": "^8.3.4",
-    "eslint": "^7.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "eslint": "^8.8.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
