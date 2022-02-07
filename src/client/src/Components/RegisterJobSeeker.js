@@ -1,7 +1,21 @@
 import { useForm } from "react-hook-form";
+import { useRef } from "react";
 
 function RegisterJobSeeker() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+    },
+  });
+  const password = useRef();
+  password.current = watch("password", "");
+
   const onSubmitForm = async (data) => {
     const res = await fetch("/api/auth/register", {
       method: "POST",
@@ -23,13 +37,20 @@ function RegisterJobSeeker() {
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div className="form-floating mb-3">
               <input
-                {...register("firstName", { required: true })}
+                {...register("firstName", {
+                  required: "Please fill out this field",
+                })}
                 type="text"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.firstName ? "is-invalid" : ""
+                }`}
                 placeholder="First Name"
                 id="firstName"
               />
               <label htmlFor="firstName">First Name</label>
+              <div className="invalid-feedback">
+                {errors.firstName && errors.firstName.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
@@ -41,69 +62,122 @@ function RegisterJobSeeker() {
               />
               <label htmlFor="middleName">Middle Name</label>
             </div>
-
             <div className="form-floating mb-3">
               <input
-                {...register("lastName", { required: true })}
+                {...register("lastName", {
+                  required: "Please fill out this field",
+                })}
                 type="text"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.lastName ? "is-invalid" : ""
+                }`}
                 placeholder="Last Name"
                 id="lastName"
               />
               <label htmlFor="lastName">Last Name</label>
+              <div className="invalid-feedback">
+                {errors.lastName && errors.lastName.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: "Please fill out this field",
+                  validate: (value) =>
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                      value
+                    ) || "Invalid Email",
+                })}
                 type="email"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.email ? "is-invalid" : ""
+                }`}
                 placeholder="Email"
                 id="email"
               />
               <label htmlFor="email">Email</label>
+              <div className="invalid-feedback">
+                {errors.email && errors.email.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("phone", {})}
-                type="tel"
-                defaultValue={""}
-                className="form-control form-control-lg"
+                {...register("phone", {
+                  required: "Please fill out this field",
+                  pattern: {
+                    value: /^[0-9\b]+$/,
+                    message: "Phone number must be a number",
+                  },
+                })}
+                type="text"
+                className={`form-control form-control-lg ${
+                  errors.phone ? "is-invalid" : ""
+                }`}
                 placeholder="Phone Number"
                 id="phoneNumber"
               />
               <label htmlFor="phoneNumber">Phone Number</label>
+              <div className="invalid-feedback">
+                {errors.phone && errors.phone.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("birthday", { required: true })}
+                {...register("birthday", {
+                  required: "Please fill out this field",
+                })}
                 type="date"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.birthday ? "is-invalid" : ""
+                }`}
                 placeholder="Birthday"
                 id="birthday"
               />
               <label htmlFor="birthday">Birthday</label>
+              <div className="invalid-feedback">
+                {errors.birthday && errors.birthday.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
                 {...register("password", {
                   required: true,
-                  pattern: /(?=.*)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
+                  pattern: {
+                    value: /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}/,
+                    message:
+                      "Password must be 8-20 characters and must be a mix of letters, numbers and symbols",
+                  },
                 })}
                 type="password"
-                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.password ? "is-invalid" : ""
+                }`}
                 placeholder="Password"
                 id="password"
               />
               <label htmlFor="password">Password</label>
+              <div className="invalid-feedback">
+                {errors.password && errors.password.message}
+              </div>
             </div>
-            {/* <select {...register("faculty", {required:true})} className="form-select form-select-lg my-2" >
-                            <option value="BCT">BCT</option>
-                            <option value="BME">BME</option>
-                            <option value="BCE">BCE</option>
-                            <option value="BEI">BEI</option>
-                        </select> */}
-
+            <div className="form-floating mb-3">
+              <input
+                {...register("confirmPassword", {
+                  validate: (value) =>
+                    value === password.current || "Passwords do not match",
+                })}
+                type="password"
+                className={`form-control form-control-lg ${
+                  errors.confirmPassword ? "is-invalid" : ""
+                }`}
+                placeholder="Confirm Password"
+                id="confirmPassword"
+              />
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="invalid-feedback">
+                {errors.confirmPassword && errors.confirmPassword.message}
+              </div>
+            </div>
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
                 Sign Up
