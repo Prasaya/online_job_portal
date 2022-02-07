@@ -45,6 +45,7 @@ router.post(
                 return res.status(400).json({ message: errors.array(), success: false });
             }
 
+
             const jobPostData: JobInput = {
                 title: req.body.title,
                 description: req.body.description,
@@ -52,6 +53,8 @@ router.post(
                 experience: req.body.experience,
                 address: req.body.address,
                 district: req.body.district,
+                qualifications: req.body.qualifications,
+                skills: req.body.skills
             };
             //          const user = await createNewJobPost(jobPostData);
             //          res.json({ ...user });

@@ -21,8 +21,23 @@ export interface Job extends DBJob {
         discipline: string;
         degree: string;
     }[];
+    skills: {
+        skillName: string;
+        proficiency: string;
+    }[];
 }
 
-export type JobInput = Omit<DBJob, "jobId" | "companyId">
+export interface JobSkill {
+    skillName: string,
+    proficiency: string
+}
+
+export interface JobQualification {
+    level: string,
+    discipline: string,
+    degree: string
+}
+
+export type JobInput = Omit<Job, "jobId" | "companyId">
 
 
