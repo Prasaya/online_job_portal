@@ -93,9 +93,9 @@ function RegisterCompany() {
                 {...register("password", {
                   required: "Please fill out this field",
                   pattern: {
-                    value: /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}/,
+                    value: /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%\^&*()\-_=+[\]{};:\x27.,\x22\\|/?><])(?=.*[0-9]).{8,20}/,
                     message:
-                      "Password must be 8-20 characters and must be a mix of letters, numbers and symbols",
+                      "Password must be 8-20 characters and must be a mix of small and capital letters, numbers and symbols",
                   },
                 })}
                 type="password"
