@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 
 function RegisterCompany() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
@@ -17,79 +21,120 @@ function RegisterCompany() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-floating mb-3">
               <input
-                {...register("name")}
+                {...register("name", {
+                  required: "Please fill out this field",
+                })}
                 type="text"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.name ? "is-invalid" : ""
+                }`}
                 placeholder="Company Name"
                 id="companyName"
-                required
               />
               <label htmlFor="companyName">Company Name</label>
+              <div className="invalid-feedback">
+                {errors.name && errors.name.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("email")}
+                {...register("email", {
+                  required: "Please fill out this field",
+                })}
                 type="email"
-                className="form-control form-control-lg"
-                placeholder="Company Name"
-                id="companyName"
-                required
+                className={`form-control form-control-lg ${
+                  errors.email ? "is-invalid" : ""
+                }`}
+                placeholder="Email"
+                id="email"
               />
-              <label htmlFor="companyEmail">Company Email</label>
+              <label htmlFor="email">Email</label>
+              <div className="invalid-feedback">
+                {errors.email && errors.email.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("phoneNumber")}
+                {...register("phoneNumber", {
+                  required: "Please fill out this field",
+                })}
                 type="tel"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.phoneNumber ? "is-invalid" : ""
+                }`}
                 placeholder="Phone Number"
                 id="companyName"
-                required
               />
               <label htmlFor="phoneNumber">Phone Number</label>
+              <div className="invalid-feedback">
+                {errors.phoneNumber && errors.phoneNumber.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("password")}
+                {...register("password", {
+                  required: "Please fill out this field",
+                  pattern: {
+                    value: /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}/,
+                    message:
+                      "Password must be 8-20 characters and must be a mix of letters, numbers and symbols",
+                  },
+                })}
                 type="password"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.password ? "is-invalid" : ""
+                }`}
                 placeholder="Password"
                 id="companyPassword"
-                required
               />
               <label htmlFor="companyPassword">Password</label>
+              <div className="invalid-feedback">
+                {errors.password && errors.password.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("website")}
+                {...register("website", {
+                  required: "Please fill out this field",
+                })}
                 type="url"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.website ? "is-invalid" : ""
+                }`}
                 placeholder="Website"
                 id="website"
-                required
               />
               <label htmlFor="website">Website</label>
+              <div className="invalid-feedback">
+                {errors.website && errors.website.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("address")}
+                {...register("address", {
+                  required: "Please fill out this field",
+                })}
                 type="text"
-                className="form-control form-control-lg"
+                className={`form-control form-control-lg ${
+                  errors.address ? "is-invalid" : ""
+                }`}
                 placeholder="Address"
                 id="address"
-                required
               />
               <label htmlFor="address">Address</label>
+              <div className="invalid-feedback">
+                {errors.address && errors.address.message}
+              </div>
             </div>
             <div className="form-floating mb-3">
               <select
-                {...register("district")}
-                className="form-select"
+                {...register("district", {
+                  required: "Please choose a valid option",
+                })}
+                className={`form-select ${errors.district ? "is-invalid" : ""}`}
                 id="district"
-                defaultValue="choose"
-                required
               >
-                <option selected disabled value="choose">
+                <option selected disabled value="">
                   Choose...
                 </option>
                 <option value="bhaktapur">Bhaktapur</option>
@@ -97,6 +142,9 @@ function RegisterCompany() {
                 <option value="lalitpur">Lalitpur</option>
               </select>
               <label htmlFor="district">District</label>
+              <div className="invalid-feedback">
+                {errors.district && errors.district.message}
+              </div>
             </div>
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
