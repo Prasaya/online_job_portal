@@ -1,4 +1,6 @@
-import { Handler, Request } from 'express';
+import {
+    Handler, Request
+} from 'express';
 
 const viewCounter: Handler = (req: Request, res, next) => {
     if (req.session.views) {

@@ -17,11 +17,15 @@ router.get('/userinfo', isLoggedIn, (req: Request, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.json({ message: 'This is the api page!', success: true });
+    res.json({
+        message: 'This is the api page!', success: true,
+    });
 });
 
 router.get('*', (req, res) => {
-    res.status(404).json({ message: 'Could not find page!', success: false });
+    res.status(404).json({
+        message: 'Could not find page!', success: false,
+    });
 });
 
 export default router;

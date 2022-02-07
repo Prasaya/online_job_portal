@@ -4,7 +4,9 @@ import {
 } from '@typings/User';
 import hashPassword from '../utils/password';
 import connection from '@utils/dbSetup';
-import { FieldPacket, RowDataPacket } from 'mysql2';
+import {
+    FieldPacket, RowDataPacket
+} from 'mysql2';
 import { Schema } from 'express-validator';
 
 export const registerSchema: Schema = {
@@ -12,7 +14,13 @@ export const registerSchema: Schema = {
         in: ['body'],
         isEmail: true,
         normalizeEmail: true,
-        isLength: { options: [{ min: 1, max: 250 }] },
+        isLength: {
+            options: [
+                {
+                    min: 1, max: 250,
+                },
+            ],
+        },
     },
     password: {
         in: ['body'],
@@ -150,7 +158,10 @@ export const getFederatedCredentials = async (
       'federated_credentials fc INNER JOIN federated_credentials_provider fp ' +
       'ON fc.provider_id = fp.provider_id ' +
       'WHERE fp.provider_name = ? AND fc.identifier = ?',
-        [provider, identifier]
+        [
+            provider,
+            identifier,
+        ]
     );
   type T = { uid: string };
   return result as Array<T>;

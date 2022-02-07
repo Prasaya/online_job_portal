@@ -5,7 +5,9 @@ import { Handler } from 'express';
 export function roleCallback(cb: (role: Role) => boolean): Handler {
     return (req, res, next) => {
         if (!req.user) {
-            return res.status(401).json({ message: 'Authorization missing', success: false });
+            return res.status(401).json({
+                message: 'Authorization missing', success: false,
+            });
         }
         const userRoles = req.user.roles;
         userRoles?.forEach((r) => {
@@ -13,7 +15,9 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
                 return next();
             }
         });
-        res.status(403).json({ message: 'Forbidden', success: false });
+        res.status(403).json({
+            message: 'Forbidden', success: false,
+        });
     };
 }
 

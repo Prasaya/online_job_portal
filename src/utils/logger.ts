@@ -13,7 +13,10 @@ const logger = createLogger({
     transports: [
         new transports.File({
             filename: 'app-error.log', dirname: 'logs', level: 'error',
-        }), new transports.File({ filename: 'app-combined.log', dirname: 'logs' }),
+        }),
+        new transports.File({
+            filename: 'app-combined.log', dirname: 'logs',
+        }),
     ],
 });
 

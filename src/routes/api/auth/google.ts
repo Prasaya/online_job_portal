@@ -5,7 +5,12 @@ import passport from 'passport';
 const router = express.Router();
 router.get(
     '/',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+    passport.authenticate('google', {
+        scope: [
+            'profile',
+            'email',
+        ],
+    })
 );
 
 router.get(

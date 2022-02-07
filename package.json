@@ -12,7 +12,7 @@
     "client": "gulp client",
     "server": "gulp server",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-    "eslint": "eslint"
+    "eslint": "eslint -c .eslintrc.cjs ."
   },
   "author": "nobody",
   "license": "ISC",

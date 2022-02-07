@@ -1,6 +1,8 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { User, NewUserInput } from '@typings/User';
+import {
+    User, NewUserInput
+} from '@typings/User';
 import {
     createNewUser, getAuthUser, getFederatedCredentials, getUserByEmail, getUserByUid
 } from '../models/User';
@@ -90,7 +92,9 @@ const passportConfigure = (passport: passport.Authenticator) => {
     passport.use(new LocalStrategy(async (email, password, cb) => {
         try {
             const invalidDataPrompt = 'Incorrect username or password';
-            const userData = await getAuthUser({ type: 'email', criteria: email });
+            const userData = await getAuthUser({
+                type: 'email', criteria: email,
+            });
             if (userData === null) {
                 return cb(null, false, { message: invalidDataPrompt });
             }

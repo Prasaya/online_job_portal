@@ -20,7 +20,9 @@ router.get(
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.json({ message: 'Logout successful!', success: true });
+    res.json({
+        message: 'Logout successful!', success: true,
+    });
 });
 
 export default router;
