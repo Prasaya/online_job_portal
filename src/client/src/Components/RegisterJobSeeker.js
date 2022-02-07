@@ -143,9 +143,8 @@ function RegisterJobSeeker() {
                 {...register("password", {
                   required: true,
                   pattern: {
-                    value: /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%^&*()\-_=+[\]{};:\x27.,\x22\\|/?><])(?=.*[0-9]).{8,20}/,
-                    message:
-                      "Password must be 8-20 characters and must be a mix of small and capital letters, numbers and symbols",
+                    value:
+                      /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%^&*()\-_=+[\]{};:\x27.,\x22\\|/?><])(?=.*[0-9]).{8,20}/,
                   },
                 })}
                 type="password"
@@ -156,8 +155,13 @@ function RegisterJobSeeker() {
                 id="password"
               />
               <label htmlFor="password">Password</label>
-              <div className="invalid-feedback">
-                {errors.password && errors.password.message}
+              <div
+                className={`form-text ${
+                  errors.password ? "invalid-feedback" : ""
+                }`}
+              >
+                Password must be 8-20 characters and must be a mix of small and
+                capital letters, numbers and symbols
               </div>
             </div>
             <div className="form-floating mb-3">
