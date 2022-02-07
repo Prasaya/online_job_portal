@@ -1,11 +1,16 @@
 import { useForm } from "react-hook-form";
+import { useRef } from "react";
 
 function RegisterCompany() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const password = useRef();
+  password.current = watch("password", "");
 
   const onSubmit = (data) => {
     console.log(data);
@@ -90,6 +95,24 @@ function RegisterCompany() {
               <label htmlFor="companyPassword">Password</label>
               <div className="invalid-feedback">
                 {errors.password && errors.password.message}
+              </div>
+            </div>
+            <div className="form-floating mb-3">
+              <input
+                {...register("confirmPassword", {
+                  validate: (value) =>
+                    value === password.current || "Passwords do not match",
+                })}
+                type="password"
+                className={`form-control form-control-lg ${
+                  errors.confirmPassword ? "is-invalid" : ""
+                }`}
+                placeholder="Confirm Password"
+                id="confirmPassword"
+              />
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="invalid-feedback">
+                {errors.confirmPassword && errors.confirmPassword.message}
               </div>
             </div>
             <div className="form-floating mb-3">
