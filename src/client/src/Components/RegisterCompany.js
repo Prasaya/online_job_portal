@@ -62,8 +62,12 @@ function RegisterCompany() {
               <input
                 {...register("phoneNumber", {
                   required: "Please fill out this field",
+                  pattern: {
+                    value: /^[0-9\b]+$/,
+                    message: "Phone number must be a number"
+                  }
                 })}
-                type="tel"
+                type="text"
                 className={`form-control form-control-lg ${
                   errors.phoneNumber ? "is-invalid" : ""
                 }`}
