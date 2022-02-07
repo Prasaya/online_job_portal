@@ -11,7 +11,7 @@ appSetup(app);
 app.use('/api', apiRoute);
 
 app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile('index.html', { root: './dist/public' });
 });
 
 app.use((err, req, res, next) => {

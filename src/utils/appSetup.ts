@@ -10,7 +10,7 @@ import dbConnection from './dbSetup';
 var MySQLStore = require('express-mysql-session')(session);
 
 const appSetup = (app: express.Application) => {
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static('./dist/public'));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
