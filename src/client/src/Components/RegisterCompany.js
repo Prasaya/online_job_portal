@@ -7,7 +7,12 @@ function RegisterCompany() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+    },
+  });
 
   const password = useRef();
   password.current = watch("password", "");
@@ -45,6 +50,10 @@ function RegisterCompany() {
               <input
                 {...register("email", {
                   required: "Please fill out this field",
+                  validate: (value) =>
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+                      value
+                    ) || "Invalid Email",
                 })}
                 type="email"
                 className={`form-control form-control-lg ${
@@ -64,15 +73,15 @@ function RegisterCompany() {
                   required: "Please fill out this field",
                   pattern: {
                     value: /^[0-9\b]+$/,
-                    message: "Phone number must be a number"
-                  }
+                    message: "Phone number must be a number",
+                  },
                 })}
                 type="text"
                 className={`form-control form-control-lg ${
                   errors.phoneNumber ? "is-invalid" : ""
                 }`}
                 placeholder="Phone Number"
-                id="companyName"
+                id="phoneNumber"
               />
               <label htmlFor="phoneNumber">Phone Number</label>
               <div className="invalid-feedback">
