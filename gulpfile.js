@@ -13,11 +13,15 @@ function runCommand (command, args, {
     const child = spawn(command, args, { cwd: cwd || '.', shell: true });
     child.on('error', (err) => {
         process.stderr.write(`Error in ${name}: ${err}\n`);
-        errorCallback(err);
+        if (errorCallback){
+            errorCallback(err);
+        }
     });
     child.on('close', (code, signal) => {
         process.stdout.write(`${name} exited with code ${code} and signal ${signal}\n`);
-        closeCallback(code, signal);
+        if (closeCallback) {
+            closeCallback(code, signal);
+        }
     });
     child.stdout.on('data', (data) => {
         process.stdout.write(`${name}: ${data}`);
@@ -27,7 +31,7 @@ function runCommand (command, args, {
     });
 }
 
-function backendBuild (cb) {
+function backendBuild () {
     return new Promise((resolve, reject) => {
         webpack(webpackConfig, (err, stats) => {
             if (err) {
@@ -44,7 +48,7 @@ function backendBuild (cb) {
 function backendStart (cb) {
     const name = 'Server';
     const errorCallback = cb;
-    const closeCallback = (code, signal) => {
+    const closeCallback = () => {
         return cb();
     };
     if (env === 'production') {
@@ -83,15 +87,15 @@ const server = env === 'production'
 function clientBuild (cb) {
     const name = 'Client';
     const errorCallback = cb;
-    const closeCallback = (code, signal) => {
+    const closeCallback = () => {
         runCommand('cp', [
             '-rf',
             'build/.',
             '../../dist/public',
         ], {
-            name: 'Client-copy', 
+            name: 'Client-copy',
             errorCallback,
-            closeCallback: (code, signal) => {
+            closeCallback: () => {
                 return cb();
             },
             cwd: './src/client',
@@ -102,7 +106,8 @@ function clientBuild (cb) {
         ['-p', 'dist'],
         {
             name: 'mkdir',
-            closeCallback: () => {},
+            // yarn build should be here as close callback but practically it's not needed
+            // as build is generally much slower than mkdir
             errorCallback: cb,
         }
     );
@@ -123,7 +128,7 @@ function clientStart (cb) {
     const errorCallback = (err) => {
         return cb(err);
     };
-    const closeCallback = (code, signal) => {
+    const closeCallback = () => {
         return cb();
     };
     runCommand(
@@ -140,7 +145,7 @@ function clientStart (cb) {
 
 const client = env === 'production' ? clientBuild : clientStart;
 
-function watch (cb) {
+function watch () {
     process.stdout.write('Starting watch');
     return gulp.watch(
         '**/**',
