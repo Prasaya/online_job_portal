@@ -9,7 +9,10 @@ const hashPassword = async (password: string | null): Promise<string | null> => 
     return computedHash;
 };
 
-export const verifyPassword = async (enteredPassword: string, storedPassword: string | null): Promise<Boolean> => {
+export const verifyPassword = async (
+    enteredPassword: string,
+    storedPassword: string | null
+): Promise<boolean> => {
     if (!storedPassword) {
         return false;
     }

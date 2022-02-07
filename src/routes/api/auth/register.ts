@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createNewUser, getUserByEmail, registerSchema, verifyEmail } from '@root/models/User';
+import {
+    createNewUser, registerSchema, verifyEmail
+} from '@root/models/User';
 import { NewUserInput, User } from '@typings/User';
 import logger from '@root/utils/logger';
 

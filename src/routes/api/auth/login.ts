@@ -9,7 +9,7 @@ router.post(
         failureRedirect: '/api/auth/failed',
         failureMessage: true,
     }),
-    (req, res, next) => {
+    (req, res) => {
         res.redirect('/api/userinfo');
     }
 );

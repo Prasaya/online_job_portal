@@ -1,23 +1,28 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { User, NewUserInput } from '@typings/User';
-import { createNewUser, getAuthUser, getFederatedCredentials, getUserByEmail, getUserByUid } from '../models/User';
+import {
+    createNewUser, getAuthUser, getFederatedCredentials, getUserByEmail, getUserByUid
+} from '../models/User';
 import { verifyPassword } from './password';
 import connection from '@utils/dbSetup';
 import passport from 'passport';
 import logger from '@utils/logger';
 
 const passportConfigure = (passport: passport.Authenticator) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        throw new Error('Google client id or secret is not set');
+    }
     passport.use(new GoogleStrategy(
         {
-            clientID: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: '/api/auth/google/callback',
             state: true,
         },
         async (accessToken, refreshToken, profile, cb) => {
             try {
-                const providerData = await getFederatedCredentials("google", profile.id);
+                const providerData = await getFederatedCredentials('google', profile.id);
                 let user: User;
                 if (providerData.length === 0) {
                     const emails = profile.emails;
@@ -31,12 +36,11 @@ const passportConfigure = (passport: passport.Authenticator) => {
                                     middleName: profile.name.middleName || null,
                                     lastName: profile.name.familyName,
                                 };
-                            }
-                            else {
+                            } else {
                                 names = {
                                     firstName: null,
                                     middleName: null,
-                                    lastName: null
+                                    lastName: null,
                                 };
                             }
                             const newUser: NewUserInput = {
@@ -50,13 +54,12 @@ const passportConfigure = (passport: passport.Authenticator) => {
                                 gender: null,
                             };
                             user = await createNewUser(newUser);
-                        }
-                        else {
+                        } else {
                             user = userData;
                         }
-                    }
-                    else {
-                        throw new Error(`Something unexpected happened! User ${profile} has no email!`);
+                    } else {
+                        throw new Error(`Something unexpected happened!
+                            User ${profile} has no email!`);
                     }
                     await connection.execute(
                         'INSERT INTO federated_credentials ' +
@@ -71,7 +74,8 @@ const passportConfigure = (passport: passport.Authenticator) => {
                 } else {
                     const temp = await getUserByUid(providerData[0].uid);
                     if (temp === null) {
-                        throw new Error(`User ${profile} is present in federatedCredentials but not in Users!`);
+                        throw new Error(`User ${profile} is present in
+                        federatedCredentials but not in Users!`);
                     }
                     user = temp;
                 }
@@ -108,7 +112,9 @@ const passportConfigure = (passport: passport.Authenticator) => {
 
     passport.deserializeUser(async (obj: string | null | undefined, cb) => {
         try {
-            if (!obj) return cb(null, null);
+            if (!obj) {
+                return cb(null, null);
+            }
             const userData = await getUserByUid(obj);
             cb(null, userData);
         } catch (err) {

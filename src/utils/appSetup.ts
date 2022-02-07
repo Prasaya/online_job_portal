@@ -2,14 +2,13 @@ import express from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import passport from 'passport';
-import path from 'path';
 import logger from '@utils/logger';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
 import mysqlSession from 'express-mysql-session';
 import viewCounter from '@root/middleware/viewCounter';
 
-var MySQLStore = mysqlSession(session);
+const MySQLStore = mysqlSession(session);
 
 const appSetup = (app: express.Application) => {
     app.use(express.static('./dist/public'));
@@ -24,9 +23,13 @@ const appSetup = (app: express.Application) => {
         }
     });
     const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
+    if (!process.env.SESSION_SECRET) {
+        logger.error('No session secret set!');
+        process.exit(1);
+    }
     const sess = {
         name: 'sessionId',
-        secret: process.env.SESSION_SECRET!,
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
         store: sessionStore,
@@ -39,10 +42,6 @@ const appSetup = (app: express.Application) => {
 
     };
     app.set('trust proxy', 1);
-    if (!process.env.SESSION_SECRET) {
-        logger.error('No session secret set!');
-        process.exit(1);
-    }
 
     app.use(session(sess));
 

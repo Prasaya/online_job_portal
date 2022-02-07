@@ -1,6 +1,3 @@
-import { breakStatement } from '@babel/types';
-import { PartialExcept } from '@typings/utils';
-
 export type social =
     {
         providerName: string;
@@ -19,7 +16,7 @@ export interface AuthUser {
 }
 
 export type AuthUserParameters = {
-    type: "uid" | "email";
+    type: 'uid' | 'email';
     criteria: string;
 };
 export interface DBUser {
@@ -35,10 +32,9 @@ export interface DBUser {
     gender: string | null;
 }
 
-export interface User extends Omit<DBUser, "password"> {
+export interface User extends Omit<DBUser, 'password'> {
     password: null;
     socials: social[];
 }
 
-export interface NewUserInput extends Omit<DBUser, "uid"> {
-}
+export type NewUserInput = Omit<DBUser, 'uid'>

@@ -8,7 +8,7 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
             return res.status(401).json({ message: 'Authorization missing', success: false });
         }
         const userRoles = req.user.roles;
-        userRoles?.forEach(r => {
+        userRoles?.forEach((r) => {
             if (cb(r)) {
                 return next();
             }
@@ -18,15 +18,25 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
 }
 
 export function roleHigherThan(role: string) {
-    const reqRoles = roles.filter(r => r.rName === role)[0];
-    return roleCallback(r => r.rLevel >= reqRoles.rLevel);
+    const reqRoles = roles.filter((r) => {
+        return r.rName === role;
+    })[0];
+    return roleCallback((r) => {
+        return r.rLevel >= reqRoles.rLevel;
+    });
 }
 
 export function roleStrictlyHigherThan(role: string) {
-    const reqRoles = roles.filter(r => r.rName === role)[0];
-    return roleCallback(r => r.rLevel > reqRoles.rLevel);
+    const reqRoles = roles.filter((r) => {
+        return r.rName === role;
+    })[0];
+    return roleCallback((r) => {
+        return r.rLevel > reqRoles.rLevel;
+    });
 }
 
 export function roleExactly(role: string) {
-    return roleCallback(r => r.rName === role);
+    return roleCallback((r) => {
+        return r.rName === role;
+    });
 }

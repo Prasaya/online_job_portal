@@ -1,11 +1,12 @@
 module.exports = {
+    root: true,
     env: {
         browser: true,
         commonjs: true,
         es2021: true,
         node: true,
     },
-    ignorePatterns: ['src/client/**/*'],
+    ignorePatterns: ['/src/client/**', '**/node_modules/**'],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],

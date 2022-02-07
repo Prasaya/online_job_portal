@@ -19,10 +19,8 @@ router.
         }
         return res.json({
             user,
-            success: true
+            success: true,
         });
-    })
-    .put('/:uid', (req, res) => {
     });
 
 export default router;
