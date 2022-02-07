@@ -1,14 +1,20 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+import { fileURLToPath } from 'url';
+import nodeExternals from 'webpack-node-externals';
+import path from 'path';
 
-module.exports = {
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const config = {
     /**
      * @type {("none" | "development" | "production")}
      */
     mode: process.env.NODE_ENV || 'development',
     entry: './src/bin/www',
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(
+            dirname,
+            'dist',
+        ),
         filename: 'backend.cjs',
     },
     module: {
@@ -38,3 +44,5 @@ module.exports = {
     externalsPresets: { node: true },
     externals: [nodeExternals()],
 };
+
+export default config;
