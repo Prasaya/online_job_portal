@@ -5,7 +5,7 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
 
-export const registerSchema: Schema = {
+export const userRegisterSchema: Schema = {
     email: {
         in: ['body'],
         isEmail: true,

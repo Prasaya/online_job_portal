@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createNewUser, registerSchema, verifyEmail } from '@root/models/User';
+import { createNewUser, userRegisterSchema, verifyEmail } from '@root/models/User';
 import { NewUserInput, User } from '@typings/User';
 import logger from '@root/utils/logger';
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
     '/',
-    checkSchema(registerSchema),
+    checkSchema(userRegisterSchema),
     async (req: Request, res: Response) => {
         try {
             const errors = validationResult(req);
