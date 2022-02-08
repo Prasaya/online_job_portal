@@ -1,8 +1,8 @@
-import { fileURLToPath } from 'url';
-import nodeExternals from 'webpack-node-externals';
-import path from 'path';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const nodeExternals = require('webpack-node-externals');
+const path = require('path');
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
+const dirname = __dirname;
 
 const config = {
     /**
@@ -45,4 +45,4 @@ const config = {
     externals: [nodeExternals()],
 };
 
-export default config;
+module.exports = config;

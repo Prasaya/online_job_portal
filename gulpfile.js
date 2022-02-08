@@ -1,7 +1,8 @@
-import gulp from 'gulp';
-import { spawn } from 'child_process';
-import webpack from 'webpack';
-import webpackConfig from './webpack.config.mjs';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const gulp = require('gulp');
+const { spawn } = require('child_process');
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config');
 
 const env = process.env.NODE_ENV || 'development';
 process.stdout.write(`Using environment: ${env}\n`);
@@ -53,12 +54,12 @@ function backendBuild() {
             webpackConfig,
             (err, stats) => {
                 if (err) {
-                    return reject(err);
+                    reject(err);
                 }
                 if (stats.hasErrors()) {
-                    return reject(new Error(stats.compilation.errors.join('\n')));
+                    reject(new Error(stats.compilation.errors.join('\n')));
                 }
-                return resolve();
+                resolve();
             },
         );
     });
@@ -98,7 +99,6 @@ function backendStart(cb) {
 }
 
 function watchFiles() {
-    process.stdout.write('Starting watch\n');
     return gulp.watch(
         '**/**',
         {
@@ -198,20 +198,11 @@ const start = gulp.parallel(
     client,
 );
 
-export {
-    backendBuild as buildServer,
-    clientBuild as buildClient,
+module.exports = {
+    buildServer: backendBuild,
+    buildClient: clientBuild,
     build,
     server,
     client,
     start,
 };
-
-// module.exports = {
-//     buildServer: backendBuild,
-//     buildClient: clientBuild,
-//     build,
-//     server,
-//     client,
-//     start,
-// };
