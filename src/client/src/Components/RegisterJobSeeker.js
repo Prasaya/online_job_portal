@@ -139,6 +139,37 @@ function RegisterJobSeeker() {
               </div>
             </div>
             <div className="form-floating mb-3">
+              <select
+                {...register("gender", {
+                  required: "Please choose a valid option",
+                })}
+                className={`form-select ${errors.gender ? "is-invalid" : ""}`}
+                id="gender"
+              >
+                <option selected disabled value="">
+                  Choose...
+                </option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <label htmlFor="gender">Gender</label>
+              <div className="invalid-feedback">
+                {errors.gender && errors.gender.message}
+              </div>
+            </div>
+            {/* <div className="form-floating mb-3">
+              <input
+                {...register("picture")}
+                type="file"
+                className="form-control form-control-lg"
+                placeholder="Picture"
+                id="picture"
+                accept="image/png, image/jpeg"
+              />
+              <label htmlFor="picture" className="form-label">Upload Avatar</label>
+            </div> */}
+            <div className="form-floating mb-3">
               <input
                 {...register("password", {
                   required: true,
