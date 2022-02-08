@@ -20,15 +20,11 @@ const roles: Role[] = [
 ];
 
 export function getRoleById(id: number): Role | null {
-    return roles.find((role) => {
-        return role.rId === id;
-    }) || null;
+    return roles.find((role) => role.rId === id) || null;
 }
 
 export function getRoleByName(name: string): Role | null {
-    return roles.find((role) => {
-        return role.rName === name;
-    }) || null;
+    return roles.find((role) => role.rName === name) || null;
 }
 
 export default roles;

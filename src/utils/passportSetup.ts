@@ -1,21 +1,17 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as LocalStrategy } from 'passport-local';
-import {
-    User, NewUserInput
-} from '@typings/User';
-import {
-    createNewUser, getAuthUser, getFederatedCredentials, getUserByEmail, getUserByUid
-} from '../models/User';
-import { verifyPassword } from './password';
+import { NewUserInput, User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import passport from 'passport';
 import logger from '@utils/logger';
+import { verifyPassword } from './password';
+import { createNewUser, getAuthUser, getFederatedCredentials, getUserByEmail, getUserByUid } from '../models/User';
 
-const passportConfigure = (passport: passport.Authenticator) => {
+const passportConfigure = (passportInstance: passport.Authenticator) => {
     if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
         throw new Error('Google client id or secret is not set');
     }
-    passport.use(new GoogleStrategy(
+    passportInstance.use(new GoogleStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -24,10 +20,13 @@ const passportConfigure = (passport: passport.Authenticator) => {
         },
         async (accessToken, refreshToken, profile, cb) => {
             try {
-                const providerData = await getFederatedCredentials('google', profile.id);
+                const providerData = await getFederatedCredentials(
+                    'google',
+                    profile.id,
+                );
                 let user: User;
                 if (providerData.length === 0) {
-                    const emails = profile.emails;
+                    const { emails } = profile;
                     if (emails) {
                         const userData = await getUserByEmail(emails[0].value);
                         if (userData === null) {
@@ -50,7 +49,9 @@ const passportConfigure = (passport: passport.Authenticator) => {
                                 email: emails[0].value,
                                 password: null,
                                 ...names,
-                                picture: profile.photos ? profile.photos[0].value : null,
+                                picture: profile.photos
+                                    ? profile.photos[0].value
+                                    : null,
                                 birthday: null,
                                 phone: null,
                                 gender: null,
@@ -64,14 +65,14 @@ const passportConfigure = (passport: passport.Authenticator) => {
                             User ${profile} has no email!`);
                     }
                     await connection.execute(
-                        'INSERT INTO federated_credentials ' +
-                        '(uid, provider, identifier) ' +
-                        'VALUES (?, ?, ?)',
+                        'INSERT INTO federated_credentials '
+                        + '(uid, provider, identifier) '
+                        + 'VALUES (?, ?, ?)',
                         [
                             user.uid,
                             'google',
                             profile.id,
-                        ]
+                        ],
                     );
                 } else {
                     const temp = await getUserByUid(providerData[0].uid);
@@ -81,49 +82,79 @@ const passportConfigure = (passport: passport.Authenticator) => {
                     }
                     user = temp;
                 }
-                return cb(null, user);
+                return cb(
+                    null,
+                    user,
+                );
             } catch (err) {
                 logger.error(`Error in quering database: ${err}`);
                 return cb(err as string | Error | null | undefined);
             }
-        }
+        },
     ));
 
-    passport.use(new LocalStrategy(async (email, password, cb) => {
+    passportInstance.use(new LocalStrategy(async (email, password, cb) => {
         try {
             const invalidDataPrompt = 'Incorrect username or password';
-            const userData = await getAuthUser({
-                type: 'email', criteria: email,
-            });
+            const userData = await getAuthUser({ type: 'email', criteria: email });
             if (userData === null) {
-                return cb(null, false, { message: invalidDataPrompt });
+                return cb(
+                    null,
+                    false,
+                    { message: invalidDataPrompt },
+                );
             }
-            const passwordMatches = await verifyPassword(password, userData.password);
+            const passwordMatches = await verifyPassword(
+                password,
+                userData.password,
+            );
             if (!passwordMatches) {
-                return cb(null, false, { message: invalidDataPrompt });
+                return cb(
+                    null,
+                    false,
+                    { message: invalidDataPrompt },
+                );
             }
             const user = await getUserByUid(userData.uid);
-            return cb(null, user);
+            return cb(
+                null,
+                user,
+            );
         } catch (err) {
             logger.error(`Error in local login: ${err}`);
-            return cb(err, null);
+            return cb(
+                err,
+                null,
+            );
         }
     }));
 
-    passport.serializeUser((user, cb) => {
-        cb(null, user.uid);
+    passportInstance.serializeUser((user, cb) => {
+        cb(
+            null,
+            user.uid,
+        );
     });
 
-    passport.deserializeUser(async (obj: string | null | undefined, cb) => {
+    passportInstance.deserializeUser(async (obj: string | null | undefined, cb) => {
         try {
             if (!obj) {
-                return cb(null, null);
+                return cb(
+                    null,
+                    null,
+                );
             }
             const userData = await getUserByUid(obj);
-            cb(null, userData);
+            return cb(
+                null,
+                userData,
+            );
         } catch (err) {
             logger.error(`Error in quering database: deserializeUser: ${err}`);
-            return cb(err, null);
+            return cb(
+                err,
+                null,
+            );
         }
     });
 };

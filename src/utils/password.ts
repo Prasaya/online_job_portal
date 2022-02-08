@@ -5,18 +5,24 @@ const hashPassword = async (password: string | null): Promise<string | null> => 
         return null;
     }
     const saltRounds = 13;
-    const computedHash = await bcrypt.hash(password, saltRounds);
+    const computedHash = await bcrypt.hash(
+        password,
+        saltRounds,
+    );
     return computedHash;
 };
 
 export const verifyPassword = async (
     enteredPassword: string,
-    storedPassword: string | null
+    storedPassword: string | null,
 ): Promise<boolean> => {
     if (!storedPassword) {
         return false;
     }
-    return await bcrypt.compare(enteredPassword, storedPassword);
+    return bcrypt.compare(
+        enteredPassword,
+        storedPassword,
+    );
 };
 
 export default hashPassword;
