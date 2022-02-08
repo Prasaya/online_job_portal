@@ -8,6 +8,7 @@ module.exports = {
         '/src/client/',
         '/src/client/**',
         '**/node_modules/**',
+        '/dist/',
     ],
     parser: '@typescript-eslint/parser',
     plugins: [
