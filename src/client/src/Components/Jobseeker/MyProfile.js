@@ -16,8 +16,6 @@ function MyProfile() {
     const fetchInfo = async () => {
         const res = await fetch("http://localhost:4000/profile")
         const data = await res.json()
-        console.log(data)
-        console.log(res)
         return data
     }
     
@@ -39,7 +37,7 @@ function MyProfile() {
             <h1>My Profile <span><Link className="btn btn-secondary" to="/jobseeker/editprofile">Edit</Link></span></h1>
             <div className="container bg-light profile">
                 <div className="row">
-                    <div className="col-2">
+                    <div className="col-10 col-sm-2">
                         <img className="img-fluid img-thumbnail rounded float-start" src={picture || "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png"} alt="profile pic" />
                     </div>
                     <div className="col-10">
