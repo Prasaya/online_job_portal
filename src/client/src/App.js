@@ -29,7 +29,12 @@ function App() {
             <Route path="overview" element={<JobseekerOverview/>} />
             <Route path="mystatus" element={<JobseekerMyStatus/>} />
             <Route path="myprofile" element={<JobseekerMyProfile/>} />
-            <Route path="editprofile" element={<JobseekerEditProfile/>} />
+            <Route path="editprofile" element={<JobseekerEditProfile/>}>
+              <Route path="avatar" element={<JobseekerEditProfile/>}/>
+              <Route path="basics" element={<JobseekerEditProfile/>}/>
+              <Route path="education" element={<JobseekerEditProfile/>}/>
+              <Route path="skills" element={<JobseekerEditProfile/>}/>
+            </Route>
             <Route path="settings" element={<JobseekerSettings/>} />
           </Route>
           <Route path="/company" element={<CompanyHome />}>
