@@ -3,12 +3,20 @@ import Header from "./Components/Header";
 import Login from "./Components/Login";
 import RegisterJobSeeker from "./Components/RegisterJobSeeker";
 import RegisterCompany from "./Components/RegisterCompany";
-import JobseekerHome from "./Components/Jobseeker/Home"
+
+//Jobseeker 
+import JobseekerHome from "./Components/Jobseeker/Home";
 import JobseekerOverview from "./Components/Jobseeker/Overview";
 import JobseekerMyStatus from "./Components/Jobseeker/MyStatus";
 import JobseekerMyProfile from "./Components/Jobseeker/MyProfile";
 import JobseekerSettings from "./Components/Jobseeker/Settings";
 import JobseekerEditProfile from "./Components/Jobseeker/EditProfile";
+import JobseekerAvatar from "./Components/Jobseeker/EditProfile/Avatar";
+import JobseekerBasics from "./Components/Jobseeker/EditProfile/Basics";
+import JobseekerEducation from "./Components/Jobseeker/EditProfile/Education";
+import JobseekerSkills from "./Components/Jobseeker/EditProfile/Skills";
+
+//Company
 import CompanyHome from "./Components/Company/Home";
 import CompanyOverview from "./Components/Company/Overview";
 import CompanyProfile from "./Components/Company/Profile";
@@ -30,10 +38,10 @@ function App() {
             <Route path="mystatus" element={<JobseekerMyStatus/>} />
             <Route path="myprofile" element={<JobseekerMyProfile/>} />
             <Route path="editprofile" element={<JobseekerEditProfile/>}>
-              <Route path="avatar" element={<JobseekerEditProfile/>}/>
-              <Route path="basics" element={<JobseekerEditProfile/>}/>
-              <Route path="education" element={<JobseekerEditProfile/>}/>
-              <Route path="skills" element={<JobseekerEditProfile/>}/>
+              <Route path="avatar" element={<JobseekerAvatar/>}/>
+              <Route path="basics" element={<JobseekerBasics/>}/>
+              <Route path="education" element={<JobseekerEducation/>}/>
+              <Route path="skills" element={<JobseekerSkills/>}/>
             </Route>
             <Route path="settings" element={<JobseekerSettings/>} />
           </Route>
