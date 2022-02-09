@@ -54,6 +54,7 @@ function MyProfile() {
                                                     {entry[1] && 
                                                     <tr>
                                                         <td>{titleCase(entry[0])}</td>
+                                                        <td>:</td>
                                                         <td>{entry[1]}</td>
                                                      </tr>}
                                                 </>
@@ -71,14 +72,17 @@ function MyProfile() {
                                                 <>
                                                     <tr>
                                                         <td>Level</td>
+                                                        <td>:</td>
                                                         <td>{titleCase(entry["level"])}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Discipline</td>
+                                                        <td>:</td>
                                                         <td>{titleCase(entry["discipline"])}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Degree</td>
+                                                        <td>:</td>
                                                         <td>{titleCase(entry["degree"])}</td>
                                                     </tr>
                                                 </>
@@ -99,6 +103,7 @@ function MyProfile() {
                                             return (
                                                 <tr>
                                                     <td>{titleCase(entry[0])}</td>
+                                                    <td>:</td>
                                                     <td>{entry[1]}</td>
                                                 </tr>
                                             )
