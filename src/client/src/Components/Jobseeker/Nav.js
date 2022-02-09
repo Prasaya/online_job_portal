@@ -1,12 +1,13 @@
-import { Link } from "react-router-dom"
-import {useState} from "react"
+import { Link, useLocation } from "react-router-dom"
+import {useState, useEffect} from "react"
 
 function Nav(){
+    const path = useLocation().pathname
     const [navElements, setNavElements] = useState([
         {
             name: "Overview",
             to:"overview",
-            status: "active" 
+            status: "" 
         },
         {
             name: "My Status",
@@ -37,6 +38,19 @@ function Nav(){
         })
         setNavElements(updatedNavElements)
     }
+    //set active for initial render
+    useEffect(() => {
+        const updatedNavElements = navElements.map((element) => {
+            if (element.status === "active"){
+                element.status = ""
+            }
+            if (path.includes(element.to) ){
+                element.status = "active"
+            }
+            return element
+        })
+        setNavElements(updatedNavElements)
+    }, []);
 
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
