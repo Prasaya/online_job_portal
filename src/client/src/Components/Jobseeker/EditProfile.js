@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form"
 import {useState, useEffect} from "react"
 import {Link, useLocation, Outlet} from "react-router-dom"
 
@@ -169,7 +168,7 @@ function MyProfile() {
                         </table>
                     </div>
                     <div className="col-12 col-lg-9">
-                        <h1>Lol</h1>
+                        <Outlet/>
                     </div>
                 </div>
             </div>
