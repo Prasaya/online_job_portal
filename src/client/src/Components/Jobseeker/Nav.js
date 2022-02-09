@@ -50,6 +50,7 @@ function Nav(){
             return element
         })
         setNavElements(updatedNavElements)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return(
