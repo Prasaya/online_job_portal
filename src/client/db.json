@@ -17,24 +17,26 @@
     }
   ],
   "profile": {
-    "basics":{
+    "basics": {
       "firstName": "John",
-      "middleName": "",
+      "middleName": "Lol",
       "lastName": "Doe",
       "email": "johndoe@email.com",
       "phone": "0123456789",
       "birthday": "1995-01-11",
-      "gender": "M"
+      "gender": "male"
     },
     "skills": {
       "html": "intermediate",
       "js": "expert"
     },
-    "education": [{
-      "level": "masters",
-      "discipline": "computer engineering",
-      "degree": "bachelor of computer application"
-    }],
+    "education": [
+      {
+        "level": "masters",
+        "discipline": "computer engineering",
+        "degree": "bachelor of computer application"
+      }
+    ],
     "picture": "https://www.proheadshots.ca/wp-content/uploads/2016/02/studio-background-dark-1.jpg"
   }
 }
