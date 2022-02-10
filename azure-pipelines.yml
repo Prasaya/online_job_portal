@@ -28,6 +28,8 @@ stages:
       steps:
       - checkout: self
         clean: false
+      - script: sudo cat etc/hosts
+      - script: echo '127.0.0.1 nepaljobs.cf' | sudo tee -a /etc/hosts
       - script: yarn
         displayName: Install backend dependencies
       - script: yarn
