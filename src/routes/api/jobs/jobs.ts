@@ -1,6 +1,6 @@
 import express, { query } from 'express';
 import { body, validationResult } from 'express-validator';
-import { createNewJobPost } from '@root/models/JobPost';
+import { createNewJobPost } from '@root/models/Jobs';
 import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
 import DBJob, { Job, JobInput } from '@typings/Jobs'
 import connection from '@utils/dbSetup';
@@ -56,8 +56,8 @@ router.post(
                 qualifications: req.body.qualifications,
                 skills: req.body.skills
             };
-            //          const user = await createNewJobPost(jobPostData);
-            //          res.json({ ...user });
+            const user = await createNewJobPost(jobPostData);
+            res.json({ ...user });
         } catch (err) {
             console.log('Error in job post creation', err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
