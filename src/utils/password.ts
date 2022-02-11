@@ -1,7 +1,9 @@
 import * as bcrypt from 'bcrypt';
 
-const hashPassword = async (password: string | null): Promise<string | null> => {
-    if (!password || password.length === 0) {
+async function hashPassword(password: string): Promise<string>;
+async function hashPassword(password?: null): Promise<null>;
+async function hashPassword(password: string | null | undefined) {
+    if (!password) {
         return null;
     }
     const saltRounds = 13;
@@ -10,7 +12,7 @@ const hashPassword = async (password: string | null): Promise<string | null> => 
         saltRounds,
     );
     return computedHash;
-};
+}
 
 export const verifyPassword = async (
     enteredPassword: string,

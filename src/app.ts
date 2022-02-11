@@ -28,6 +28,10 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (err) {
         logger.error(err);
     }
+    const sentError = err.expose
+        ? err
+        : {};
+    return res.status(err.status || 500).json({ message: 'Something went wrong!', err: sentError, success: false });
 };
 app.use(errorHandler);
 

@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
@@ -12,8 +13,8 @@ const MySQLStore = mysqlSession(session);
 
 const appSetup = (app: express.Application) => {
     app.use(express.static('./dist/public'));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     const sessionStore = new MySQLStore(
         {},

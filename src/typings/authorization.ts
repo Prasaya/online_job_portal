@@ -1,5 +1,15 @@
+import { social } from './User';
+
 export interface Role {
-    rId: number;
-    rName: string;
-    rLevel: number;
+    roleId: number;
+    roleName: string;
+    roleLevel: number;
+}
+
+export interface AuthData {
+    id: string;
+    email: string;
+    password?: string;
+    role: string;
+    socials: social[];
 }

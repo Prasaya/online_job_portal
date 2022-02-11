@@ -20,10 +20,12 @@ router.use(
 
 router.get(
     '/failed',
-    (req, res) => res.json({ message: 'Failed to authenticate', log: req.session.messages, success: false }),
+    (req, res) => {
+        res.json({ message: 'Failed to authenticate', log: req.session.messages, success: false });
+    },
 );
 
-router.get(
+router.post(
     '/logout',
     (req, res) => {
         req.logout();
