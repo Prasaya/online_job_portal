@@ -1,10 +1,50 @@
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createNewUser, userRegisterSchema, verifyEmail } from '@root/models/User';
+import { createNewUser, userRegisterSchema } from '@models/User';
+import { organizationRegisterSchema, createNewOrganization } from '@root/models/Organization';
 import { NewUserInput, User } from '@typings/User';
 import logger from '@root/utils/logger';
+import { Organization, NewOrganizationInput } from '@typings/Organization';
+import { getAuthUser } from '@root/models/Auth';
 
 const router = express.Router();
+
+router.post(
+    '/organization',
+    checkSchema(organizationRegisterSchema),
+    async (req: Request, res: Response) => {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ message: errors.array(), success: false });
+            }
+
+            const existingUser = await getAuthUser(req.body.email);
+            if (existingUser !== null) {
+                return res
+                    .status(400)
+                    .json({ message: 'User is already registered', success: false });
+            }
+
+            const organizationData: NewOrganizationInput = {
+                email: req.body.email,
+                password: req.body.password,
+                name: req.body.name,
+                description: req.body.description || null,
+                address: req.body.address || null,
+                city: req.body.city || null,
+                website: req.body.website || null,
+                phone: req.body.phone || null,
+                logo: req.body.logo || null,
+            };
+            const organization: Organization = await createNewOrganization(organizationData);
+            return res.json(organization);
+        } catch (err) {
+            logger.error(err);
+            return res.status(500).json({ message: 'Something went wrong!', success: false });
+        }
+    },
+);
 
 router.post(
     '/',
@@ -16,7 +56,8 @@ router.post(
                 return res.status(400).json({ message: errors.array(), success: false });
             }
 
-            if (await verifyEmail(req.body.email)) {
+            const existingUser = await getAuthUser(req.body.email);
+            if (existingUser !== null) {
                 return res
                     .status(400)
                     .json({ message: 'User is already registered', success: false });
