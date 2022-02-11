@@ -57,8 +57,8 @@ CREATE TABLE federated_credentials_provider (
 CREATE TABLE federated_credentials (
     uid char(36) not null,
     providerId int not null,
-    identifier varchar(100) not null,
-    primary key (providerId, identifier),
+    identifier varchar(2048) not null,
+    primary key (uid, providerId),
     foreign key (uid) references users(uid),
     foreign key (providerId) references federated_credentials_provider(providerId)
 );
