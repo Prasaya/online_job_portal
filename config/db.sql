@@ -6,12 +6,15 @@ drop table if exists roles;
 truncate sessions;
 
 CREATE TABLE roles (
-    roleId int auto_increment,
+    roleId int,
     roleName varchar(20) unique not null,
+    roleLevel int,
     primary key (roleid)
 );
-Insert into roles (roleId, roleName) values (1, "Administrators"), (2, "Employers"),
-    (3, "Applicants"), (4, "Users");
+INSERT INTO roles (roleId, roleName, roleLevel) VALUES 
+	(1, "Administrators", 5), 
+    (2, "Organizations", 10),
+    (3, "Users", 10);
 
 CREATE TABLE webapp.companies (
     cid char(36),
