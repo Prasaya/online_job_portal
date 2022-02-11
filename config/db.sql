@@ -19,7 +19,7 @@ INSERT INTO roles (roleId, roleName, roleLevel) VALUES
 CREATE TABLE organizations (
     oid char(36),
     role int not null default 2,
-    password char(60),
+    email varchar(255) unique not null,
     password char(60) not null,
     name varchar(100) not null,
     description varchar(5000),
@@ -34,7 +34,8 @@ CREATE TABLE organizations (
 
 CREATE TABLE users (
     uid char(36),
-    email varchar(250) unique not null,
+    role int not null default 3,
+    email varchar(255) unique not null,
     password char(60),
     firstName varchar(50),
     middleName varchar(50),
@@ -43,7 +44,8 @@ CREATE TABLE users (
     birthday date,
     phone varchar(20),
     gender varchar(10),
-    primary key (uid)
+    primary key (uid),
+    foreign key (role) references roles(roleId)
 );
 
 CREATE TABLE federated_credentials_provider (
