@@ -124,3 +124,6 @@ src/public/*
 !src/public/stylesheets
 
 images/
+
+# ignore files from python
+env/
