@@ -1,11 +1,11 @@
 drop table if exists webapp.companies;
-drop table if exists webapp.federated_credentials;
-drop table if exists webapp.federated_credentials_provider;
-drop table if exists webapp.users;
-drop table if exists webapp.roles;
-truncate webapp.sessions;
+drop table if exists federated_credentials;
+drop table if exists federated_credentials_provider;
+drop table if exists users;
+drop table if exists roles;
+truncate sessions;
 
-CREATE TABLE webapp.roles (
+CREATE TABLE roles (
     roleId int auto_increment,
     roleName varchar(20) unique not null,
     primary key (roleid)
@@ -27,7 +27,7 @@ CREATE TABLE webapp.companies (
     primary key (cid)
 );
 
-CREATE TABLE webapp.users (
+CREATE TABLE users (
     uid char(36),
     email varchar(250) unique not null,
     password char(60),
@@ -41,13 +41,13 @@ CREATE TABLE webapp.users (
     primary key (uid)
 );
 
-CREATE TABLE webapp.federated_credentials_provider (
+CREATE TABLE federated_credentials_provider (
     providerId int auto_increment,
     providerName varchar(50) unique not null,
     primary key(providerId)
 );
 
-CREATE TABLE webapp.federated_credentials (
+CREATE TABLE federated_credentials (
     uid char(36) not null,
     providerId int not null,
     identifier varchar(100) not null,
