@@ -1,6 +1,6 @@
-import { createPool } from 'mysql2/promise';
+import { createPool } from 'mysql2';
 
-const connection = createPool({
+export const pool = createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     port: parseInt(
@@ -11,4 +11,4 @@ const connection = createPool({
     database: process.env.DB_NAME,
 });
 
-export default connection;
+export default pool.promise();
