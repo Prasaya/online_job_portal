@@ -35,7 +35,7 @@ CREATE TABLE webapp.users (
     middleName varchar(50),
     lastName varchar(50),
     picture varchar(200),
-    birthday datetime,
+    birthday date,
     phone varchar(20),
     gender varchar(10),
     primary key (uid)
