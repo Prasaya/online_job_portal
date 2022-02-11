@@ -3,7 +3,7 @@ import {useEffect, useState} from "react"
 
 function Basics() {
     const [basicInfo, setBasicInfo] = useState({})
-    const [allInfo, setAllInfo] = useState({})
+    const [allInfo, setAllInfo] = useState({}) //becasuse json server doesnt allow directly nested objects
     const {register,
         reset, 
         handleSubmit, 
@@ -42,8 +42,8 @@ function Basics() {
     }, [basicInfo, reset])
 
     return (
-        <>
-            <h1>Basics</h1>
+        <div className="container">
+            <h3>Basics</h3>
             <div className="col-lg-6 m-auto mb-2">
                 <form onSubmit={handleSubmit(onSubmitForm)}>
                     <div className="form-floating mb-3">
@@ -156,7 +156,7 @@ function Basics() {
                     </div>
                 </form>
             </div>
-        </>
+        </div>
     );
 }
 
