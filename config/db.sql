@@ -1,4 +1,4 @@
-drop table if exists webapp.companies;
+drop table if exists organizations;
 drop table if exists federated_credentials;
 drop table if exists federated_credentials_provider;
 drop table if exists users;
@@ -16,18 +16,20 @@ INSERT INTO roles (roleId, roleName, roleLevel) VALUES
     (2, "Organizations", 10),
     (3, "Users", 10);
 
-CREATE TABLE webapp.companies (
-    cid char(36),
-    email varchar(250) unique not null,
+CREATE TABLE organizations (
+    oid char(36),
+    role int not null default 2,
     password char(60),
+    password char(60) not null,
     name varchar(100) not null,
     description varchar(5000),
     address varchar(200),
     city varchar(100),
     website varchar(200),
     phone varchar(20),
-    logo varchar(100),
-    primary key (cid)
+    logo varchar(200),
+    primary key (oid),
+    foreign key (role) references roles(roleId)
 );
 
 CREATE TABLE users (
