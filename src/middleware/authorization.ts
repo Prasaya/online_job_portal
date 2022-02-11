@@ -7,7 +7,7 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
         if (!req.user) {
             return res.status(401).json({ message: 'Authorization missing', success: false });
         }
-        const userRoles = req.user.roles;
+        const userRoles = req.user.role;
         const isAuthorized = userRoles?.some((r) => cb(r));
         if (isAuthorized) {
             return next();
@@ -18,14 +18,14 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
 
 export function roleHigherThan(role: string) {
     const reqRoles = roles.filter((r) => r.rName === role)[0];
-    return roleCallback((r) => r.rLevel >= reqRoles.rLevel);
+    return roleCallback((r) => r.roleLevel >= reqRoles.roleLevel);
 }
 
 export function roleStrictlyHigherThan(role: string) {
     const reqRoles = roles.filter((r) => r.rName === role)[0];
-    return roleCallback((r) => r.rLevel > reqRoles.rLevel);
+    return roleCallback((r) => r.roleLevel > reqRoles.roleLevel);
 }
 
 export function roleExactly(role: string) {
-    return roleCallback((r) => r.rName === role);
+    return roleCallback((r) => r.roleName === role);
 }

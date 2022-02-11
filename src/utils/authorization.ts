@@ -1,30 +1,29 @@
-import { Role } from '@root/typings/authorization';
+import { Role } from '@typings/authorization';
+import connection from './dbSetup';
 
-const roles: Role[] = [
-    {
-        rId: 1,
-        rName: 'admin',
-        rLevel: 1,
-    },
-    {
-        rId: 2,
-        rName: 'employee',
-        rLevel: 2,
-    },
-    {
-        rId: 3,
-        rName: 'applicant',
-        rLevel: 2,
-    },
+// eslint-disable-next-line import/no-mutable-exports
+let cachedRoles: Role[];
+async function getRoles() {
+    if (cachedRoles !== undefined) {
+        return cachedRoles;
+    }
+    const [result] = await connection.query('SELECT * FROM roles');
+    return result as Role[];
+}
+(async () => {
+    cachedRoles = await getRoles();
+})();
 
-];
-
-export function getRoleById(id: number): Role | null {
-    return roles.find((role) => role.rId === id) || null;
+export function getRoleById(id: number): Promise<Role | null> {
+    return getRoles().then(
+        (roles) => roles.find((role) => role.roleId === id) || null,
+    );
 }
 
-export function getRoleByName(name: string): Role | null {
-    return roles.find((role) => role.rName === name) || null;
+export function getRoleByName(name: string): Promise<Role | null> {
+    return getRoles().then(
+        (roles) => roles.find((role) => role.roleName === name) || null,
+    );
 }
 
-export default roles;
+export default cachedRoles;
