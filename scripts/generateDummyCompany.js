@@ -14,7 +14,7 @@ function generateString() {
 
 function generateCompanyValues() {
     const userValues = {
-        cid: randomUUID(),
+        oid: randomUUID(),
         email: `${generateString()}@gmail.com`.substring(0, 250),
         password: `${generateString()}${generateString()}`.substring(0, 60),
         name: generateString().substring(0, 100),
@@ -46,7 +46,7 @@ function arrayToString(arr, quote = "'") {
 }
 
 function createCompany(num) {
-    let query = `SET autocommit = 0;\nSET unique_checks = 0;\nINSERT INTO companies (${arrayToString(
+    let query = `SET autocommit = 0;\nSET unique_checks = 0;\nINSERT INTO organizations (${arrayToString(
         Object.keys(generateCompanyValues()),
         '',
     )}) VALUES \n\t`;

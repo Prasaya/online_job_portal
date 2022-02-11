@@ -21,7 +21,7 @@ function generateUserValues() {
         middleName: generateString().substring(0, 50),
         lastName: generateString().substring(0, 50),
         picture: generateString().substring(0, 200),
-        birthday: '2022-02-09 07:38:14',
+        birthday: '2022-02-09',
         phone: generateString().substring(
             0,
             10,
