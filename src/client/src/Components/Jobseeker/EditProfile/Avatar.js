@@ -3,16 +3,17 @@ import {useState, useEffect} from "react"
 function Avatar() {
     const [avatar, setAvatar] = useState("")
     const stockPhoto = "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png"
-    
+
     const fetchAvatar = async () => {
-        const res = await fetch("http://localhost:4000/profile")
+        const res = await fetch("/api/user")
         const data = await res.json()
-        return data["picture"]
+        console.log(data)
+        return data.user.basics.picture
     }
 
     useEffect(()=>{
         const getAvatar = async () => {
-            const data = await fetchAvatar()    
+            const data = await fetchAvatar()
             setAvatar(data || stockPhoto)
         }
         getAvatar()
@@ -20,19 +21,18 @@ function Avatar() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const fileName = e.target.value.split("C:\\fakepath\\")[1]
         const fileInput = document.querySelector('#picture');
         const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
+        formData.append('avatar', fileInput.files[0]);
         const options = {
             method: 'POST',
             body: formData,
-        }   
-        fetch(`/api/user/pictures/${fileName}`, options);
+        }
+        fetch(`/api/user/avatar`, options);
     }
     const handleChange = (e) => {
-        if(e.target.files[0].size > 409600){
-            alert("File size should be smaller than 400 KB");
+        if(e.target.files[0].size > 1024 * 1024){
+            alert("File size should be smaller than 1 MB");
             e.target.value = "";
         }else{
             const url = URL.createObjectURL(e.target.files[0])
