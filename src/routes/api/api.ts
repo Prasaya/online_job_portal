@@ -3,8 +3,14 @@ import isLoggedIn from '@middleware/isLoggedIn';
 import authRoute from './auth/auth';
 import userRoute from './user/user';
 import jobPostRoute from './jobpost/jobpost';
+import academicsRoute from './academics';
 
 const router = express.Router();
+
+router.use(
+    '/academics',
+    academicsRoute,
+);
 
 router.use(
     '/auth',
