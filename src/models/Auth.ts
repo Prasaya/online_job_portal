@@ -34,7 +34,7 @@ export async function searchUser(
             'CALL getUserData(?)',
             [id],
         );
-        if (!Array.isArray(result) || !Array.isArray(result[0]) || result[0][0].length === 0) {
+        if (!Array.isArray(result) || !Array.isArray(result[0]) || result[0].length === 0) {
             return null;
         }
         const socials = result[0].socials
