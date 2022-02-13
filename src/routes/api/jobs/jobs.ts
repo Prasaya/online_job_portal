@@ -1,6 +1,6 @@
 import express, { query } from 'express';
 import { body, validationResult } from 'express-validator';
-import { createNewJobPost } from '@root/models/Jobs';
+import { createNewJobPost, deleteJobPost } from '@root/models/Jobs';
 import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
 import DBJob, { Job, JobInput } from '@typings/Jobs'
 import connection from '@utils/dbSetup';
@@ -77,7 +77,9 @@ router.patch('/', async (req, res) => {
 router.delete('/:id',
     async (req, res) => {
         const jobID = req.params.id;
+
         try {
+            deleteJobPost(jobID);
             await connection.query(
                 'DELETE FROM skills ' +
                 'WHERE jobId = ?',
