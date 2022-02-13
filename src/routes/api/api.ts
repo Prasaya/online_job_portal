@@ -15,7 +15,7 @@ router.use(
 
 router.use(
     '/jobs',
-    jobs
+    jobs,
 );
 
 router.use(

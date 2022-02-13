@@ -71,12 +71,13 @@ CREATE TABLE jobs (
     jobId char(36),
     companyId char(36) not null, 
     title varchar(100) not null,
-    description varchar(1000),
+    description varchar(5000),
     vacancies int not null,
     experience int,
     address varchar(1000),
     district varchar(1000),
-    primary key (jobId)
+    primary key (jobId),
+    foreign key (companyId) references organizations(oId);
 );
 
 CREATE TABLE skills (
@@ -87,14 +88,6 @@ CREATE TABLE skills (
     foreign key (jobId) references jobs(jobId)
 );
 
-CREATE TABLE webapp.job_qualifications (
-    jobId char(36) not null,
-    qId varchar(36) not null,
-    primary key (jobId, qId),
-    foreign key (jobId) references jobs(jobId),
-    foreign key (qId) references academicQualifications(qId)
-);
-
 CREATE TABLE academic_qualifications (
 	qid int auto_increment,
 	level varchar(30),
@@ -102,3 +95,12 @@ CREATE TABLE academic_qualifications (
     degree varchar(100),
     primary key (qid)
 );
+
+CREATE TABLE job_qualifications (
+    jobId char(36) not null,
+    qId varchar(36) not null,
+    primary key (jobId, qId),
+    foreign key (jobId) references jobs(jobId),
+    foreign key (qId) references academic_qualifications(qId)
+);
+
