@@ -78,11 +78,11 @@ export const JobCreationSchema: Schema = {
 export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> => {
     console.log("Reached inside createNewJobPost");
 
-    let PromiseArray = [];
+    const PromiseArray: Array<Promise<RowDataPacket[]>> = [];
 
     const jobData: DBJob = {
         jobId: uuidv4(),
-        //TODO: insert comapny Id
+        // TODO: insert comapny Id
         companyId: '1',
         title: jobPostData.title,
         description: jobPostData.description || null,
@@ -92,8 +92,8 @@ export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> =>
         district: jobPostData.district || null,
     };
 
-    //TODO: generate qualification and skills id for each skill
-    //TODO: link job id and qualification and skills
+    // TODO: generate qualification and skills id for each skill
+    // TODO: link job id and qualification and skills
     const qualifications: JobQualification[] = jobPostData.qualifications;
     const skills: JobSkill[] = jobPostData.skills;
 

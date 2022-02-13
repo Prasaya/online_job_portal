@@ -9,24 +9,25 @@ import isLoggedIn from '@middleware/isLoggedIn';
 
 const router = express.Router();
 
-//router.get('/', isLoggedIn,
-router.get('/',
+// router.get('/', isLoggedIn,
+router.get(
+    '/',
     async (req, res) => {
         const [result] = await connection.query(
-            'SELECT * FROM jobs '
+            'SELECT * FROM jobs ',
         );
         const [result2] = await connection.query(
-            'SELECT * FROM skills '
+            'SELECT * FROM skills ',
         );
-        let job_list: any = {};
-        (result as RowDataPacket[]).forEach(job => {
-            job_list[job.jobId] = { ...job, skills: [] };
+        const jobList: unknown = {};
+        (result as RowDataPacket[]).forEach((job) => {
+            jobList[job.jobId] = { ...job, skills: [] };
         }
         );
         (result2 as RowDataPacket[]).forEach(skill => {
-            job_list[skill.jobId].skills.push(skill);
+            jobList[skill.jobId].skills.push(skill);
         });
-        res.json(Object.values(job_list));
+        res.json(Object.values(jobList));
     }
 );
 
@@ -45,7 +46,6 @@ router.post(
                 return res.status(400).json({ message: errors.array(), success: false });
             }
 
-
             const jobPostData: JobInput = {
                 title: req.body.title,
                 description: req.body.description,
@@ -54,25 +54,29 @@ router.post(
                 address: req.body.address,
                 district: req.body.district,
                 qualifications: req.body.qualifications,
-                skills: req.body.skills
+                skills: req.body.skills,
             };
             const user = await createNewJobPost(jobPostData);
-            res.json({ ...user });
+            return res.json({ ...user });
         } catch (err) {
             console.log('Error in job post creation', err);
-            res.status(500).json({ message: 'Something went wrong!', success: false });
+            return res.status(500).json({ message: 'Something went wrong!', success: false });
         }
     }
 );
 
-router.put('/:id', async (req, res) => {
+router.put(
+    '/:id',
+    async (req, res) => {
+    }
+);
 
-});
 
+router.patch(
+    '/',
+    async (req, res) => {
 
-router.patch('/', async (req, res) => {
-
-});
+    });
 
 router.delete('/:id',
     async (req, res) => {

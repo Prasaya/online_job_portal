@@ -9,18 +9,18 @@ import academicsRoute from './academics';
 const router = express.Router();
 
 router.use(
+    '/academics',
+    academicsRoute,
+);
+
+router.use(
     '/jobs',
     jobs,
 );
 
 router.use(
-    '/jobpost',
-    jobPostRoute,
-);
-
-router.use(
-    '/academics',
-    academicsRoute,
+    '/jobs',
+    jobs,
 );
 
 router.use(
