@@ -1,41 +1,53 @@
-import {useForm, useFieldArray, Controller} from "react-hook-form"
+import {useForm, useFieldArray} from "react-hook-form"
 import {useEffect, useState} from "react"
 
 function Skills() {
-    // const [allInfo, setAllInfo] = useState({})
+    const [allInfo, setAllInfo] = useState({}) //for use with json-server
+    const [skills, setSkills] = useState([])
     const {register,
-        reset, 
+        setValue,
         control,
         handleSubmit, 
-        formState: { errors },
     } = useForm({mode: "onBlur"})
     const { fields, append, remove } = useFieldArray({
         control,
         name: "skills"
       });
 
-    // const fetchInfo = async () => {
-    //     const res = await fetch("http://localhost:4000/profile")
-    //     const data = await res.json()
-    //     return data
-    // }
-    // const onSubmitForm = (data) => {
-    //     let info = allInfo
-    //     info.basics = data
-    //     fetch(`http://localhost:4000/profile`,{
-    //                     method: "PUT",
-    //                     headers: {
-    //                         'Content-type': 'application/json'
-    //                     },
-    //                     body: JSON.stringify(info)
-    //                 })
-    // }
+    const fetchInfo = async () => {
+        const res = await fetch("http://localhost:4000/profile")
+        const data = await res.json()
+        return data
+    }
+    const onSubmitForm = (data) => {
+        let info = allInfo
+        info.skills = data
+        fetch(`http://localhost:4000/profile`,{
+                        method: "PUT",
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify(info)
+                    })
+    }
+    useEffect(() => {
+        const getInfo = async () => {
+            const info = await fetchInfo()
+            setAllInfo(info)
+            setSkills(info["skills"]["skills"])            
+        }
+        getInfo()  
+    },[])
+
+    useEffect(() => {
+        setValue("skills", skills)
+    }, [setValue, skills])
 
     return (
         <div className="container-md ">
             <h3>Skills</h3>
             <div className="m-auto mb-2">
-            <form onSubmit={handleSubmit(data => console.log(data))}>
+            <form onSubmit={handleSubmit(onSubmitForm)}>
                 <div className="skills">
                     {fields.map((item, index) => (
                     <div className="row mb-1" key={item.id}>
