@@ -41,7 +41,7 @@ function Avatar() {
     }
 
     return (
-        <div className="container">
+        <div>
             <h3>Avatar</h3>
             <img className="col-3 img-thumbnail rounded mx-auto d-block" src={avatar} alt="avatar" />
             <div className="col-3 m-auto">

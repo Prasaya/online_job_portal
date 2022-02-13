@@ -42,7 +42,7 @@ function Basics() {
     }, [basicInfo, reset])
 
     return (
-        <div className="container">
+        <div className="">
             <h3>Basics</h3>
             <div className="col-lg-6 m-auto mb-2">
                 <form onSubmit={handleSubmit(onSubmitForm)}>

@@ -44,56 +44,56 @@ function Skills() {
     }, [setValue, skills])
 
     return (
-        <div className="container-md ">
+        <div>
             <h3>Skills</h3>
             <div className="m-auto mb-2">
-            <form onSubmit={handleSubmit(onSubmitForm)}>
-                <div className="skills">
-                    {fields.map((item, index) => (
-                    <div className="row mb-1" key={item.id}>
-                        <div className="col-6 mr-1">
-                            <input
-                                {...register(`skills.${index}.skill`)}
-                                className="form-control"
-                                type="text"
-                                id="skills"
-                                placeholder="Skill"
-                                required
-                            />
-                        </div>
-                        <div className="col-4 mr-1">
+                <form onSubmit={handleSubmit(onSubmitForm)}>
+                    <div className="skills">
+                        {fields.map((item, index) => (
+                        <div className="row mb-1" key={item.id}>
+                            <div className="col-6 mr-1">
+                                <input
+                                    {...register(`skills.${index}.skill`)}
+                                    className="form-control"
+                                    type="text"
+                                    id="skills"
+                                    placeholder="Skill"
+                                    required
+                                />
+                            </div>
+                            <div className="col-4 mr-1">
+                                
+                                <select
+                                    {...register(`skills.${index}.proficiency`)}
+                                    className="form-select"
+                                    id="skillProficiency"
+                                    required
+                                >
+                                    <option selected disabled value="">
+                                        Proficiency...
+                                    </option>
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                    <option value="Expert">Expert</option>
+                                </select>
+                            </div>
                             
-                            <select
-                                {...register(`skills.${index}.proficiency`)}
-                                className="form-select"
-                                id="skillProficiency"
-                                required
-                            >
-                                <option selected disabled value="">
-                                    Proficiency...
-                                </option>
-                                <option value="Beginner">Beginner</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Advanced">Advanced</option>
-                                <option value="Expert">Expert</option>
-                            </select>
+                            <button type="button" className="btn btn-sm btn-danger col-2" onClick={() => remove(index)}>Delete</button>
                         </div>
-                        
-                        <button type="button" className="btn btn-sm btn-danger col-2" onClick={() => remove(index)}>Delete</button>
+                        ))}
                     </div>
-                    ))}
-                </div>
-                <div className="d-grid gap-2 m-auto mt-4">
-                    <button
-                        className="btn btn-secondary btn-md"
-                        type="button"
-                        onClick={() => append({ skill: "", proficiency: "" })}
-                    >
-                        Add
-                    </button>
-                    <button type="submit" className="btn btn-success btn-md">Update</button>
-                </div>
-            </form>
+                    <div className="d-grid gap-2 m-auto mt-4">
+                        <button
+                            className="btn btn-secondary btn-md"
+                            type="button"
+                            onClick={() => append({ skill: "", proficiency: "" })}
+                        >
+                            Add
+                        </button>
+                        <button type="submit" className="btn btn-success btn-md">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     );
