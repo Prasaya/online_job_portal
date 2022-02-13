@@ -27,8 +27,20 @@
       "gender": "male"
     },
     "skills": {
-      "html": "intermediate",
-      "js": "expert"
+      "skills": [
+        {
+          "skill": "HTML",
+          "proficiency": "Expert"
+        },
+        {
+          "skill": "JS",
+          "proficiency": "Expert"
+        },
+        {
+          "skill": "CSS",
+          "proficiency": "Advanced"
+        }
+      ]
     },
     "education": [
       {
