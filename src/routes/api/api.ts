@@ -4,26 +4,55 @@ import authRoute from './auth/auth';
 import userRoute from './user/user';
 import jobPostRoute from './jobs/jobpost';
 import jobs from './jobs/jobs';
+import academicsRoute from './academics';
 
 const router = express.Router();
 
-router.use('/auth', authRoute);
-router.use('/user', userRoute);
-router.use('/jobs', jobs);
-router.use('/jobpost', jobPostRoute);
+router.use(
+    '/academics',
+    academicsRoute,
+);
 
-router.get('/userinfo', isLoggedIn, (req: Request, res) => {
-    res.json({
-        user: req.user, session: req.session, success: true,
-    });
-});
+router.use(
+    '/jobs',
+    jobs
+);
 
-router.get('/', (req, res) => {
-    res.json({ message: 'This is the api page!', success: true });
-});
+router.use(
+    '/auth',
+    authRoute,
+);
 
-router.get('*', (req, res) => {
-    res.status(404).json({ message: 'Could not find page!', success: false });
-});
+router.use(
+    '/user',
+    userRoute,
+);
+
+router.use(
+    '/jobpost',
+    jobPostRoute,
+);
+
+router.get(
+    '/userinfo',
+    isLoggedIn,
+    (req: Request, res) => {
+        res.json({ user: req.user, session: req.session, success: true });
+    },
+);
+
+router.get(
+    '/',
+    (req, res) => {
+        res.json({ message: 'This is the api page!', success: true });
+    },
+);
+
+router.get(
+    '*',
+    (req, res) => {
+        res.status(404).json({ message: 'Could not find page!', success: false });
+    },
+);
 
 export default router;

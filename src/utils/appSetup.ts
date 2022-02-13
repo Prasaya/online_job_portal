@@ -1,32 +1,40 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import passport from 'passport';
-import path from 'path';
 import logger from '@utils/logger';
-import passportSetup from './passportSetup';
-import dbConnection from './dbSetup';
 import mysqlSession from 'express-mysql-session';
 import viewCounter from '@root/middleware/viewCounter';
+import passportSetup from './passportSetup';
+import dbConnection from './dbSetup';
 
-var MySQLStore = mysqlSession(session);
+const MySQLStore = mysqlSession(session);
 
 const appSetup = (app: express.Application) => {
     app.use(express.static('./dist/public'));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
-    const sessionStore = new MySQLStore({}, dbConnection, (err) => {
-        if (err) {
-            logger.error(`Error setting up sessionStore: ${err}`);
-        } else {
-            logger.info('Session store connected!');
-        }
-    });
+    const sessionStore = new MySQLStore(
+        {},
+        dbConnection,
+        (err) => {
+            if (err) {
+                logger.error(`Error setting up sessionStore: ${err}`);
+            } else {
+                logger.info('Session store connected!');
+            }
+        },
+    );
     const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
+    if (!process.env.SESSION_SECRET) {
+        logger.error('No session secret set!');
+        process.exit(1);
+    }
     const sess = {
         name: 'sessionId',
-        secret: process.env.SESSION_SECRET!,
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
         store: sessionStore,
@@ -38,11 +46,10 @@ const appSetup = (app: express.Application) => {
         },
 
     };
-    app.set('trust proxy', 1);
-    if (!process.env.SESSION_SECRET) {
-        logger.error('No session secret set!');
-        process.exit(1);
-    }
+    app.set(
+        'trust proxy',
+        1,
+    );
 
     app.use(session(sess));
 

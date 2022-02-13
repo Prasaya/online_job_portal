@@ -1,14 +1,20 @@
-const path = require('path');
+/* eslint-disable @typescript-eslint/no-var-requires */
 const nodeExternals = require('webpack-node-externals');
+const path = require('path');
 
-module.exports = {
+const dirname = __dirname;
+
+const config = {
     /**
      * @type {("none" | "development" | "production")}
      */
     mode: process.env.NODE_ENV || 'development',
     entry: './src/bin/www',
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(
+            dirname,
+            'dist',
+        ),
         filename: 'backend.cjs',
     },
     module: {
@@ -38,3 +44,5 @@ module.exports = {
     externalsPresets: { node: true },
     externals: [nodeExternals()],
 };
+
+module.exports = config;

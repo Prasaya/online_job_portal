@@ -122,3 +122,8 @@ src/public/*
 !/src/public/javascript
 !src/public/images
 !src/public/stylesheets
+
+images/
+
+# ignore files from python
+env/
