@@ -160,7 +160,9 @@ function MyProfile() {
                                 {navElements.map((element) => {
                                     return(
                                         <tr className="">
-                                            <Link onClick={OnClick} className={`nav-link ${element.status}`} to={element.to} id={`${element.to}`}>{element.name}</Link>
+                                            <td>
+                                                <Link onClick={OnClick} className={`nav-link ${element.status}`} to={element.to} id={`${element.to}`}>{element.name}</Link>
+                                            </td>
                                         </tr>
                                     )
                                 })}
