@@ -31,27 +31,27 @@ module.exports = {
                 map: [
                     [
                         '@root',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src',
+                        './src',
                     ],
                     [
                         '@middleware',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src/middleware',
+                        './src/middleware',
                     ],
                     [
                         '@models',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src/models',
+                        './src/models',
                     ],
                     [
                         '@routes',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src/routes',
+                        './src/routes',
                     ],
                     [
                         '@utils',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src/utils',
+                        './src/utils',
                     ],
                     [
                         '@typings',
-                        '/media/nevus/Data/6thSemester/Minor_Project/project/src/typings',
+                        './src/typings',
                     ],
                 ],
                 extensions: [
@@ -101,7 +101,8 @@ module.exports = {
             'error',
             'always',
         ],
-        'no-extra-parens': 'warn',
+        'no-extra-parens': 'off',
+        '@typescript-eslint/no-extra-parens': 'warn',
         'object-curly-newline': [
             'error',
             { multiline: true },
