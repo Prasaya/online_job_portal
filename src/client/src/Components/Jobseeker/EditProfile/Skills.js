@@ -20,6 +20,7 @@ function Skills() {
         return data
     }
     const onSubmitForm = (data) => {
+        console.log(data)
         let info = allInfo
         info.skills = data
         fetch(`http://localhost:4000/profile`,{
@@ -51,12 +52,12 @@ function Skills() {
                     <div className="skills">
                         {fields.map((item, index) => (
                         <div className="row mb-1" key={item.id}>
-                            <div className="col-6 mr-1">
+                            <div className="col-4 mr-1">
                                 <input
                                     {...register(`skills.${index}.skill`)}
                                     className="form-control"
                                     type="text"
-                                    id="skills"
+                                    id={`skill${index}`}
                                     placeholder="Skill"
                                     required
                                 />
@@ -66,7 +67,7 @@ function Skills() {
                                 <select
                                     {...register(`skills.${index}.proficiency`)}
                                     className="form-select"
-                                    id="skillProficiency"
+                                    id={`skillProficiency${index}`}
                                     required
                                 >
                                     <option selected disabled value="">
@@ -78,6 +79,17 @@ function Skills() {
                                     <option value="Expert">Expert</option>
                                 </select>
                             </div>
+                            <div className="col-2 mr-1">
+                                <input
+                                    {...register(`skills.${index}.experience`)}
+                                    className="form-control"
+                                    type="number"
+                                    min="0"
+                                    id={`skillExperience${index}`}
+                                    placeholder="Experience"
+                                    required
+                                />
+                            </div>
                             
                             <button type="button" className="btn btn-sm btn-danger col-2" onClick={() => remove(index)}>Delete</button>
                         </div>
@@ -87,7 +99,7 @@ function Skills() {
                         <button
                             className="btn btn-secondary btn-md"
                             type="button"
-                            onClick={() => append({ skill: "", proficiency: "" })}
+                            onClick={() => append({ skill: "", proficiency: "", experience: "" })}
                         >
                             Add
                         </button>

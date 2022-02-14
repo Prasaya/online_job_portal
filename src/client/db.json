@@ -30,15 +30,23 @@
       "skills": [
         {
           "skill": "HTML",
-          "proficiency": "Expert"
+          "proficiency": "Expert",
+          "experience": "2"
         },
         {
           "skill": "JS",
-          "proficiency": "Expert"
+          "proficiency": "Expert",
+          "experience": "3"
         },
         {
           "skill": "CSS",
-          "proficiency": "Advanced"
+          "proficiency": "Advanced",
+          "experience": "3"
+        },
+        {
+          "skill": "Python",
+          "proficiency": "Advanced",
+          "experience": "2"
         }
       ]
     },
