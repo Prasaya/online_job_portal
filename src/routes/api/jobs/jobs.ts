@@ -1,11 +1,12 @@
-import express, { query } from 'express';
-import { body, validationResult } from 'express-validator';
-import { createNewJobPost, deleteJobPost } from '@root/models/Jobs';
+import express, { Request, Response } from 'express';
+import { param, validationResult, checkSchema } from 'express-validator';
+import { createNewJobPost, deleteJobPost, JobCreationSchema } from '@root/models/Jobs';
 import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
-import DBJob, { Job, JobInput } from '@typings/Jobs'
+import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
 import isLoggedIn from '@middleware/isLoggedIn';
+import logger from '@root/utils/logger';
 
 const router = express.Router();
 
@@ -22,24 +23,19 @@ router.get(
         const jobList: unknown = {};
         (result as RowDataPacket[]).forEach((job) => {
             jobList[job.jobId] = { ...job, skills: [] };
-        }
-        );
-        (result2 as RowDataPacket[]).forEach(skill => {
+        });
+        (result2 as RowDataPacket[]).forEach((skill) => {
             jobList[skill.jobId].skills.push(skill);
         });
         res.json(Object.values(jobList));
-    }
+    },
 );
 
 router.post(
     '/',
-    body('title').isString().isLength({ max: 100 }),
-    body('description').isString().optional(),
-    body('vacancies').isNumeric().optional(),
-    body('experience').isNumeric().optional(),
-    body('address').isString().isLength({ max: 1000 }).optional(),
-    body('district').isString().isLength({ max: 1000 }).optional(),
-    async (req, res) => {
+    // isLoggedIn,
+    checkSchema(JobCreationSchema),
+    async (req: Request, res: Response) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -47,6 +43,7 @@ router.post(
             }
 
             const jobPostData: JobInput = {
+                companyId: req.body.companyId,
                 title: req.body.title,
                 description: req.body.description,
                 vacancies: req.body.vacancies,
@@ -59,46 +56,36 @@ router.post(
             const user = await createNewJobPost(jobPostData);
             return res.json({ ...user });
         } catch (err) {
-            console.log('Error in job post creation', err);
+            logger.error(
+                err,
+            );
             return res.status(500).json({ message: 'Something went wrong!', success: false });
         }
-    }
+    },
 );
 
-router.put(
+router.delete(
     '/:id',
-    async (req, res) => {
-    }
-);
-
-
-router.patch(
-    '/',
-    async (req, res) => {
-
-    });
-
-router.delete('/:id',
-    async (req, res) => {
-        const jobID = req.params.id;
-
+    // isLoggedIn,
+    param('id').isString().isLength({ min: 36, max: 36 }),
+    async (req: Request, res: Response) => {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                res.status(400).json({ message: errors.array(), success: false });
+                return;
+            }
+            const jobID = req.params.id;
             deleteJobPost(jobID);
-            await connection.query(
-                'DELETE FROM skills ' +
-                'WHERE jobId = ?',
-                [jobID]
-            );
-            await connection.query(
-                'DELETE FROM jobs ' +
-                'WHERE jobId = ?',
-                [jobID]
-            );
         } catch (err) {
-            console.log('Error in job delete operation', err);
+            logger.error(
+                'Error in Job Deletion',
+                err,
+            );
             res.status(500).json({ message: 'Something went wrong!', success: false });
         }
         res.status(200).json({ message: 'Job deleted', success: true });
-    });
+    },
+);
 
 export default router;
