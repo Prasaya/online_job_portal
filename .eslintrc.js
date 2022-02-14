@@ -110,7 +110,8 @@ module.exports = {
         ],
         'object-property-newline': 'error',
         'no-eq-null': 'error',
-
+        semi: 'off',
+        '@typescript-eslint/semi': ['error'],
     },
     globals: {
         require: true,
