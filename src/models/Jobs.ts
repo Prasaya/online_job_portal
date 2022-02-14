@@ -1,14 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Schema } from 'express-validator';
-import User, { NewUserInput, DBUser } from '@typings/User';
-import JobPost, { NewJobPost, DBJobPost } from '@typings/JobPost';
-import DBJob, { Job, JobInput, JobSkill, JobQualification } from '@typings/Jobs'
+import DBJob, { JobInput, JobSkill, JobQualification } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
-import { RowDataPacket } from 'mysql2';
-import { QualifiedName } from 'typescript';
-import { ValidatorsImpl } from 'express-validator/src/chain';
+import { FieldPacket, RowDataPacket } from 'mysql2';
+import internal from 'stream';
+import logger from '@root/utils/logger';
 
 export const JobCreationSchema: Schema = {
+    companyId: {
+        in: ['body'],
+        isString: true,
+        isLength: { options: [{ max: 36 }] },
+    },
     title: {
         in: ['body'],
         isString: true,
@@ -39,26 +42,12 @@ export const JobCreationSchema: Schema = {
     },
     qualifications: {
         in: ['body'],
-        isObject: true,
+        isArray: true,
     },
-    'qualifications.*.level': {
-        isString: true,
-        isIn: {
-            //TODO : Add more options
-            options: [["Bachelors", "Masters"]],
-            errorMessage: "Invalid qualifications Level"
-        }
-    },
-    'qualifications.*.discipline': {
-        isString: true,
-        isIn: {
-            //TODO : Add more options
-            options: [["Agriculture", "Computer"]],
-            errorMessage: "Invalid Qualifications Discipline"
-        }
-    },
-    'qualifications.*.degree': {
-        isString: true,
+    'qualifications.*': { isNumeric: true },
+    skills: {
+        in: ['body'],
+        isArray: true,
     },
     'skills.*.skillName': {
         isString: true,
@@ -67,23 +56,26 @@ export const JobCreationSchema: Schema = {
     'skills.*.proficiency': {
         isString: true,
         isIn: {
-            options: [["Begineer", "Intermediate", "Advanced"]],
-            errorMessage: "Invalid Skills Proficiency"
-        }
-    }
+            options: [
+                [
+                    'Beginner',
+                    'Intermediate',
+                    'Advanced',
+                ],
+            ],
+            errorMessage: 'Invalid Skills Proficiency',
+        },
+    },
 };
 
-
-
 export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> => {
-    console.log("Reached inside createNewJobPost");
+    // console.log('Reached inside createNewJobPost');
 
-    const PromiseArray: Array<Promise<RowDataPacket[]>> = [];
+    const PromiseArray: Array<Promise<[RowDataPacket[], FieldPacket[]]>> = [];
 
     const jobData: DBJob = {
         jobId: uuidv4(),
-        // TODO: insert comapny Id
-        companyId: '1',
+        companyId: jobPostData.companyId,
         title: jobPostData.title,
         description: jobPostData.description || null,
         vacancies: jobPostData.vacancies,
@@ -92,92 +84,127 @@ export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> =>
         district: jobPostData.district || null,
     };
 
-    // TODO: generate qualification and skills id for each skill
-    // TODO: link job id and qualification and skills
-    const qualifications: JobQualification[] = jobPostData.qualifications;
-    const skills: JobSkill[] = jobPostData.skills;
-
-    console.log(...Object.values(jobData));
-    let promise1 = connection.execute(
-        'INSERT INTO jobs ' +
-        '(jobId, companyId, title, description, vacancies, experience, address, district) ' +
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [...Object.values(jobData)]
+    const { qualifications, skills } = jobPostData;
+    const cols = Object.keys(jobData).join(', ');
+    await connection.execute(
+        'INSERT INTO jobs '
+        + '(jobId, companyId, title, description, vacancies, experience, address, district) '
+        + 'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [...Object.values(jobData)],
     );
-    PromiseArray.push(promise1);
 
-    // for (let i = 0; i < qualifications.length; ++i) {
-    //     const qId = uuidv4();
-    //     console.log("Inside qualifications : ", typeof (qualifications[i]), qualifications[i], qualifications);
-    //     console.log(typeof (qualifications), qualifications.length);
-    //     await connection.execute(
-    //         'INSERT INTO academicQualifications ' +
-    //         '(qId, level, discipline, degree) ' +
-    //         'VALUES (?, ?, ?, ?)',
-    //         [qId, ...Object.values(qualifications[i])]
-    //     );
-    // }
+    const baseQuery = 'INSERT INTO job_qualifications (jobId, qid) VALUES ';
+    let parameters: string[] = [];
+    let query = baseQuery;
+    qualifications.forEach(
+        (qualification, index) => {
+            // Batch qualifications into groups of 20
+            // for 0-19 index/20 gives 0 and for 20-39 index/20 gives 1 and so on
+            // at index 20, 1(from division) != 0(from length) so we insert into array
+            // This is to avoid the max bytes limitation of mysql
+            if (
+                Math.floor(index / 20) === PromiseArray.length
+                && index !== qualifications.length - 1
+            ) {
+                query += '(?, ?), ';
+                parameters.push(
+                    jobData.jobId,
+                    qualification,
+                );
+            } else {
+                query += '(?, ?)';
+                parameters.push(
+                    jobData.jobId,
+                    qualification,
+                );
+                PromiseArray.push(
+                    connection.query(
+                        query,
+                        parameters,
+                    ),
+                );
+                query = baseQuery;
+                parameters = [];
+            }
+        },
+    );
 
-    let tempPromise;
-    // for (let i = 0; i < skills.length; ++i) {
-    //     console.log("Inside skills : ", skills[i]);
-    //     tempPromise = connection.execute(
-    //         'INSERT INTO skills ' +
-    //         '(jobId, skillName, proficiency) ' +
-    //         'VALUES (?, ?, ?)',
-    //         [jobData.jobId, ...Object.values(skills[i])]
-    //     )
-    //     PromiseArray.push(tempPromise);
-    // }
-
+    const skillsBaseQuery = 'INSERT INTO skills (jobId, skillName, proficiency) VALUES ';
+    parameters = [];
+    query = skillsBaseQuery;
+    const initialPromiseArrayLength = PromiseArray.length;
     skills.forEach(
-        (skill) => {
-            tempPromise = connection.execute(
-                'INSERT INTO skills ' +
-                '(jobId, skillName, proficiency) ' +
-                'VALUES (?, ?, ?)',
-                [jobData.jobId, ...Object.values(skill)]
-            )
-            PromiseArray.push(tempPromise);
-        }
-    )
-
-    await Promise.all(PromiseArray).then((values) => {
-        console.log(values);
-    })
-        .catch((error) => {
-            console.log("Error in Promises", error);
-        });
-
+        (skill, index) => {
+            // Batch qualifications into groups of 20
+            // for 0-19 index/20 gives 0 and for 20-39 index/20 gives 1 and so on
+            // at index 20, 1(from division) != 0(from length) so we insert into array
+            // This is to avoid the max bytes limitation of mysql
+            if (
+                Math.floor(index / 20) === PromiseArray.length - initialPromiseArrayLength
+                && index !== skills.length - 1
+            ) {
+                query += '(?, ?, ?), ';
+                parameters.push(
+                    jobData.jobId,
+                    skill.skillName,
+                    skill.proficiency,
+                );
+            } else {
+                query += '(?, ?, ?)';
+                parameters.push(
+                    jobData.jobId,
+                    skill.skillName,
+                    skill.proficiency,
+                );
+                PromiseArray.push(connection.query(
+                    query,
+                    parameters,
+                ));
+                query = skillsBaseQuery;
+                parameters = [];
+            }
+        },
+    );
+    try {
+        await Promise.all(PromiseArray);
+    } catch (error) {
+        logger.error(error);
+    }
     return { ...<DBJob>jobData };
-}
-
+};
 
 export const deleteJobPost = async (jobId: string) => {
-    console.log("Reached inside deleteJobPost");
+    console.log('Reached inside deleteJobPost');
 
-    let promise1 = connection.execute(
-        'DELETE FROM jobs ' +
-        'WHERE jobId = ?',
-        [jobId]
+    const promise1 = connection.execute(
+        'DELETE FROM jobs '
+        + 'WHERE jobId = ?',
+        [jobId],
     );
 
-    let promise2 = connection.execute(
-        'DELETE FROM skills ' +
-        'WHERE jobId = ?',
-        [jobId]
+    const promise2 = connection.execute(
+        'DELETE FROM skills '
+        + 'WHERE jobId = ?',
+        [jobId],
     );
 
-    let promise3 = connection.execute(
-        'DELETE FROM jobQualifications ' +
-        'WHERE jobId = ?',
-        [jobId]
+    const promise3 = connection.execute(
+        'DELETE FROM job_qualifications '
+        + 'WHERE jobId = ?',
+        [jobId],
     );
 
-    await Promise.all([promise1, promise2, promise3]).then((values) => {
+    await Promise.all([
+        promise1,
+        promise2,
+        promise3,
+    ]).then((values) => {
         console.log(values);
     })
         .catch((error) => {
-            console.log("Error in Job delete Promises", error);
+            console.log(
+                'Error in Job delete Promises',
+                error,
+            );
         });
-}
+};
