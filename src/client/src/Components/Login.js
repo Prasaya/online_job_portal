@@ -19,6 +19,7 @@ function Login(){
         if (isAuth) {
             setauthStatus(true)
         }
+        console.log(jsonVal)
     }
 
     return (
