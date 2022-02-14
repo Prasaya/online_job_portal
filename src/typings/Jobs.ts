@@ -16,11 +16,7 @@ export default interface DBJob {
 }
 
 export interface Job extends DBJob {
-    qualifications: {
-        level: string;
-        discipline: string;
-        degree: string;
-    }[];
+    qualifications: string[];
     skills: {
         skillName: string;
         proficiency: string;
@@ -29,7 +25,7 @@ export interface Job extends DBJob {
 
 export interface JobSkill {
     skillName: string,
-    proficiency: string
+    proficiency: string,
 }
 
 export interface JobQualification {
@@ -38,6 +34,4 @@ export interface JobQualification {
     degree: string
 }
 
-export type JobInput = Omit<Job, "jobId" | "companyId">
-
-
+export type JobInput = Omit<Job, 'jobId'>;
