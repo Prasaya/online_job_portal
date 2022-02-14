@@ -17,8 +17,15 @@ function RegisterCompany() {
   const password = useRef();
   password.current = watch("password", "");
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const res = await fetch("/api/auth/register/organization", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(await res.json());
   };
 
   return (
@@ -69,7 +76,7 @@ function RegisterCompany() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("phoneNumber", {
+                {...register("phone", {
                   required: "Please fill out this field",
                   pattern: {
                     value: /^[0-9\b]+$/,
@@ -78,14 +85,14 @@ function RegisterCompany() {
                 })}
                 type="text"
                 className={`form-control form-control-lg ${
-                  errors.phoneNumber ? "is-invalid" : ""
+                  errors.phone ? "is-invalid" : ""
                 }`}
                 placeholder="Phone Number"
-                id="phoneNumber"
+                id="phone"
               />
-              <label htmlFor="phoneNumber">Phone Number</label>
+              <label htmlFor="phone">Phone Number</label>
               <div className="invalid-feedback">
-                {errors.phoneNumber && errors.phoneNumber.message}
+                {errors.phone && errors.phone.message}
               </div>
             </div>
             <div className="form-floating mb-3">
@@ -168,10 +175,10 @@ function RegisterCompany() {
             </div>
             <div className="form-floating mb-3">
               <select
-                {...register("district", {
+                {...register("city", {
                   required: "Please choose a valid option",
                 })}
-                className={`form-select ${errors.district ? "is-invalid" : ""}`}
+                className={`form-select ${errors.city ? "is-invalid" : ""}`}
                 id="district"
               >
                 <option selected disabled value="">
@@ -183,7 +190,7 @@ function RegisterCompany() {
               </select>
               <label htmlFor="district">District</label>
               <div className="invalid-feedback">
-                {errors.district && errors.district.message}
+                {errors.city && errors.city.message}
               </div>
             </div>
             <div className="d-grid gap-2">
