@@ -66,6 +66,7 @@ module.exports = {
             'warn',
             'never',
         ],
+        'import/order': 'off',
         'array-callback-return': [
             'error',
             { checkForEach: true },
