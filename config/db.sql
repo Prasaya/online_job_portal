@@ -91,7 +91,7 @@ CREATE TABLE jobs (
     address varchar(1000),
     district varchar(1000),
     primary key (jobId),
-    foreign key (companyId) references organizations(oId);
+    foreign key (companyId) references organization_data(id)
 );
 
 CREATE TABLE skills (
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS academic_qualifications (
 
 CREATE TABLE job_qualifications (
     jobId char(36) not null,
-    qId varchar(36) not null,
+    qId int not null,
     primary key (jobId, qId),
     foreign key (jobId) references jobs(jobId),
     foreign key (qId) references academic_qualifications(qId)
