@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Schema } from 'express-validator';
-import DBJob, { JobInput, JobSkill, JobQualification } from '@typings/Jobs';
+import DBJob, { JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { FieldPacket, RowDataPacket } from 'mysql2';
-import internal from 'stream';
-import logger from '@root/utils/logger';
+import logger from '@utils/logger';
 
 export const JobCreationSchema: Schema = {
     companyId: {
@@ -69,10 +68,7 @@ export const JobCreationSchema: Schema = {
 };
 
 export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> => {
-    // console.log('Reached inside createNewJobPost');
-
     const PromiseArray: Array<Promise<[RowDataPacket[], FieldPacket[]]>> = [];
-
     const jobData: DBJob = {
         jobId: uuidv4(),
         companyId: jobPostData.companyId,
@@ -85,7 +81,6 @@ export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> =>
     };
 
     const { qualifications, skills } = jobPostData;
-    const cols = Object.keys(jobData).join(', ');
     await connection.execute(
         'INSERT INTO jobs '
         + '(jobId, companyId, title, description, vacancies, experience, address, district) '
@@ -174,37 +169,26 @@ export const createNewJobPost = async (jobPostData: JobInput): Promise<DBJob> =>
 };
 
 export const deleteJobPost = async (jobId: string) => {
-    console.log('Reached inside deleteJobPost');
-
-    const promise1 = connection.execute(
-        'DELETE FROM jobs '
-        + 'WHERE jobId = ?',
-        [jobId],
-    );
-
-    const promise2 = connection.execute(
-        'DELETE FROM skills '
-        + 'WHERE jobId = ?',
-        [jobId],
-    );
-
-    const promise3 = connection.execute(
-        'DELETE FROM job_qualifications '
-        + 'WHERE jobId = ?',
-        [jobId],
-    );
-
-    await Promise.all([
-        promise1,
-        promise2,
-        promise3,
-    ]).then((values) => {
-        console.log(values);
-    })
-        .catch((error) => {
-            console.log(
-                'Error in Job delete Promises',
-                error,
-            );
-        });
+    try {
+        await connection.execute(
+            'DELETE FROM jobs '
+            + 'WHERE jobId = ?',
+            [jobId],
+        );
+        await connection.execute(
+            'DELETE FROM skills '
+            + 'WHERE jobId = ?',
+            [jobId],
+        );
+        await connection.execute(
+            'DELETE FROM job_qualifications '
+            + 'WHERE jobId = ?',
+            [jobId],
+        );
+    } catch (error) {
+        logger.error(
+            'Error deleting jobs',
+            error,
+        );
+    }
 };
