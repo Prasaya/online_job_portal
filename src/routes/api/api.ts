@@ -2,7 +2,6 @@ import express, { Request } from 'express';
 import isLoggedIn from '@middleware/isLoggedIn';
 import authRoute from './auth/auth';
 import userRoute from './user/user';
-import jobPostRoute from './jobs/jobpost';
 import jobs from './jobs/jobs';
 import academicsRoute from './academics';
 
@@ -26,11 +25,6 @@ router.use(
 router.use(
     '/user',
     userRoute,
-);
-
-router.use(
-    '/jobpost',
-    jobPostRoute,
 );
 
 router.get(
