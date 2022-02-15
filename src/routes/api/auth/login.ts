@@ -5,37 +5,26 @@ import passport from 'passport';
 const router = express.Router();
 
 router.post(
-    '/',
-    // TODO: Add isNotLoggedIn middleware
-    (req, res, next) => {
-        passport.authenticate(
-            'local',
-            (err, user, info) => {
-                if (err) {
-                    logger.error(err);
-                    return next(err);
-                }
-                if (!user) {
-                    return res.status(401).json({ message: info.message, success: false });
-                }
-                return req.logIn(
-                    user,
-                    (loginError) => {
-                        if (loginError) {
-                            logger.error(loginError);
-                            return next(loginError);
-                        }
-                        return res.json({ user, success: true });
-                    },
-                );
-            },
-
-        )(
-            req,
-            res,
-            next,
-        );
-    },
+  '/',
+  // TODO: Add isNotLoggedIn middleware
+  (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        logger.error(err);
+        return next(err);
+      }
+      if (!user) {
+        return res.status(401).json({ message: info.message, success: false });
+      }
+      return req.logIn(user, (loginError) => {
+        if (loginError) {
+          logger.error(loginError);
+          return next(loginError);
+        }
+        return res.json({ user, success: true });
+      });
+    })(req, res, next);
+  },
 );
 
 export default router;
