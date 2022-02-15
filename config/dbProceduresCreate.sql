@@ -58,3 +58,12 @@ BEGIN
 END |
 DELIMITER ;
 
+DELIMITER |
+DROP PROCEDURE IF EXISTS deleteJobs |
+CREATE PROCEDURE deleteJobs(IN jId CHAR(36))
+BEGIN
+    DELETE FROM skills WHERE jobId = jId;
+    DELETE FROM job_qualifications WHERE jobId = jId;
+	DELETE FROM jobs WHERE jobId = jId;
+END |
+DELIMITER ;
