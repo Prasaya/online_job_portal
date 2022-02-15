@@ -1,26 +1,42 @@
-drop table if exists organizations;
 drop table if exists federated_credentials;
 drop table if exists federated_credentials_provider;
-drop table if exists users;
+drop table if exists applicant_data;
+drop table if exists organization_data;
+drop table if exists user_roles;
+drop table if exists auth;
 drop table if exists roles;
-truncate sessions;
 
 CREATE TABLE roles (
-    roleId int,
-    roleName varchar(20) unique not null,
-    roleLevel int,
-    primary key (roleid)
+    id int unique not null,
+    name varchar(20) unique not null,
+    level int not null,
+    primary key (id)
 );
-INSERT INTO roles (roleId, roleName, roleLevel) VALUES 
-	(1, "Administrators", 5), 
+INSERT INTO roles (id, name, level) VALUES
+	(1, "Administrators", 5),
     (2, "Organizations", 10),
-    (3, "Users", 10);
+    (3, "Applicants", 10);
 
-CREATE TABLE organizations (
-    oid char(36),
-    role int not null default 2,
+CREATE TABLE auth (
+    id char(36) unique not null,
     email varchar(255) unique not null,
-    password char(60) not null,
+    password char(60),
+    type ENUM('Users', 'Organizations') not null,
+    primary key (email)
+);
+
+-- Many to many relationship
+CREATE TABLE user_roles (
+    id char(36) not null,
+    roleId int not null,
+    primary key(id, roleId),
+    foreign key (id) references auth(id),
+    foreign key (roleId) references roles(id)
+);
+
+-- One to one relationship
+CREATE TABLE organization_data (
+    id char(36) unique not null,
     name varchar(100) not null,
     description varchar(5000),
     address varchar(200),
@@ -28,15 +44,13 @@ CREATE TABLE organizations (
     website varchar(200),
     phone varchar(20),
     logo varchar(200),
-    primary key (oid),
-    foreign key (role) references roles(roleId)
+    primary key (id),
+    foreign key (id) references auth(id)
 );
 
-CREATE TABLE users (
-    uid char(36),
-    role int not null default 3,
-    email varchar(255) unique not null,
-    password char(60),
+-- One to one relationship
+CREATE TABLE applicant_data (
+    id char(36) unique not null,
     firstName varchar(50),
     middleName varchar(50),
     lastName varchar(50),
@@ -44,8 +58,8 @@ CREATE TABLE users (
     birthday date,
     phone varchar(20),
     gender varchar(10),
-    primary key (uid),
-    foreign key (role) references roles(roleId)
+    primary key (id),
+    foreign key (id) references auth(id)
 );
 
 CREATE TABLE federated_credentials_provider (
@@ -55,11 +69,11 @@ CREATE TABLE federated_credentials_provider (
 );
 
 CREATE TABLE federated_credentials (
-    uid char(36) not null,
+    id char(36) not null,
     providerId int not null,
     identifier varchar(2048) not null,
-    primary key (uid, providerId),
-    foreign key (uid) references users(uid),
+    primary key (id, providerId),
+    foreign key (id) references auth(id),
     foreign key (providerId) references federated_credentials_provider(providerId)
 );
 
