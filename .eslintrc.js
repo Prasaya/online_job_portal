@@ -45,7 +45,7 @@ module.exports = {
     'no-constructor-return': 'error',
     'no-duplicate-imports': 'warn',
     'no-self-compare': 'error',
-    'no-template-curly-string': 'warn',
+    'no-template-curly-in-string': 'warn',
     'no-unmodified-loop-condition': 'error',
     'no-unreachable-loop': 'warn',
     'no-use-before-define': 'error',
