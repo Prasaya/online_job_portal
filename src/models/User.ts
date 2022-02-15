@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NewUserInput, User } from '@typings/User';
+import { NewUserInput, NewUserParameters, User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
@@ -68,7 +68,7 @@ export const userRegisterSchema: Schema = {
 };
 
 export const createNewUser = async (userData: NewUserInput): Promise<User> => {
-    const user = {
+    const user: NewUserParameters = {
         id: uuidv4(),
         email: userData.email,
         password: await hashPassword(userData.password),
@@ -81,10 +81,8 @@ export const createNewUser = async (userData: NewUserInput): Promise<User> => {
         gender: userData.gender,
     };
     await connection.execute(
-        'INSERT INTO users '
-      + '(uid, email, password, firstName, middleName, lastName, picture, birthday, phone, gender) '
-      + 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'CALL createApplicant(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [...Object.values(user)],
     );
-    return { ...user, role: 'Users', socials: [], password: null };
+    return { ...user, type: 'Users', roles: [], socials: [], password: null };
 };

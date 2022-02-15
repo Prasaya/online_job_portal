@@ -10,6 +10,6 @@ export interface AuthData {
     id: string;
     email: string;
     password?: string;
-    type: string;
+    type: 'Users' | 'Organizations';
     socials: social[];
 }

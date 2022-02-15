@@ -3,9 +3,9 @@ import { checkSchema, validationResult } from 'express-validator';
 import { createNewUser, userRegisterSchema } from '@models/User';
 import { organizationRegisterSchema, createNewOrganization } from '@root/models/Organization';
 import { NewUserInput, User } from '@typings/User';
-import logger from '@root/utils/logger';
+import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
-import { getAuthUser } from '@root/models/Auth';
+import { getAuthUser } from '@models/Auth';
 
 const router = express.Router();
 

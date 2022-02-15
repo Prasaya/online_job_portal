@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Schema } from 'express-validator';
-import { Organization, NewOrganizationInput } from '@root/typings/Organization';
+import { Organization, NewOrganizationInput, NewOrganizationParameters } from '@root/typings/Organization';
 import connection from '@utils/dbSetup';
 import hashPassword from '@root/utils/password';
 
@@ -79,7 +79,7 @@ export const createNewOrganization = async (organizationData: NewOrganizationInp
     if (!hashPassword) {
         throw new Error('Hashed password is null!');
     }
-    const organization = {
+    const organization: NewOrganizationParameters = {
         id: uuidv4(),
         email: organizationData.email,
         password: hashedPassword,
@@ -92,10 +92,8 @@ export const createNewOrganization = async (organizationData: NewOrganizationInp
         logo: organizationData.logo,
     };
     await connection.execute(
-        'INSERT INTO organizations '
-        + '(oid, email, password, name, description, address, city, website, phone, logo) '
-        + 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+        'CALL createOrganization(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [...Object.values(organization)],
     );
-    return { ...organization, role: 'Organizations', password: null };
+    return { ...organization, type: 'Organizations', roles: [], socials: [], password: null };
 };

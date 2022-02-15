@@ -8,27 +8,21 @@ export type social =
     identifier: null;
 };
 
-export interface DBUser {
-    uid: string;
-    role: number;
+export interface User {
+    id: string;
     email: string;
-    password: string | null;
-    firstName: string | null;
+    password: null;
+    type: 'Users';
+    roles: string[];
+    firstName: string;
     middleName: string | null;
     lastName: string | null;
     picture: string | null;
     birthday: Date | null;
     phone: string | null;
     gender: string | null;
-}
-
-export interface User extends Omit<DBUser, 'uid' | 'role' | 'password'> {
-    id: string;
-    role: string;
-    password: null;
     socials: social[];
 }
 
-export interface NewUserInput extends Omit<DBUser, 'uid' | 'password' | 'role'> {
-    password: string;
-}
+export type NewUserParameters = Omit<User, 'type' | 'roles' | 'socials'>;
+export type NewUserInput = Omit<NewUserParameters, 'id'>;

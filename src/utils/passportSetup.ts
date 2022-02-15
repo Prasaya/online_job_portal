@@ -44,7 +44,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
                 );
             }
             const user = await searchUser(
-                userData.role,
+                userData.type,
                 userData.id,
             );
             if (user === null) {
@@ -66,14 +66,14 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
 
     passportInstance.serializeUser((data, cb) => {
         const { basics: user } = data;
-        const { id, role } = user;
+        const { id, type } = user;
         cb(
             null,
-            { id, role },
+            { id, type },
         );
     });
 
-    passportInstance.deserializeUser(async (obj: {id: string, role: string}, cb) => {
+    passportInstance.deserializeUser(async (obj: {id: string, type: 'Users' | 'Organizations'}, cb) => {
         try {
             if (!obj) {
                 return cb(
@@ -82,7 +82,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
                 );
             }
             const userData = await searchUser(
-                obj.role,
+                obj.type,
                 obj.id,
             );
             if (userData === null) {

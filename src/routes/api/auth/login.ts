@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post(
     '/',
+    // TODO: Add isNotLoggedIn middleware
     (req, res, next) => {
         passport.authenticate(
             'local',

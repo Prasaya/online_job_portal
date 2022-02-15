@@ -1,4 +1,4 @@
-import isLoggedIn from '@middleware/isLoggedIn';
+import { isLoggedIn } from '@root/middleware/authentication';
 import { searchUser } from '@root/models/Auth';
 import logger from '@root/utils/logger';
 import express from 'express';
@@ -6,6 +6,7 @@ import fileUpload from 'express-fileupload';
 import path from 'path';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';
+import { isApplicant } from '@root/middleware/authorization';
 
 const router = express.Router();
 
@@ -22,14 +23,9 @@ router.get(
 
 router.get(
     '/avatar',
-    isLoggedIn,
+    isApplicant,
     (req, res) => {
         const userData = req.user?.basics as User;
-        // TODO: Use middleware for RBAC
-        if (userData.role !== 'Users') {
-            res.status(400).json({ message: 'You are not a user!', success: false });
-            return;
-        }
         const fileName = userData.picture;
         if (!fileName) {
             res.status(400).json({ message: 'No avatar found!', success: false });
@@ -45,7 +41,7 @@ router.get(
 
 router.post(
     '/avatar',
-    isLoggedIn,
+    isApplicant,
     fileUpload({
         createParentPath: true,
         debug: false,
@@ -61,7 +57,8 @@ router.post(
         }
         const file = req.files.avatar as fileUpload.UploadedFile;
         try {
-            const fileName = req.user.basics.id + path.extname(file.name);
+            // eslint-disable-next-line no-unsafe-optional-chaining
+            const fileName = req.user?.basics.id + path.extname(file.name);
             await file.mv(path.resolve(
                 '.',
                 'images',
@@ -93,15 +90,21 @@ router
     .get(
         '/:uid',
         async (req, res) => {
-            const user = await searchUser(
+            const user: User = await searchUser(
                 'Users',
                 req.params.uid,
             );
             if (user === null) {
-                return res.status(404).json({ message: 'Could not find user.', success: false });
+                return res.status(404).json({ message: `Could not find user ${req.params.uid}.`, success: false });
             }
             return res.json({
-                user,
+                id: user.id,
+                email: user.email,
+                type: user.type,
+                firstName: user.firstName,
+                middleName: user.middleName,
+                lastName: user.lastName,
+                picture: user.picture,
                 success: true,
             });
         },

@@ -1,8 +1,11 @@
-export interface DBOrganization {
-    oid: string;
-    role: number;
+import { social } from './User';
+
+export interface Organization {
+    id: string;
     email: string;
     password: string;
+    type: 'Organizations';
+    roles: string[];
     name: string;
     description: string | null;
     address: string | null;
@@ -10,14 +13,8 @@ export interface DBOrganization {
     website: string | null;
     phone: string | null;
     logo: string | null;
+    socials: social[];
 }
 
-export interface Organization extends Omit<DBOrganization, 'oid' | 'role' | 'password'> {
-    id: string;
-    role: string;
-    password: null;
-}
-
-export interface NewOrganizationInput extends Omit<DBOrganization, 'oid' | 'role'> {
-    password: string;
-}
+export type NewOrganizationParameters = Omit<Organization, 'type' | 'roles' | 'socials'>;
+export type NewOrganizationInput = Omit<NewOrganizationParameters, 'id'>;
