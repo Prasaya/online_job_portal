@@ -7,8 +7,13 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
         if (!req.user) {
             return res.status(401).json({ message: 'Authorization missing', success: false });
         }
-        // eslint-disable-next-line no-return-await
-        const userRoles = req.user.basics.roles.map(async (role) => await getRoleByName(role));
+        const userRoles: Role[] = [];
+        req.user.basics.roles.forEach(async (roleName) => {
+            const role = await getRoleByName(roleName);
+            if (role) {
+                userRoles.push(role);
+            }
+        });
         const isAuthorized = userRoles?.some((r) => cb(r));
         if (isAuthorized) {
             return next();
