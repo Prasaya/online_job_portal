@@ -63,7 +63,7 @@ CREATE TABLE federated_credentials (
     foreign key (providerId) references federated_credentials_provider(providerId)
 );
 
-CREATE TABLE academic_qualifications (
+CREATE TABLE IF NOT EXISTS academic_qualifications (
 	qid int auto_increment,
 	level varchar(30),
     discipline varchar(100),
