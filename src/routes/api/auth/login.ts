@@ -17,7 +17,7 @@ router.post(
                 if (!user) {
                     return res.status(401).json({ message: info.message, success: false });
                 }
-                req.logIn(
+                return req.logIn(
                     user,
                     (loginError) => {
                         if (loginError) {

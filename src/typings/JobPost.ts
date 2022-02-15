@@ -9,5 +9,5 @@ export default interface JobPost {
     skills: string | null;
 }
 
-export type NewJobPost = PartialExcept<Omit<JobPost, "jid">, "title">;
-export type DBJobPost = PartialExcept<JobPost, "jid">;
+export type NewJobPost = PartialExcept<Omit<JobPost, 'jid'>, 'title'>;
+export type DBJobPost = PartialExcept<JobPost, 'jid'>;

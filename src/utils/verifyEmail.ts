@@ -1,7 +1,7 @@
 import { User } from '@typings/User';
 import sgMail from './sendMail';
 
-export async function sendVerificationEmail(user: User, token: string) {
+export default async function sendVerificationEmail(user: User, token: string) {
     const msg = {
         to: user.email,
         from: 'accounts@nepaljobs.cf',

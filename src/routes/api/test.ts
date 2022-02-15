@@ -1,3 +1,4 @@
+import logger from '@utils/logger';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -64,7 +65,7 @@ router.post(
                 file.name,
             ));
         } catch (err) {
-            console.log(err);
+            logger.log(err);
             res.status(500).json({ message: 'Something went wrong!', success: false });
             return;
         }

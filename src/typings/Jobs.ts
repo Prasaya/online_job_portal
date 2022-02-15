@@ -1,9 +1,3 @@
-import { PartialExcept } from '@typings/utils';
-
-interface skill {
-    [key: string]: 'Beginner' | 'Intermediate' | 'Advanced';
-}
-
 export default interface DBJob {
     jobId: string;
     companyId: string;
@@ -15,12 +9,18 @@ export default interface DBJob {
     district: string | null;
 }
 
+export interface DBSkill {
+    skillName: string;
+    jobId: string;
+    proficiency: 'Beginner' | 'Intermediate' | 'Advanced';
+}
+export interface Skill {
+    skillName: string;
+    proficiency: string;
+}
 export interface Job extends DBJob {
     qualifications: string[];
-    skills: {
-        skillName: string;
-        proficiency: string;
-    }[];
+    skills: Skill[];
 }
 
 export interface JobSkill {
