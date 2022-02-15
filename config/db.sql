@@ -8,7 +8,6 @@ drop table if exists roles;
 drop table if exists jobs;
 drop table if exists skills;
 drop table if exists job_qualifications;
-drop table if exists academic_qualifications;
 truncate sessions;
 
 CREATE TABLE roles (
