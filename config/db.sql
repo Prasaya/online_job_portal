@@ -5,6 +5,11 @@ drop table if exists organization_data;
 drop table if exists user_roles;
 drop table if exists auth;
 drop table if exists roles;
+drop table if exists jobs;
+drop table if exists skills;
+drop table if exists job_qualifications;
+drop table if exists academic_qualifications;
+truncate sessions;
 
 CREATE TABLE roles (
     id int unique not null,
@@ -77,14 +82,7 @@ CREATE TABLE federated_credentials (
     foreign key (providerId) references federated_credentials_provider(providerId)
 );
 
-CREATE TABLE IF NOT EXISTS academic_qualifications (
-	qid int auto_increment,
-	level varchar(30),
-    discipline varchar(100),
-    degree varchar(100),
-    primary key (qid)
-);
-CREATE TABLE webapp.jobs (
+CREATE TABLE jobs (
     jobId char(36),
     companyId char(36) not null,
     title varchar(100) not null,
@@ -97,7 +95,7 @@ CREATE TABLE webapp.jobs (
     foreign key (companyId) references organizations(oId);
 );
 
-CREATE TABLE webapp.skills (
+CREATE TABLE skills (
     skillName varchar(100) not null,
     jobId char(36) not null,
     proficiency ENUM('Beginner', 'Intermediate', 'Advanced') not null,
@@ -105,7 +103,7 @@ CREATE TABLE webapp.skills (
     foreign key (jobId) references jobs(jobId)
 );
 
-CREATE TABLE academic_qualifications (
+CREATE TABLE IF NOT EXISTS academic_qualifications (
 	qid int auto_increment,
 	level varchar(30),
     discipline varchar(100),

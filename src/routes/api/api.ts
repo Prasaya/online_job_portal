@@ -19,18 +19,15 @@ router.use(
 );
 
 router.use(
-    '/jobs',
-    jobs,
-);
-
-router.use(
     '/auth',
     authRoute,
 );
+
 router.use(
     '/user',
     userRoute,
 );
+
 router.use(
     '/jobpost',
     jobPostRoute,
