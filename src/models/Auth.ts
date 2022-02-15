@@ -1,5 +1,4 @@
 import { Organization } from '@root/typings/Organization';
-import logger from '@root/utils/logger';
 import { AuthData } from '@typings/authorization';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';

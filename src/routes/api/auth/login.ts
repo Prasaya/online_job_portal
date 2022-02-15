@@ -1,7 +1,6 @@
 import logger from '@root/utils/logger';
 import express from 'express';
 import passport from 'passport';
-import { nextTick } from 'process';
 
 const router = express.Router();
 

@@ -38,7 +38,7 @@ function arrayToString(arr, quote = "'") {
     let str = '';
     arr.forEach((st, index, obj) => {
         str += `${quote}${st}${quote}`;
-        if (index !== (obj.length - 1)) {
+        if (index !== obj.length - 1) {
             str += ', ';
         }
     });
@@ -52,7 +52,7 @@ function createUser(num) {
     )}) VALUES \n\t`;
     for (let i = 0; i < num; i += 1) {
         query += `(${arrayToString(Object.values(generateUserValues()))})`;
-        if (i !== (num - 1)) {
+        if (i !== num - 1) {
             query += ',\n\t';
         }
     }

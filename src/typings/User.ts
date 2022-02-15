@@ -1,10 +1,10 @@
 export type social =
 {
-    providerName: string;
+    provider: string;
     identifier: string;
 }
 | {
-    providerName: null;
+    provider: null;
     identifier: null;
 };
 
