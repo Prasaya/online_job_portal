@@ -40,7 +40,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
         if (user === null) {
           return cb(null, false, { message: 'Could not find user data!' });
         }
-        return cb(null, { basics: user });
+        return cb(null, { user });
       } catch (err) {
         logger.error(`Error in local login: ${err}`);
         return cb(err);
@@ -49,8 +49,9 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
   );
 
   passportInstance.serializeUser((data, cb) => {
-    const { basics: user } = data;
-    const { id, type } = user;
+    const { user } = data;
+    const { id, type } = user.basics;
+    console.log(user.basics);
     cb(null, { id, type });
   });
 
@@ -64,7 +65,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
         if (userData === null) {
           return cb(null, false);
         }
-        return cb(null, { basics: userData });
+        return cb(null, { user: userData });
       } catch (err) {
         logger.error(`Error in quering database: deserializeUser: ${err}`);
         return cb(err, null);

@@ -16,7 +16,7 @@ router.use('/auth', authRoute);
 router.use('/user', userRoute);
 
 router.get('/userinfo', isLoggedIn, (req: Request, res) => {
-  res.json({ user: req.user, session: req.session, success: true });
+  res.json({ user: req.user?.user, session: req.session, success: true });
 });
 
 router.get('/', (req, res) => {

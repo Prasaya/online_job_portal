@@ -51,9 +51,31 @@ export async function searchUser(
     ) {
       return null;
     }
-    const roles = result[0].roles ? JSON.parse(result[0].roles) : [];
-    const socials = result[0].socials ? JSON.parse(result[0].socials) : [];
-    return { ...result[0][0], roles, socials } as User;
+    const data = result[0][0];
+    const roles = data.roles ? data.roles : [];
+    const socials = data.socials ? data.socials : [];
+    const skills = data.skills ? data.skills : [];
+    const academics = data.academics ? data.academics : [];
+    const user: User = {
+      basics: {
+        id: data.id,
+        email: data.email,
+        password: null,
+        type: 'Users',
+        firstName: data.firstName,
+        middleName: data.middleName,
+        lastName: data.lastName,
+        picture: data.picture,
+        birthday: data.birthday,
+        phone: data.phone,
+        gender: data.gender,
+        roles,
+        socials,
+      },
+      skills,
+      academics,
+    };
+    return user;
   }
   if (userType === 'Organizations') {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
@@ -67,9 +89,21 @@ export async function searchUser(
     ) {
       return null;
     }
-    const roles = result[0].roles ? JSON.parse(result[0].roles) : [];
-    const socials = result[0].socials ? JSON.parse(result[0].socials) : [];
-    return { ...result[0][0], roles, socials } as Organization;
+    const data = result[0][0];
+    const roles = data.roles ? JSON.parse(result[0].roles) : [];
+    const socials = data.socials ? JSON.parse(result[0].socials) : [];
+    const organization: Organization = {
+      basics: {
+        id: data.id,
+        email: data.email,
+        password: null,
+        type: 'Organizations',
+        roles,
+        name: data.name,
+        description: data.description,
+      },
+    };
+    return organization;
   }
 
   throw new Error(`Invalid value for userType ${userType}`);
