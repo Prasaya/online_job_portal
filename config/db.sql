@@ -12,6 +12,14 @@ drop table if exists auth;
 drop table if exists roles;
 truncate sessions;
 
+CREATE TABLE IF NOT EXISTS academic_qualifications (
+	qid int auto_increment,
+	level varchar(30),
+    discipline varchar(100),
+    degree varchar(100),
+    primary key (qid)
+);
+
 CREATE TABLE roles (
     id int unique not null,
     name varchar(20) unique not null,
@@ -31,7 +39,7 @@ CREATE TABLE auth (
     primary key (email)
 );
 
--- Many to many relationship
+-- Many to many relationship with auth
 CREATE TABLE user_roles (
     id char(36) not null,
     roleId int not null,
@@ -40,7 +48,7 @@ CREATE TABLE user_roles (
     foreign key (roleId) references roles(id)
 );
 
--- One to one relationship
+-- One to one relationship with auth
 CREATE TABLE organization_data (
     id char(36) unique not null,
     name varchar(100) not null,
@@ -54,7 +62,7 @@ CREATE TABLE organization_data (
     foreign key (id) references auth(id)
 );
 
--- One to one relationship
+-- One to one relationship with auth
 CREATE TABLE applicant_data (
     id char(36) unique not null,
     firstName varchar(50),
@@ -68,12 +76,32 @@ CREATE TABLE applicant_data (
     foreign key (id) references auth(id)
 );
 
+-- One to many relationship (applicant_data to applicant_academics)
+CREATE TABLE applicant_academics (
+	id char(36) not null,
+    qid int not null,
+    primary key(id, qid),
+    foreign key (id) references applicant_data(id),
+    foreign key (qid) references academic_qualifications(qid)
+);
+
+-- One to many relationship (applicant_data to applicant_skills)
+CREATE TABLE applicant_skills (
+	id char(36) not null,
+    name varchar(100) not null,
+    proficiency ENUM('Beginner', 'Intermediate', 'Advanced', 'Expert') not null,
+    experience int not null,
+    primary key(id, name),
+    foreign key (id) references applicant_data(id)
+);
+
 CREATE TABLE federated_credentials_provider (
     providerId int auto_increment,
     providerName varchar(50) unique not null,
     primary key(providerId)
 );
 
+-- One to many relationship (auth to federated_credentials)
 CREATE TABLE federated_credentials (
     id char(36) not null,
     providerId int not null,
@@ -102,14 +130,6 @@ CREATE TABLE skills (
     proficiency ENUM('Beginner', 'Intermediate', 'Advanced') not null,
     primary key (skillName, jobId),
     foreign key (jobId) references jobs(jobId)
-);
-
-CREATE TABLE IF NOT EXISTS academic_qualifications (
-	qid int auto_increment,
-	level varchar(30),
-    discipline varchar(100),
-    degree varchar(100),
-    primary key (qid)
 );
 
 CREATE TABLE job_qualifications (

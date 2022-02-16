@@ -46,6 +46,8 @@ BEGIN
     SELECT type INTO accType FROM auth WHERE uid = id;
     IF (accType = 'Users') THEN
     BEGIN
+		DELETE FROM applicant_academics WHERE id = uid;
+        DELETE FROM applicant_skills WHERE id = uid;
 		DELETE FROM applicant_data WHERE id = uid;
 	END;
     ELSEIF (accType = 'Organizations') THEN
