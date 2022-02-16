@@ -1,13 +1,15 @@
+drop table if exists job_qualifications;
+drop table if exists skills;
+drop table if exists jobs;
 drop table if exists federated_credentials;
 drop table if exists federated_credentials_provider;
 drop table if exists applicant_data;
 drop table if exists organization_data;
+drop table if exists user_academics;
+drop table if exists user_skills;
 drop table if exists user_roles;
 drop table if exists auth;
 drop table if exists roles;
-drop table if exists skills;
-drop table if exists job_qualifications;
-drop table if exists jobs;
 truncate sessions;
 
 CREATE TABLE roles (
