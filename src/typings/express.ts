@@ -5,7 +5,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface User {
-      basics: UserData | Organization;
+      user: UserData | Organization;
     }
   }
 }

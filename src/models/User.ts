@@ -67,6 +67,39 @@ export const userRegisterSchema: Schema = {
   },
 };
 
+export const userSkillsSchema: Schema = {
+  skills: {
+    in: ['body'],
+    isArray: true,
+    notEmpty: true,
+  },
+  ['skills.*']: {
+    isObject: true,
+  },
+  ['skills.*.name']: {
+    isString: true,
+    isLength: { options: [{ max: 100 }] },
+  },
+  ['skills.*.proficiency']: {
+    isString: true,
+    isIn: { options: [['Beginner', 'Intermediate', 'Expert']] },
+  },
+  ['skills.*.experience']: {
+    isInt: { options: { min: 0, max: 100 } },
+  },
+};
+
+export const userAcademicsSchema: Schema = {
+  academics: {
+    in: ['body'],
+    isArray: true,
+    notEmpty: true,
+  },
+  ['academics.*']: {
+    isInt: true,
+  },
+};
+
 export const createNewUser = async (userData: NewUserInput): Promise<User> => {
   const user: NewUserParameters = {
     id: uuidv4(),
