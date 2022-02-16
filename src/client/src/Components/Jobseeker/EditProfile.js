@@ -11,7 +11,7 @@ function MyProfile() {
             status: "" 
         },
         {
-            name: "Basic Info",
+            name: "Basics",
             to:"basics",
             status: ""
         },
@@ -65,8 +65,8 @@ function MyProfile() {
                                 {navElements.map((element) => {
                                     return(
                                         <tr className="">
-                                            <td>
-                                                <Link onClick={OnClick} className={`nav-link ${element.status} link-dark`} to={element.to} id={`${element.to}`}>{element.name}</Link>
+                                            <td className={`${element.status}`}>
+                                                <Link onClick={OnClick} className={`nav-link link-dark`} to={element.to} id={`${element.to}`}>{element.name}</Link>
                                             </td>
                                         </tr>
                                     )
