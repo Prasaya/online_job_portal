@@ -26,30 +26,28 @@
       "birthday": "1995-01-11",
       "gender": "male"
     },
-    "skills": {
-      "skills": [
-        {
-          "skill": "HTML",
-          "proficiency": "Expert",
-          "experience": "2"
-        },
-        {
-          "skill": "JS",
-          "proficiency": "Expert",
-          "experience": "3"
-        },
-        {
-          "skill": "CSS",
-          "proficiency": "Advanced",
-          "experience": "3"
-        },
-        {
-          "skill": "Python",
-          "proficiency": "Advanced",
-          "experience": "2"
-        }
-      ]
-    },
+    "skills": [
+      {
+        "skill": "HTML",
+        "proficiency": "Expert",
+        "experience": "2"
+      },
+      {
+        "skill": "JS",
+        "proficiency": "Expert",
+        "experience": "3"
+      },
+      {
+        "skill": "CSS",
+        "proficiency": "Advanced",
+        "experience": "3"
+      },
+      {
+        "skill": "Python",
+        "proficiency": "Advanced",
+        "experience": "2"
+      }
+    ],
     "education": [
       {
         "level": "masters",

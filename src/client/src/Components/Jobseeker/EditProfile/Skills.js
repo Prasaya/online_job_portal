@@ -35,7 +35,7 @@ function Skills() {
         const getInfo = async () => {
             const info = await fetchInfo()
             setAllInfo(info)
-            setSkills(info["skills"]["skills"])            
+            setSkills(info["skills"])            
         }
         getInfo()  
     },[])

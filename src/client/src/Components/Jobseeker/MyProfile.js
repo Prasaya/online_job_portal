@@ -7,11 +7,10 @@ function titleCase(str) {
 }
 function MyProfile() {
     const [basicInfo, setBasicInfo] = useState({})
-    const [skills, setSkills] = useState({})
+    const [skills, setSkills] = useState([])
     const [education, setEducation] = useState([])
     const [picture, setPicture] = useState("")
     let basicEntries = []
-    let skillsEntries = []
 
     const fetchInfo = async () => {
         const res = await fetch("http://localhost:4000/profile")
@@ -31,7 +30,6 @@ function MyProfile() {
         
     }, [])
     basicEntries = Object.entries(basicInfo)
-    skillsEntries = Object.entries(skills)
     return ( 
         <div className="myprofile">
             <h1>My Profile <span><Link className="btn btn-secondary" to="/jobseeker/editprofile">Edit</Link></span></h1>
@@ -97,12 +95,17 @@ function MyProfile() {
                                 <h3>Skills</h3>
                                 <table className="table">
                                     <tbody>
-                                        {skillsEntries.map((entry) => {
+                                        <tr>
+                                            <th>Skill</th>
+                                            <th>Proficiency</th>
+                                            <th>Experience</th>
+                                        </tr>
+                                        {skills.map((skill) => {
                                             return (
                                                 <tr>
-                                                    <td>{titleCase(entry[0])}</td>
-                                                    <td>:</td>
-                                                    <td>{entry[1]}</td>
+                                                    <td>{skill["skill"]}</td>
+                                                    <td>{skill["proficiency"]}</td>
+                                                    <td>{skill["experience"]}</td>
                                                 </tr>
                                             )
                                         })}
