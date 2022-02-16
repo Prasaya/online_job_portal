@@ -8,5 +8,10 @@
     "**dist/**": true,
     "**/public/**": true,
     "**/build/*": true
-  }
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "eslint.alwaysShowStatus": true
 }

@@ -5,41 +5,33 @@ module.exports = {
     node: true,
   },
   ignorePatterns: [
-    '/src/client/',
-    '/src/client/**',
-    '**/node_modules/**',
-    '/dist/',
+    'node_modules',
+    '**/node_modules',
+    '/src/client',
+    '/src/public',
+    '/dist',
   ],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'import'],
-  extends: [
-    'airbnb',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/recommended',
-  ],
+  extends: ['eslint:recommended'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'script',
   },
-  settings: {
-    'import/resolver': {
-      alias: {
-        map: [
-          ['@root', './src'],
-          ['@middleware', './src/middleware'],
-          ['@models', './src/models'],
-          ['@routes', './src/routes'],
-          ['@utils', './src/utils'],
-          ['@typings', './src/typings'],
-        ],
-        extensions: ['.ts', '.js'],
+  overrides: [
+    {
+      files: ['src/**/*.js', 'src/**.*.ts'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint', 'import'],
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'prettier',
+      ],
+      parserOptions: {
+        project: ['./tsconfig.json'],
       },
     },
-  },
+  ],
   rules: {
-    'import/extensions': ['warn', 'never'],
-    'import/order': 'off',
     'array-callback-return': ['error', { checkForEach: true }],
     'no-await-in-loop': 'warn',
     'no-constructor-return': 'error',
@@ -57,8 +49,10 @@ module.exports = {
     'dot-notation': 'error',
     eqeqeq: 'error',
     'no-eq-null': 'error',
-    semi: 'off',
-    '@typescript-eslint/semi': ['error'],
+
+    'no-extra-semi': 'off',
+    'no-mixed-spaces-and-tabs': 'off',
+    'no-unexpected-multiline': 'off',
   },
   globals: {
     require: true,
