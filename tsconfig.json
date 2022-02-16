@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es2021",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -20,6 +20,7 @@
       "@typings/*": ["./src/typings/*"]
     }
   },
+  "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": [
     "node_modules",
     "**/node_modules/*",
