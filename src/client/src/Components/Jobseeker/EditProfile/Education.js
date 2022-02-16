@@ -56,7 +56,7 @@ function Education() {
 
     return (
         <>
-            <h1>Education</h1>
+            <h3>Education</h3>
             <div className="m-auto mb-2">
                 <form onSubmit={handleSubmit(onSubmitForm)}>
                     <div className="education">
