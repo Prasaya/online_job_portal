@@ -7,7 +7,6 @@ function Avatar() {
     const fetchAvatar = async () => {
         const res = await fetch("/api/user")
         const data = await res.json()
-        console.log(data)
         return data.user.basics.picture
     }
 
