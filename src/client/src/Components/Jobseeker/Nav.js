@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom"
 import {useState, useEffect} from "react"
+import "./nav.css"
 
 function Nav(){
     const path = useLocation().pathname
@@ -25,6 +26,15 @@ function Nav(){
             status: ""
         }]
     )
+    const [avatar, setAvatar] = useState("")
+    const stockPhoto = "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png"
+
+    const fetchAvatar = async () => {
+        const res = await fetch("/api/user")
+        const data = await res.json()
+        return data.user.basics.picture
+    }
+
     function OnClick(e){
         const id = e.target.id
         const updatedNavElements = navElements.map((element) => {
@@ -53,6 +63,14 @@ function Nav(){
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(()=>{
+        const getAvatar = async () => {
+            const data = await fetchAvatar()
+            setAvatar(data || stockPhoto)
+        }
+        getAvatar()
+    },[])
+
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
             <div className="container-fluid">
@@ -70,6 +88,12 @@ function Nav(){
                                         </li>
                                     )
                                 })}
+                                <li class="dropdown">
+                                    <img src={avatar || stockPhoto} alt="avatar" className="rounded-circle mx-auto img img-thumbnail float-end dropdown-toggle" id="dropdownMenuImage" data-bs-toggle="dropdown"/>
+                                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuImage">
+                                        <li><a className="dropdown-item" href="/login">Log Out</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                     </div>
                 </div>
