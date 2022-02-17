@@ -41,4 +41,5 @@
   "exclude": [
     "**/node_modules/**",
     "src/client/**"
-  }
+  ],
+}
