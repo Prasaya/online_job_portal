@@ -6,26 +6,39 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "src/typings"],
+    "typeRoots": [
+      "node_modules/@types",
+      "src/typings"
+    ],
     "outDir": "./dist",
     "allowJs": true,
     "checkJs": false,
     "baseUrl": ".",
     "paths": {
-      "@root/*": ["./src/*"],
-      "@middleware/*": ["./src/middleware/*"],
-      "@models/*": ["./src/models/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@typings/*": ["./src/typings/*"]
+      "@root/*": [
+        "./src/*"
+      ],
+      "@middleware/*": [
+        "./src/middleware/*"
+      ],
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@routes/*": [
+        "./src/routes/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@typings/*": [
+        "./src/typings/*"
+      ]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.js"],
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
-    "node_modules",
-    "**/node_modules/*",
-    "./src/client/*",
-    "./src/public/*",
-    "./dist/*"
-  ]
-}
+    "**/node_modules/**",
+    "src/client/**"
+  }
