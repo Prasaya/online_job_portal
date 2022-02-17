@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, Fragment} from "react"
 import { Link } from "react-router-dom";
 function titleCase(str) {
     return str.toLowerCase().split(' ').map(function(word) {
@@ -13,24 +13,24 @@ function MyProfile() {
     let basicEntries = []
 
     const fetchInfo = async () => {
-        const res = await fetch("http://localhost:4000/profile")
+        const res = await fetch("/api/user")
         const data = await res.json()
-        return data
+        return data.user
     }
-    
+
     useEffect(() => {
         const getInfo = async () => {
-            const info = await fetchInfo()
-            setBasicInfo(info["basics"])
-            setSkills(info["skills"])
-            setEducation(info["education"])   
-            setPicture(info["picture"])         
+            const user = await fetchInfo()
+            setBasicInfo(user.basics)
+            setSkills(user.skills)
+            setEducation(user.academics)
+            setPicture(user.basics.picture)
         }
         getInfo()
-        
+
     }, [])
     basicEntries = Object.entries(basicInfo)
-    return ( 
+    return (
         <div className="myprofile">
             <h1>My Profile <span><Link className="btn btn-secondary" to="/jobseeker/editprofile">Edit</Link></span></h1>
             <div className="container bg-light profile">
@@ -46,14 +46,14 @@ function MyProfile() {
                                     <tbody>
                                         {basicEntries.map((entry) => {
                                             return (
-                                                <>
-                                                    {entry[1] && 
+                                                <Fragment key={entry[0]}>
+                                                    {entry[1] &&
                                                     <tr>
                                                         <td>{titleCase(entry[0])}</td>
                                                         <td>:</td>
                                                         <td>{entry[1]}</td>
                                                      </tr>}
-                                                </>
+                                                </Fragment>
                                             )
                                         })}
                                     </tbody>
@@ -65,25 +65,25 @@ function MyProfile() {
                                     <tbody>
                                         {education.map((entry)=>{
                                             return(
-                                                <>
+                                                <Fragment key={entry.degree}>
                                                     <tr>
                                                         <td>Level</td>
                                                         <td>:</td>
-                                                        <td>{titleCase(entry["level"])}</td>
+                                                        <td>{titleCase(entry.level)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Discipline</td>
                                                         <td>:</td>
-                                                        <td>{titleCase(entry["discipline"])}</td>
+                                                        <td>{titleCase(entry.discipline)}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>Degree</td>
                                                         <td>:</td>
-                                                        <td>{titleCase(entry["degree"])}</td>
+                                                        <td>{titleCase(entry.degree)}</td>
                                                     </tr>
-                                                </>
-                                                
-                                                
+                                                </Fragment>
+
+
                                             )
                                         })}
                                     </tbody>
@@ -102,10 +102,10 @@ function MyProfile() {
                                         </tr>
                                         {skills.map((skill) => {
                                             return (
-                                                <tr>
-                                                    <td>{skill["skill"]}</td>
-                                                    <td>{skill["proficiency"]}</td>
-                                                    <td>{skill["experience"]}</td>
+                                                <tr key={skill.name}>
+                                                    <td>{skill.name}</td>
+                                                    <td>{skill.proficiency}</td>
+                                                    <td>{skill.experience}</td>
                                                 </tr>
                                             )
                                         })}
@@ -116,7 +116,7 @@ function MyProfile() {
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
     );
 }
 
