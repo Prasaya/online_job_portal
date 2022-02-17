@@ -1,18 +1,24 @@
 {
   "jobs": [
     {
-      "id": 1,
+      "jobId": 1,
       "title": "React Developer",
       "description": "We are looking for a react developer with 100 years of experience in web development.",
       "deadline": "2022-10-10",
       "vacancy": 5,
+      "address": "Baneshwor",
+      "district": "Kathmandu",
+      "companyName": "React Company",
       "applied": true
     },
     {
-      "id": 2,
+      "jobId": 2,
       "title": "Java Developer",
       "description": "We are looking for a Java developer with 200 years of experience in web development.",
       "deadline": "2022-11-11",
+      "address": "Baneshwor",
+      "district": "Kathmandu",
+      "companyName": "Java Company",
       "applied": false
     }
   ],
