@@ -63,27 +63,18 @@ function MyProfile() {
                                 <h3>Education</h3>
                                 <table className="table">
                                     <tbody>
+                                        <tr>
+                                            <th>Level</th>
+                                            <th>Discipline</th>
+                                            <th>Degree</th>
+                                        </tr>
                                         {education.map((entry)=>{
                                             return(
-                                                <Fragment key={entry.degree}>
-                                                    <tr>
-                                                        <td>Level</td>
-                                                        <td>:</td>
-                                                        <td>{titleCase(entry.level)}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Discipline</td>
-                                                        <td>:</td>
-                                                        <td>{titleCase(entry.discipline)}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Degree</td>
-                                                        <td>:</td>
-                                                        <td>{titleCase(entry.degree)}</td>
-                                                    </tr>
-                                                </Fragment>
-
-
+                                                <tr key={entry.degree}>
+                                                    <td>{entry.level}</td>
+                                                    <td>{entry.discipline}</td>
+                                                    <td>{entry.degree}</td>
+                                                </tr>
                                             )
                                         })}
                                     </tbody>
