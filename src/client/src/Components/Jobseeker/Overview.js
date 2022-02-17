@@ -44,11 +44,17 @@ function Overview() {
         <div className="overview ">
             <h1>Overview</h1>
             <div className="jobs container bg-light">
-                {jobs.map((job) => {
-                    return (
-                        <Job job={job} OnClick={toggleApply} />
-                    )
-                })}
+                <ul>
+                    {jobs.map((job) => {
+                        return (
+                            <li key={job.jobId}>
+                                <Job job={job} OnClick={toggleApply} />
+                            </li>
+                            
+                        )
+                    })}
+                </ul>
+                
             </div>
         </div>
     )
