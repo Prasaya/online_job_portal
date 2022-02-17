@@ -13,10 +13,10 @@ drop table if exists roles;
 truncate sessions;
 
 CREATE TABLE IF NOT EXISTS academic_qualifications (
-	qid int auto_increment,
-	level varchar(30),
-    discipline varchar(100),
-    degree varchar(100),
+	qid int auto_increment unique not null,
+	level varchar(30) not null,
+    discipline varchar(100) not null,
+    degree varchar(100) not null,
     primary key (qid)
 );
 
