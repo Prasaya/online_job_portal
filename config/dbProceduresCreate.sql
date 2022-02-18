@@ -17,7 +17,43 @@ BEGIN
     INSERT INTO applicant_data (id, firstName, middleName, lastName, picture, birthday, phone, gender)
 		VALUES (id, firstName, middleName, lastname, picture, birthday, phone, gender);
 END |
+DELIMITER ;
 
+DELIMITER |
+DROP PROCEDURE IF EXISTS updateApplicant |
+CREATE PROCEDURE updateApplicant(
+	IN uid CHAR(36),
+    IN uemail VARCHAR(255),
+    IN upassword CHAR(60),
+    IN ufirstName VARCHAR(50),
+    IN umiddleName VARCHAR(50),
+    IN ulastName VARCHAR(50),
+    IN upicture VARCHAR(200),
+    IN ubirthday DATE,
+    IN uphone VARCHAR(20),
+    IN ugender VARCHAR(10)
+)
+BEGIN
+	DECLARE userType ENUM('Users', 'Organizations');
+	SELECT type into userType FROM auth WHERE auth.id = uid;
+	IF (ISNULL(userType) OR userType <> 'Users') THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid value for user id!';
+    END IF;
+    SELECT 
+		IFNULL(uemail, auth.email), IFNULL(upassword, auth.password),
+        IFNULL(ufirstName, ad.firstName),IFNULL(umiddleName, ad.middleName),IFNULL(ulastName, ad.lastName),
+        IFNULL(upicture, ad.picture),IFNULL(ubirthday, ad.birthday),IFNULL(uphone, ad.phone),
+        IFNULL(ugender, ad.gender)
+	FROM auth
+    INNER JOIN applicant_data AS ad ON ad.id = auth.id
+    WHERE auth.id = uid
+    INTO uemail, upassword, ufirstName, umiddleName, ulastName, upicture, ubirthday,uphone, ugender;
+    
+    SELECT uid, uemail, upassword, ufirstName, umiddleName, ulastName, upicture, ubirthday,uphone, ugender;
+END |
+DELIMITER ;
+
+DELIMITER |
 DROP PROCEDURE IF EXISTS createOrganization |
 CREATE PROCEDURE createOrganization(
     IN id CHAR(36),
