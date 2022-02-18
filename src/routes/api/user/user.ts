@@ -9,6 +9,7 @@ import connection from '@utils/dbSetup';
 import { isApplicant } from '@middleware/authorization';
 import { checkSchema, validationResult } from 'express-validator';
 import {
+  addApplicantSkills,
   updatePicture,
   userAcademicsSchema,
   userSkillsSchema,
@@ -63,6 +64,11 @@ router.post(
   },
 );
 
+router.get('/skills', isApplicant, async (req, res) => {
+  const userData = req.user?.user as User;
+  res.json({ skills: userData.skills, success: true });
+});
+
 router.post(
   '/skills',
   isApplicant,
@@ -72,26 +78,30 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array(), success: false });
     }
-    try {
-      await connection.execute('CALL addApplicantSkills(?, ?)', [
-        req.user?.user.basics.id,
-        JSON.stringify(req.body.skills),
-      ]);
-    } catch (err) {
-      logger.error('Error when adding skills: ', err);
-      if (err.errno === 1062) {
-        res.status(400).json({
-          message: "You've already added this skill!",
-          success: false,
-        });
-        return;
-      }
-      res
-        .status(500)
-        .json({ message: 'Something went wrong!', success: false });
-      return;
+    const { status, ...message } = await addApplicantSkills(
+      req.user!.user.basics.id,
+      req.body.skills,
+      false,
+    );
+    res.json(message);
+  },
+);
+
+router.put(
+  '/skills',
+  isApplicant,
+  checkSchema(userSkillsSchema),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array(), success: false });
     }
-    res.json({ skills: req.body.skills, success: true });
+    const { status, ...message } = await addApplicantSkills(
+      req.user!.user.basics.id,
+      req.body.skills,
+      true,
+    );
+    res.json(message);
   },
 );
 

@@ -113,20 +113,35 @@ DELIMITER |
 DROP PROCEDURE IF EXISTS addApplicantSkills |
 CREATE PROCEDURE addApplicantSkills(
 	IN uid char(36),
-	IN skills JSON
+	IN skills JSON,
+	IN useReplace BOOLEAN
 )
 BEGIN
-	INSERT INTO applicant_skills (
+	IF (useReplace = true) THEN
+		REPLACE INTO applicant_skills (
 		SELECT uid AS id, name, proficiency, experience
         FROM JSON_TABLE(
 			skills,
             '$[*]' COLUMNS (
 				-- id char(36) PATH "$.id",
                 name varchar(100) PATH "$.name",
-                proficiency ENUM('Beginner', 'Intermediate', 'Advanced') PATH "$.proficiency",
+                proficiency ENUM('Beginner', 'Intermediate', 'Advanced', 'Expert') PATH "$.proficiency",
                 experience int PATH "$.experience"
 			)
 		) AS extracted);
+	ELSE
+		INSERT INTO applicant_skills (
+			SELECT uid AS id, name, proficiency, experience
+			FROM JSON_TABLE(
+				skills,
+				'$[*]' COLUMNS (
+					-- id char(36) PATH "$.id",
+					name varchar(100) PATH "$.name",
+					proficiency ENUM('Beginner', 'Intermediate', 'Advanced', 'Expert') PATH "$.proficiency",
+					experience int PATH "$.experience"
+				)
+			) AS extracted);
+	END IF;
 END |
 DELIMITER ;
 
