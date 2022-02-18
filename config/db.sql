@@ -1,53 +1,142 @@
-drop table if exists webapp.federated_credentials;
-drop table if exists webapp.federated_credentials_provider;
-drop table if exists webapp.emails;
-drop table if exists webapp.users;
-drop table if exists webapp.roles;
-drop view if exists vwAuth;
-/*truncate webapp.sessions;*/
+drop table if exists job_qualifications;
+drop table if exists skills;
+drop table if exists jobs;
+drop table if exists federated_credentials;
+drop table if exists federated_credentials_provider;
+drop table if exists applicant_data;
+drop table if exists organization_data;
+drop table if exists user_academics;
+drop table if exists user_skills;
+drop table if exists user_roles;
+drop table if exists auth;
+drop table if exists roles;
+truncate sessions;
 
-CREATE TABLE webapp.roles (
-    roleId int auto_increment,
-    roleName varchar(20) unique not null,
-    primary key (roleid)
+CREATE TABLE IF NOT EXISTS academic_qualifications (
+	qid int auto_increment unique not null,
+	level varchar(30) not null,
+    discipline varchar(100) not null,
+    degree varchar(100) not null,
+    primary key (qid)
 );
-Insert into roles (roleName) values ("Administrators"), ("Employers"), ("Applicants"), ("Users");
 
+CREATE TABLE roles (
+    id int unique not null,
+    name varchar(20) unique not null,
+    level int not null,
+    primary key (id)
+);
+INSERT INTO roles (id, name, level) VALUES
+	(1, "Administrators", 5),
+    (2, "Organizations", 10),
+    (3, "Applicants", 10);
 
-CREATE TABLE webapp.users (
-    uid char(36),
-    email varchar(250) unique not null,
+CREATE TABLE auth (
+    id char(36) unique not null,
+    email varchar(255) unique not null,
     password char(60),
+    type ENUM('Users', 'Organizations') not null,
+    primary key (email)
+);
+
+-- Many to many relationship with auth
+CREATE TABLE user_roles (
+    id char(36) not null,
+    roleId int not null,
+    primary key(id, roleId),
+    foreign key (id) references auth(id),
+    foreign key (roleId) references roles(id)
+);
+
+-- One to one relationship with auth
+CREATE TABLE organization_data (
+    id char(36) unique not null,
+    name varchar(100) not null,
+    description varchar(5000),
+    address varchar(200),
+    city varchar(100),
+    website varchar(200),
+    phone varchar(20),
+    logo varchar(200),
+    primary key (id),
+    foreign key (id) references auth(id)
+);
+
+-- One to one relationship with auth
+CREATE TABLE applicant_data (
+    id char(36) unique not null,
     firstName varchar(50),
+    middleName varchar(50),
     lastName varchar(50),
     picture varchar(200),
-    birthday datetime,
+    birthday date,
     phone varchar(20),
     gender varchar(10),
-    primary key (uid)
+    primary key (id),
+    foreign key (id) references auth(id)
 );
 
-CREATE TABLE webapp.federated_credentials_provider (
+-- One to many relationship (applicant_data to applicant_academics)
+CREATE TABLE applicant_academics (
+	id char(36) not null,
+    qid int not null,
+    primary key(id, qid),
+    foreign key (id) references applicant_data(id),
+    foreign key (qid) references academic_qualifications(qid)
+);
+
+-- One to many relationship (applicant_data to applicant_skills)
+CREATE TABLE applicant_skills (
+	id char(36) not null,
+    name varchar(100) not null,
+    proficiency ENUM('Beginner', 'Intermediate', 'Advanced', 'Expert') not null,
+    experience int not null,
+    primary key(id, name),
+    foreign key (id) references applicant_data(id)
+);
+
+CREATE TABLE federated_credentials_provider (
     providerId int auto_increment,
     providerName varchar(50) unique not null,
     primary key(providerId)
 );
 
-CREATE TABLE webapp.federated_credentials (
-    uid char(36) not null,
+-- One to many relationship (auth to federated_credentials)
+CREATE TABLE federated_credentials (
+    id char(36) not null,
     providerId int not null,
-    identifier varchar(100) not null,
-    primary key (providerId, identifier),
-    foreign key (uid) references users(uid),
+    identifier varchar(2048) not null,
+    primary key (id, providerId),
+    foreign key (id) references auth(id),
     foreign key (providerId) references federated_credentials_provider(providerId)
 );
 
-CREATE OR REPLACE VIEW vwAuth AS
-    SELECT users.uid, email, password, firstName, lastName, picture
-    FROM users
-    LEFT JOIN federated_credentials as fc on fc.uid = users.uid
-    LEFT JOIN federated_credentials_provider as fcp on fcp.providerId = fc.providerId;
+CREATE TABLE jobs (
+    jobId char(36),
+    companyId char(36) not null,
+    title varchar(100) not null,
+    description varchar(5000),
+    vacancies int not null,
+    experience int,
+    address varchar(1000),
+    district varchar(1000),
+    primary key (jobId),
+    foreign key (companyId) references organization_data(id)
+);
 
+CREATE TABLE skills (
+    skillName varchar(100) not null,
+    jobId char(36) not null,
+    proficiency ENUM('Beginner', 'Intermediate', 'Advanced') not null,
+    primary key (skillName, jobId),
+    foreign key (jobId) references jobs(jobId)
+);
 
-select * from vwAuth where email = 'yednapnevus2@gmail.com';
-select * from vwAuth where uid = '97bfb1d5-1cac-4943-8f5f-f8639dfbfabe';
+CREATE TABLE job_qualifications (
+    jobId char(36) not null,
+    qId int not null,
+    primary key (jobId, qId),
+    foreign key (jobId) references jobs(jobId),
+    foreign key (qId) references academic_qualifications(qId)
+);
+

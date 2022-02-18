@@ -5,7 +5,7 @@ function Overview() {
     const [jobs, setJobs] = useState([])
 
     async function fetchJobs(){
-        const res = await fetch("/jobs")
+        const res = await fetch("http://localhost:4000/jobs")
         const data = await res.json()
         return data
     }
@@ -44,11 +44,17 @@ function Overview() {
         <div className="overview ">
             <h1>Overview</h1>
             <div className="jobs container bg-light">
-                {jobs.map((job) => {
-                    return (
-                        <Job job={job} OnClick={toggleApply} />
-                    )
-                })}
+                <ul>
+                    {jobs.map((job) => {
+                        return (
+                            <li key={job.jobId}>
+                                <Job job={job} OnClick={toggleApply} />
+                            </li>
+                            
+                        )
+                    })}
+                </ul>
+                
             </div>
         </div>
     )

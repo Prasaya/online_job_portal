@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, Fragment} from "react"
 import { Link } from "react-router-dom";
 function titleCase(str) {
     return str.toLowerCase().split(' ').map(function(word) {
@@ -6,68 +6,74 @@ function titleCase(str) {
     }).join(' ');
 }
 function MyProfile() {
-    const [basicInfo, setBasicInfo] = useState('')
-    const [skills, setSkills] = useState('')
-    const [socials, setSocials] = useState('')
+    const [basicInfo, setBasicInfo] = useState({})
+    const [skills, setSkills] = useState([])
+    const [education, setEducation] = useState([])
+    const [picture, setPicture] = useState("")
     let basicEntries = []
-    let skillsEntries = []
-    let socialsEntries = []
 
     const fetchInfo = async () => {
-        const res = await fetch("/api/user/dbd1525e-a410-47bf-af10-84e56ae67edf")
+        const res = await fetch("/api/user")
         const data = await res.json()
-        console.log(data)
-        console.log(res)
-        return data
+        return data.user
     }
-    
+
     useEffect(() => {
         const getInfo = async () => {
-            const info = await fetchInfo()
-            setBasicInfo(info["basics"])
-            setSkills(info["skills"])
-            setSocials(info["socials"])            
+            const user = await fetchInfo()
+            setBasicInfo(user.basics)
+            setSkills(user.skills)
+            setEducation(user.academics)
+            setPicture(user.basics.picture)
         }
         getInfo()
-        
+
     }, [])
     basicEntries = Object.entries(basicInfo)
-    socialsEntries = Object.entries(socials)
-    skillsEntries = skills.split(",")
-    return ( 
+    return (
         <div className="myprofile">
             <h1>My Profile <span><Link className="btn btn-secondary" to="/jobseeker/editprofile">Edit</Link></span></h1>
             <div className="container bg-light profile">
                 <div className="row">
-                    <div className="col-4">
-                        <img src="#" alt="profile pic" />
+                    <div className="col-10 col-sm-2">
+                        <img className="img-fluid img-thumbnail rounded float-start" src={picture || "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png"} alt="profile pic" />
                     </div>
-                    <div className="col-8">
+                    <div className="col-10">
                         <div className="row">
-                            <div className="basic col-6">
+                            <div className="basic col-lg-6">
                                 <h3>Basic information</h3>
                                 <table className="table">
                                     <tbody>
                                         {basicEntries.map((entry) => {
                                             return (
-                                                <tr>
-                                                    <td>{titleCase(entry[0])}</td>
-                                                    <td>{entry[1]}</td>
-                                                </tr>
+                                                <Fragment key={entry[0]}>
+                                                    {entry[1] &&
+                                                    <tr>
+                                                        <td>{titleCase(entry[0])}</td>
+                                                        <td>:</td>
+                                                        <td>{entry[1]}</td>
+                                                     </tr>}
+                                                </Fragment>
                                             )
                                         })}
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="socials col-6">
-                                <h3>Socials</h3>
+                            <div className="education col-lg-6">
+                                <h3>Education</h3>
                                 <table className="table">
                                     <tbody>
-                                        {socialsEntries.map((entry) => {
-                                            return (
-                                                <tr>
-                                                    <td>{titleCase(entry[0])}</td>
-                                                    <td><a href={entry[1]}>{entry[1]}</a></td>
+                                        <tr>
+                                            <th>Level</th>
+                                            <th>Discipline</th>
+                                            <th>Degree</th>
+                                        </tr>
+                                        {education.map((entry)=>{
+                                            return(
+                                                <tr key={entry.degree}>
+                                                    <td>{entry.level}</td>
+                                                    <td>{entry.discipline}</td>
+                                                    <td>{entry.degree}</td>
                                                 </tr>
                                             )
                                         })}
@@ -80,10 +86,17 @@ function MyProfile() {
                                 <h3>Skills</h3>
                                 <table className="table">
                                     <tbody>
-                                        {skillsEntries.map((skill) => {
+                                        <tr>
+                                            <th>Skill</th>
+                                            <th>Proficiency</th>
+                                            <th>Experience</th>
+                                        </tr>
+                                        {skills.map((skill) => {
                                             return (
-                                                <tr>
-                                                    <td>{skill}</td>
+                                                <tr key={skill.name}>
+                                                    <td>{skill.name}</td>
+                                                    <td>{skill.proficiency}</td>
+                                                    <td>{skill.experience}</td>
                                                 </tr>
                                             )
                                         })}
@@ -94,7 +107,7 @@ function MyProfile() {
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
     );
 }
 

@@ -1,10 +1,10 @@
 import { session } from 'passport';
 
 declare module 'express-session' {
-    interface SessionData {
-        views: number;
-        messages: Array<any>;
-    }
+  interface SessionData {
+    views: number;
+    messages: Array<unknown>;
+  }
 }
 
-export { session };
+export default session;

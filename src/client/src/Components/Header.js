@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom"
 
 function Header(){
     const path = useLocation().pathname
-    if (path.startsWith('/jobseeker')){
+    if (path.startsWith('/jobseeker') || path.startsWith('/company')){
         return (
             <></>
         )
