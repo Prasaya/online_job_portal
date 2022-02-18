@@ -82,7 +82,7 @@ export const userSkillsSchema: Schema = {
   },
   ['skills.*.proficiency']: {
     isString: true,
-    isIn: { options: [['Beginner', 'Intermediate', 'Expert']] },
+    isIn: { options: [['Beginner', 'Intermediate', 'Advanced', 'Expert']] },
   },
   ['skills.*.experience']: {
     isInt: { options: { min: 0, max: 100 } },
