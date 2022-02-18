@@ -7,7 +7,7 @@ function Skills() {
     const {register,
         setValue,
         control,
-        handleSubmit, 
+        handleSubmit,
     } = useForm({mode: "onBlur"})
     const { fields, append, remove } = useFieldArray({
         control,
@@ -15,9 +15,9 @@ function Skills() {
       });
 
     const fetchInfo = async () => {
-        const res = await fetch("http://localhost:4000/profile")
+        const res = await fetch("/api/user")
         const data = await res.json()
-        return data
+        return data.user
     }
     const onSubmitForm = (data) => {
         console.log(data)
@@ -35,9 +35,9 @@ function Skills() {
         const getInfo = async () => {
             const info = await fetchInfo()
             setAllInfo(info)
-            setSkills(info["skills"])            
+            setSkills(info["skills"])
         }
-        getInfo()  
+        getInfo()
     },[])
 
     useEffect(() => {
@@ -63,7 +63,7 @@ function Skills() {
                                 />
                             </div>
                             <div className="col-4 mr-1">
-                                
+
                                 <select
                                     {...register(`skills.${index}.proficiency`)}
                                     className="form-select"
@@ -90,7 +90,7 @@ function Skills() {
                                     required
                                 />
                             </div>
-                            
+
                             <button type="button" className="btn btn-sm btn-danger col-2" onClick={() => remove(index)}>Delete</button>
                         </div>
                         ))}
