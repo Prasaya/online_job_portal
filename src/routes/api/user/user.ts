@@ -24,46 +24,6 @@ router.get('/', isLoggedIn, (req, res) => {
   });
 });
 
-router.get('/avatar', isApplicant, (req, res) => {
-  const userData = req.user?.user as User;
-  const fileName = userData.basics.picture;
-  if (!fileName) {
-    res.status(404).json({ message: 'No avatar found!', success: false });
-    return;
-  }
-  res.sendFile(path.resolve('.', 'images', fileName));
-});
-
-router.post(
-  '/avatar',
-  isApplicant,
-  fileUpload({
-    createParentPath: true,
-    debug: false,
-    limits: { fileSize: 1024 * 1024 },
-    abortOnLimit: true,
-    useTempFiles: true,
-    tempFileDir: '/tmp/',
-  }),
-  async (req, res) => {
-    if (!req.files || !req.files.avatar) {
-      res
-        .status(400)
-        .json({ message: 'No files were uploaded!', success: false });
-      return;
-    }
-    if (Array.isArray(req.files.avatar)) {
-      res
-        .status(400)
-        .json({ message: 'Multiple files were uploaded!', success: false });
-      return;
-    }
-    const file = req.files.avatar as fileUpload.UploadedFile;
-    const json = await updatePicture(req.user!.user.basics.id, file);
-    res.json(json);
-  },
-);
-
 router.get('/skills', isApplicant, async (req, res) => {
   const userData = req.user?.user as User;
   res.json({ skills: userData.skills, success: true });
