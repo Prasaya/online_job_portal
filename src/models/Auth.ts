@@ -101,6 +101,12 @@ export async function searchUser(
         roles,
         name: data.name,
         description: data.description,
+        address: data.address,
+        city: data.city,
+        website: data.website,
+        phone: data.phone,
+        logo: data.logo,
+        socials,
       },
     };
     return organization;
