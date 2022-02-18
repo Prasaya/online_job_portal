@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NewUserInput, NewUserParameters, User } from '@typings/User';
+import { NewUserInput, NewUserParameters, Skill, User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
@@ -143,4 +143,30 @@ export const updatePicture = async (userId: string, picture: UploadedFile) => {
     logger.error(err);
     return { message: 'Something went wrong!', success: false };
   }
+};
+
+export const addApplicantSkills = async (
+  userId: string,
+  skills: Skill | Skill[],
+  replaceIfExists: boolean,
+) => {
+  const toAdd = Array.isArray(skills) ? skills : [skills];
+  try {
+    await connection.execute('CALL addApplicantSkills(?, ?, ?)', [
+      userId,
+      JSON.stringify(toAdd),
+      replaceIfExists,
+    ]);
+  } catch (err) {
+    logger.error('Error when adding skills: ', err);
+    if (err.errno === 1062) {
+      return {
+        status: 400,
+        message: "You've already added this skill!",
+        success: false,
+      };
+    }
+    return { status: 500, message: 'Something went wrong!', success: false };
+  }
+  return { status: 200, skills: toAdd, success: true };
 };
