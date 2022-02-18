@@ -3,6 +3,9 @@ import { NewUserInput, NewUserParameters, User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
+import { UploadedFile } from 'express-fileupload';
+import path from 'path';
+import logger from '@utils/logger';
 
 export const userRegisterSchema: Schema = {
   email: {
@@ -118,4 +121,26 @@ export const createNewUser = async (userData: NewUserInput): Promise<User> => {
     [...Object.values(user)],
   );
   return { ...user, type: 'Users', roles: [], socials: [], password: null };
+};
+
+export const updatePicture = async (userId: string, picture: UploadedFile) => {
+  try {
+    const fileName = userId + path.extname(picture.name);
+    await picture.mv(path.resolve('.', 'images', fileName));
+    await connection.query('UPDATE users SET picture = ? WHERE uid = ?', [
+      fileName,
+      userId,
+    ]);
+    return {
+      name: picture.name,
+      size: picture.size,
+      encoding: picture.encoding,
+      mimetype: picture.mimetype,
+      truncated: picture.truncated,
+      url: fileName,
+    };
+  } catch (err) {
+    logger.error(err);
+    return { message: 'Something went wrong!', success: false };
+  }
 };

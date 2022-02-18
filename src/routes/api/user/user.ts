@@ -1,14 +1,18 @@
-import { isLoggedIn } from '@root/middleware/authentication';
-import { searchUser } from '@root/models/Auth';
+import { isLoggedIn } from '@middleware/authentication';
+import { searchUser } from '@models/Auth';
 import logger from '@root/utils/logger';
 import express, { Request, Response } from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';
-import { isApplicant } from '@root/middleware/authorization';
+import { isApplicant } from '@middleware/authorization';
 import { checkSchema, validationResult } from 'express-validator';
-import { userAcademicsSchema, userSkillsSchema } from '@root/models/User';
+import {
+  updatePicture,
+  userAcademicsSchema,
+  userSkillsSchema,
+} from '@models/User';
 
 const router = express.Router();
 
@@ -23,7 +27,7 @@ router.get('/avatar', isApplicant, (req, res) => {
   const userData = req.user?.user as User;
   const fileName = userData.basics.picture;
   if (!fileName) {
-    res.status(400).json({ message: 'No avatar found!', success: false });
+    res.status(404).json({ message: 'No avatar found!', success: false });
     return;
   }
   res.sendFile(path.resolve('.', 'images', fileName));
@@ -47,29 +51,15 @@ router.post(
         .json({ message: 'No files were uploaded!', success: false });
       return;
     }
-    const file = req.files.avatar as fileUpload.UploadedFile;
-    try {
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const fileName = req.user?.user.basics.id + path.extname(file.name);
-      await file.mv(path.resolve('.', 'images', fileName));
-      await connection.query('UPDATE users SET picture = ? WHERE uid = ?', [
-        fileName,
-        req.user?.user.basics.id,
-      ]);
-      res.json({
-        name: file.name,
-        size: file.size,
-        encoding: file.encoding,
-        mimetype: file.mimetype,
-        truncated: file.truncated,
-        url: fileName,
-      });
-    } catch (err) {
-      logger.error(err);
+    if (Array.isArray(req.files.avatar)) {
       res
-        .status(500)
-        .json({ message: 'Something went wrong!', success: false });
+        .status(400)
+        .json({ message: 'Multiple files were uploaded!', success: false });
+      return;
     }
+    const file = req.files.avatar as fileUpload.UploadedFile;
+    const json = await updatePicture(req.user!.user.basics.id, file);
+    res.json(json);
   },
 );
 
