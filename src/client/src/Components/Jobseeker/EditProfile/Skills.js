@@ -35,7 +35,7 @@ function Skills() {
         const getInfo = async () => {
             const info = await fetchInfo()
             setAllInfo(info)
-            setSkills(info["skills"])
+            setSkills(info.skills)
         }
         getInfo()
     },[])
@@ -54,10 +54,10 @@ function Skills() {
                         <div className="row mb-1" key={item.id}>
                             <div className="col-4 mr-1">
                                 <input
-                                    {...register(`skills.${index}.skill`)}
+                                    {...register(`skills.${index}.name`)}
                                     className="form-control"
                                     type="text"
-                                    id={`skill${index}`}
+                                    id={`name${index}`}
                                     placeholder="Skill"
                                     required
                                 />
