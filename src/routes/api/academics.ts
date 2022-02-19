@@ -6,7 +6,7 @@ import { FieldPacket, RowDataPacket } from 'mysql2';
 const router = express.Router();
 
 let qualifications: academicQualifications;
-async function updateQualifications() {
+async function updateLocalQualifications() {
   const [result]: [RowDataPacket[][], FieldPacket[]] = await connection.query(
     'CALL getQualifications()',
   );
@@ -21,15 +21,15 @@ async function updateQualifications() {
   return newQualifications;
 }
 
-async function getQualifications() {
+async function getDBQualifications() {
   if (!qualifications) {
-    await updateQualifications();
+    await updateLocalQualifications();
   }
   return qualifications;
 }
 
 router.get('/', async (req, res) => {
-  const allQualifications = await getQualifications();
+  const allQualifications = await getDBQualifications();
   const levels = req.query.level as string[] | undefined;
   const disciplines = req.query.discipline as string[] | undefined;
   const filters = { levels, disciplines };
@@ -58,4 +58,5 @@ router.get('/', async (req, res) => {
   }
   res.json({ query: filteredQualifications, filters, success: true });
 });
+
 export default router;

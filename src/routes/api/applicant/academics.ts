@@ -4,12 +4,18 @@ import { isApplicant } from '@middleware/authorization';
 import { userAcademicsSchema } from '@models/User';
 import logger from '@utils/logger';
 import { checkSchema, validationResult } from 'express-validator';
+import { User } from '@typings/User';
+import { QueryError } from 'mysql2';
 
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  const userData = req.user?.user as User;
+  res.json({ academics: userData.academics, success: true });
+});
+
 router.post(
   '/',
-  isApplicant,
   checkSchema(userAcademicsSchema),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -22,15 +28,16 @@ router.post(
         JSON.stringify(req.body.academics),
       ]);
     } catch (err) {
+      const { errno } = err as QueryError;
       logger.error('Error when adding skills: ', err);
-      if (err.errno === 1062) {
+      if (errno === 1062) {
         res.status(400).json({
           message: "You've already added this qualification!",
           success: false,
         });
         return;
       }
-      if (err.errno === 1452) {
+      if (errno === 1452) {
         res.status(400).json({
           message: 'Invalid qualification!',
           success: false,

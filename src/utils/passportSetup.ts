@@ -2,7 +2,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 import logger from '@utils/logger';
-import { getAuthUser, searchUser } from '@root/models/Auth';
+import { getAuthUser, searchUser } from '@models/Auth';
 import { verifyPassword } from './password';
 
 const passportConfigure = (passportInstance: passport.Authenticator) => {

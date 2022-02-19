@@ -1,5 +1,5 @@
 import express, { Request } from 'express';
-import { isLoggedIn } from '@root/middleware/authentication';
+import { isLoggedIn } from '@middleware/authentication';
 import authRoute from './auth/auth';
 import userRoute from './user/user';
 import jobs from './jobs/jobs';

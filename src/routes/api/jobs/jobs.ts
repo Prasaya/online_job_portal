@@ -4,12 +4,12 @@ import {
   createNewJobPost,
   deleteJobPost,
   JobCreationSchema,
-} from '@root/models/Jobs';
+} from '@models/Jobs';
 import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
 import { isLoggedIn } from '@middleware/authentication';
-import logger from '@root/utils/logger';
+import logger from '@utils/logger';
 
 const router = express.Router();
 
