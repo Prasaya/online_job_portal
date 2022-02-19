@@ -88,7 +88,7 @@ function Nav(){
                                         </li>
                                     )
                                 })}
-                                <li class="dropdown">
+                                <li className="dropdown">
                                     <img src={avatar || stockPhoto} alt="avatar" className="rounded-circle mx-auto img img-thumbnail float-end dropdown-toggle" id="dropdownMenuImage" data-bs-toggle="dropdown"/>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuImage">
                                         <li><a className="dropdown-item" href="/login">Log Out</a></li>
