@@ -7,7 +7,7 @@ import path from 'path';
 
 const router = express.Router();
 
-router.get('/', isApplicant, (req, res) => {
+router.get('/', (req, res) => {
   const userData = req.user?.user as User;
   const fileName = userData.basics.picture;
   if (!fileName) {
@@ -17,9 +17,8 @@ router.get('/', isApplicant, (req, res) => {
   res.sendFile(path.resolve('.', 'images', fileName));
 });
 
-router.post(
+router.put(
   '/',
-  isApplicant,
   fileUpload({
     createParentPath: true,
     debug: false,
