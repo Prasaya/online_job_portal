@@ -25,9 +25,7 @@ function Login(){
             }
             userCtx.updateUserStatus(userStatus)
         }
-        console.log(jsonVal)
     }
-    console.log(userCtx)
 
     return (
         <div className="container log-in">
