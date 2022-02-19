@@ -1,4 +1,4 @@
-import { Organization } from '@root/typings/Organization';
+import { Organization } from '@typings/Organization';
 import { AuthData } from '@typings/authorization';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';

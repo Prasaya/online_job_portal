@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import passport from 'passport';
 import logger from '@utils/logger';
 import mysqlSession from 'express-mysql-session';
-import viewCounter from '@root/middleware/viewCounter';
+import viewCounter from '@middleware/viewCounter';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
 

@@ -4,7 +4,7 @@ import { createNewUser, userRegisterSchema } from '@models/User';
 import {
   organizationRegisterSchema,
   createNewOrganization,
-} from '@root/models/Organization';
+} from '@models/Organization';
 import { NewUserInput, User } from '@typings/User';
 import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';

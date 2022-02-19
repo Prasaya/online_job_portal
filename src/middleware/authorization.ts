@@ -1,4 +1,4 @@
-import { Role } from '@root/typings/authorization';
+import { Role } from '@typings/authorization';
 import roles, { getRoleByName } from '@utils/authorization';
 import { Handler } from 'express';
 

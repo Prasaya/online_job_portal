@@ -1,4 +1,4 @@
-import logger from '@root/utils/logger';
+import logger from '@utils/logger';
 import express from 'express';
 import passport from 'passport';
 
