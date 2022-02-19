@@ -5,13 +5,13 @@ import { checkSchema, validationResult } from 'express-validator';
 
 const router = express.Router();
 
-router.get('/skills', async (req, res) => {
+router.get('/', async (req, res) => {
   const userData = req.user?.user as User;
   res.json({ skills: userData.skills, success: true });
 });
 
 router.post(
-  '/skills',
+  '/',
   checkSchema(userSkillsSchema),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -28,7 +28,7 @@ router.post(
 );
 
 router.put(
-  '/skills',
+  '/',
   checkSchema(userSkillsSchema),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);

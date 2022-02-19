@@ -8,7 +8,7 @@ import { checkSchema, validationResult } from 'express-validator';
 const router = express.Router();
 
 router.post(
-  '/academics',
+  '/',
   isApplicant,
   checkSchema(userAcademicsSchema),
   async (req: Request, res: Response) => {

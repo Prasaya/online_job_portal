@@ -1,21 +1,16 @@
 import { isLoggedIn } from '@middleware/authentication';
 import { searchUser } from '@models/Auth';
-import logger from '@root/utils/logger';
-import express, { Request, Response } from 'express';
-import fileUpload from 'express-fileupload';
-import path from 'path';
-import { User } from '@typings/User';
+import express from 'express';
 import connection from '@utils/dbSetup';
-import { isApplicant } from '@middleware/authorization';
-import { checkSchema, validationResult } from 'express-validator';
-import {
-  addApplicantSkills,
-  updatePicture,
-  userAcademicsSchema,
-  userSkillsSchema,
-} from '@models/User';
+import academicsRoute from './academics';
+import avatarRoute from './avatar';
+import skillsRoute from './skills';
 
 const router = express.Router();
+
+router.use('/academics', academicsRoute);
+router.use('/avatar', avatarRoute);
+router.use('/skills', skillsRoute);
 
 router.get('/', isLoggedIn, (req, res) => {
   res.json({

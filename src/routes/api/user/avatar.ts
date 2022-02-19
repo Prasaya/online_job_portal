@@ -7,7 +7,7 @@ import path from 'path';
 
 const router = express.Router();
 
-router.get('/avatar', isApplicant, (req, res) => {
+router.get('/', isApplicant, (req, res) => {
   const userData = req.user?.user as User;
   const fileName = userData.basics.picture;
   if (!fileName) {
@@ -18,7 +18,7 @@ router.get('/avatar', isApplicant, (req, res) => {
 });
 
 router.post(
-  '/avatar',
+  '/',
   isApplicant,
   fileUpload({
     createParentPath: true,
@@ -46,3 +46,5 @@ router.post(
     res.json(json);
   },
 );
+
+export default router;
