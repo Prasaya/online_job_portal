@@ -14,13 +14,25 @@ export function UserContextProvider(props) {
     const [uid, setUid] = useState("");
     const [userType, setUserType] = useState("");
 
+    function updateAuthStatusHandler(authStatus) {
+        setUserAuthStatus(authStatus)
+    }
+
+    function updateUidHandler(uid) {
+        setUid(uid)
+    }
+
+    function updateTypeHandler(userType) {
+        setUserType(userType)
+    }
+
     const context = {
         authStatus: userAuthStatus,
         id: uid,
         type: userType,
-        updateAuthStatus: setUserAuthStatus,
-        updateUid: setUid,
-        updateType: setUserType
+        updateAuthStatus: updateAuthStatusHandler,
+        updateUid: updateUidHandler,
+        updateType: updateTypeHandler
     }
 
     return(
