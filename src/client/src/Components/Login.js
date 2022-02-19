@@ -1,10 +1,11 @@
+import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import {useState} from "react"
+import UserContext from "../Context/UserContext"
+
 function Login(){
-    const {register, handleSubmit} = useForm()
-    const [authStatus, setauthStatus] = useState(false);
-    const [uid, setUid] = useState("");
+    const {register, handleSubmit} = useForm();
+    const userCtx = useContext(UserContext)
 
     const onSubmit = async (data) => {
         const res = await fetch('/api/auth/login',{
@@ -17,7 +18,7 @@ function Login(){
         const jsonVal = await res.json()
         const isAuth = jsonVal.success
         if (isAuth) {
-            setauthStatus(true)
+            
         }
         console.log(jsonVal)
     }
