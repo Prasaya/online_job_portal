@@ -18,10 +18,16 @@ function Login(){
         const jsonVal = await res.json()
         const isAuth = jsonVal.success
         if (isAuth) {
-            
+            const userStatus = {
+                authStatus: isAuth,
+                id: jsonVal.user.user.basics.id,
+                type: jsonVal.user.user.basics.type
+            }
+            userCtx.updateUserStatus(userStatus)
         }
         console.log(jsonVal)
     }
+    console.log(userCtx)
 
     return (
         <div className="container log-in">
