@@ -5,10 +5,14 @@ CREATE PROCEDURE getAuthDetails(
 )
 BEGIN
 	SELECT a.id, email, password, type,
-		JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier)) AS socials
+		(SELECT
+		JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
+        FROM federated_credentials AS fc
+        INNER JOIN federated_credentials_provider AS fcp ON fc.providerId = fcp.providerId
+        WHERE fc.id = a.id
+        GROUP BY fc.id
+        )AS socials
 	FROM auth AS a
-    LEFT JOIN federated_credentials AS fc ON fc.id = a.id
-	LEFT JOIN federated_credentials_provider AS fcp on fcp.providerId = fc.providerID
 	WHERE email = inputEmail
 	GROUP BY a.id;
 END |
