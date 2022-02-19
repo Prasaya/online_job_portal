@@ -25,7 +25,7 @@ function MyProfile() {
             setBasicInfo(user.basics)
             setSkills(user.skills)
             setEducation(user.academics)
-            setPicture(user.picture ? '/api/user/avatar' : stockPhoto)
+            setPicture(user.basics.picture ? '/api/user/avatar' : stockPhoto)
         }
         getInfo()
 
