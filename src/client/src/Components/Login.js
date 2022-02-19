@@ -1,11 +1,14 @@
-import { useContext } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import UserContext from "../Context/UserContext"
 
 function Login(){
     const {register, handleSubmit} = useForm();
     const userCtx = useContext(UserContext)
+    const navigate = useNavigate();
+
+    
 
     const onSubmit = async (data) => {
         const res = await fetch('/api/auth/login',{
@@ -26,6 +29,20 @@ function Login(){
             userCtx.updateUserStatus(userStatus)
         }
     }
+
+    useEffect(() => {
+        if(userCtx.authStatus) {
+            if(userCtx.type === "Users") {
+                navigate("/jobseeker/overview", {replace: true})
+            }
+            else if(userCtx.type === "Organizations") {
+                navigate("/company/overview", {replace: true})
+            }
+        }
+    })
+
+    console.log(userCtx)
+
 
     return (
         <div className="container log-in">
