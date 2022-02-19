@@ -3,7 +3,10 @@ import { createContext, useState } from "react";
 const UserContext = createContext({
     authStatus: false,
     id: "",
-    type: ""
+    type: "",
+    updateAuthStatus: (authStatus) => {},
+    updateUid: (uid) => {},
+    updateType: (userType) => {}
 });
 
 export function UserContextProvider(props) {
