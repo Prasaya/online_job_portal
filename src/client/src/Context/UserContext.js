@@ -4,9 +4,7 @@ const UserContext = createContext({
     authStatus: false,
     id: "",
     type: "",
-    updateAuthStatus: (authStatus) => {},
-    updateUid: (uid) => {},
-    updateType: (userType) => {}
+    updateUserStatus: ({}) => {}
 });
 
 export function UserContextProvider(props) {
@@ -14,15 +12,13 @@ export function UserContextProvider(props) {
     const [uid, setUid] = useState("");
     const [userType, setUserType] = useState("");
 
-    function updateAuthStatusHandler(authStatus) {
-        setUserAuthStatus(authStatus)
-    }
-
-    function updateUidHandler(uid) {
+    function updateUserStatusHandler({
+        authStatus: newAuthStatus,
+        id: uid,
+        type: userType
+    }) {
+        setUserAuthStatus(newAuthStatus)
         setUid(uid)
-    }
-
-    function updateTypeHandler(userType) {
         setUserType(userType)
     }
 
@@ -30,9 +26,7 @@ export function UserContextProvider(props) {
         authStatus: userAuthStatus,
         id: uid,
         type: userType,
-        updateAuthStatus: updateAuthStatusHandler,
-        updateUid: updateUidHandler,
-        updateType: updateTypeHandler
+        updateUserStatus: updateUserStatusHandler
     }
 
     return(
