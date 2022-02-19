@@ -32,7 +32,7 @@ function Nav(){
     const fetchAvatar = async () => {
         const res = await fetch("/api/user")
         const data = await res.json()
-        return data.user.basics.picture
+        return data.user.basics.picture ? '/api/user/avatar' : stockPhoto;
     }
 
     function OnClick(e){
