@@ -4,7 +4,9 @@ const UserContext = createContext({
     authStatus: false,
     id: "",
     type: "",
-    updateUserStatus: ({}) => {}
+    updateUserStatus: ({authStatus: newAuthStatus,
+        id: uid,
+        type: userType}) => {}
 });
 
 export function UserContextProvider(props) {
