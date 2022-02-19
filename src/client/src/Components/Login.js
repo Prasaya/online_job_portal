@@ -8,8 +8,6 @@ function Login(){
     const userCtx = useContext(UserContext)
     const navigate = useNavigate();
 
-    
-
     const onSubmit = async (data) => {
         const res = await fetch('/api/auth/login',{
             method: "POST",
@@ -40,9 +38,6 @@ function Login(){
             }
         }
     })
-
-    console.log(userCtx)
-
 
     return (
         <div className="container log-in">
