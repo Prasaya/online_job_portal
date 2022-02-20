@@ -4,6 +4,7 @@ import authRoute from './auth/auth';
 import userRoute from './user/user';
 import jobs from './jobs/jobs';
 import academicsRoute from './academics';
+import organizationRoute from './organization/organization'
 
 const router = express.Router();
 
@@ -14,6 +15,8 @@ router.use('/jobs', jobs);
 router.use('/auth', authRoute);
 
 router.use('/user', userRoute);
+
+router.use('/organization', organizationRoute);
 
 router.get('/userinfo', isLoggedIn, (req: Request, res) => {
   res.json({ user: req.user?.user, session: req.session, success: true });
