@@ -97,57 +97,55 @@ function Nav() {
         <Link className="navbar-brand left" to="/">
           Job Portal
         </Link>
-        <div className="right">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#nav-right"
-            aria-controls="nav-right"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="nav-right">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {navElements.map((element) => {
-                return (
-                  <li className="nav-link" key={element.name}>
-                    <Link
-                      onClick={OnClick}
-                      className={`nav-link ${element.status}`}
-                      to={element.to}
-                      id={`${element.to}`}
-                    >
-                      {element.name}
-                    </Link>
-                  </li>
-                );
-              })}
-              <li className="dropdown">
-                <img
-                  src={avatar || stockPhoto}
-                  alt="avatar"
-                  className="rounded-circle mx-auto img img-thumbnail float-end dropdown-toggle"
-                  id="dropdownMenuImage"
-                  data-bs-toggle="dropdown"
-                />
-                <ul
-                  className="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="dropdownMenuImage"
-                >
-                  <li className="dropdown-item-text">Signed in as</li>
-                  <li className="dropdown-item-text">{userName}</li>
-                  <li>
-                    <button className="dropdown-item" onClick={logOut}>
-                      Log Out
-                    </button>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#nav-right"
+          aria-controls="nav-right"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="nav-right">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            {navElements.map((element) => {
+              return (
+                <li className="nav-link" key={element.name}>
+                  <Link
+                    onClick={OnClick}
+                    className={`nav-link ${element.status}`}
+                    to={element.to}
+                    id={`${element.to}`}
+                  >
+                    {element.name}
+                  </Link>
+                </li>
+              );
+            })}
+            <li className="dropdown mt-1">
+              <img
+                src={avatar}
+                alt="avatar"
+                className="rounded-circle mx-auto img img-thumbnail dropdown-toggle"
+                id="dropdownMenuImage"
+                data-bs-toggle="dropdown"
+              />
+              <ul
+                className="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dropdownMenuImage"
+              >
+                <li className="dropdown-item-text">Signed in as</li>
+                <li className="dropdown-item-text">{userName}</li>
+                <li>
+                  <button className="dropdown-item" onClick={logOut}>
+                    Log Out
+                  </button>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
