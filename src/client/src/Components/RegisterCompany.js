@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
 
 function RegisterCompany() {
@@ -29,7 +30,6 @@ function RegisterCompany() {
       body: JSON.stringify(data),
     });
     const jsonVal = await res.json();
-    console.log(jsonVal);
     if (!jsonVal.success) {
       setError('loginError', { message: jsonVal.message });
     } else {
@@ -41,6 +41,17 @@ function RegisterCompany() {
       userCtx.updateUserStatus(userStatus);
     }
   };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userCtx.authStatus) {
+      if (userCtx.type === 'Users') {
+        navigate('/jobseeker/overview', { replace: true });
+      } else if (userCtx.type === 'Organizations') {
+        navigate('/company/overview', { replace: true });
+      }
+    }
+  });
 
   return (
     <div className="container register-account">
