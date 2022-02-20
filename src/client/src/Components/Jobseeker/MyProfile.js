@@ -19,12 +19,13 @@ function MyProfile() {
     }
 
     useEffect(() => {
+        const stockPhoto = "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png";
         const getInfo = async () => {
             const user = await fetchInfo()
             setBasicInfo(user.basics)
             setSkills(user.skills)
             setEducation(user.academics)
-            setPicture(user.basics.picture)
+            setPicture(user.basics.picture ? '/api/user/avatar' : stockPhoto)
         }
         getInfo()
 
@@ -36,7 +37,7 @@ function MyProfile() {
             <div className="container bg-light profile">
                 <div className="row">
                     <div className="col-10 col-sm-2">
-                        <img className="img-fluid img-thumbnail rounded float-start" src={picture || "http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png"} alt="profile pic" />
+                        <img className="img-fluid img-thumbnail rounded float-start" src={picture} alt="profile pic" />
                     </div>
                     <div className="col-10">
                         <div className="row">

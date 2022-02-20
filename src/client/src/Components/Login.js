@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom"
+import { useContext, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import {useState} from "react"
+import UserContext from "../Context/UserContext"
+
 function Login(){
-    const {register, handleSubmit, setError, formState:{errors}} = useForm()
-    const [authStatus, setauthStatus] = useState(false);
-    const [uid, setUid] = useState("");
+    const {register, handleSubmit} = useForm();
+    const userCtx = useContext(UserContext)
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         const res = await fetch('/api/auth/login',{
@@ -18,12 +20,25 @@ function Login(){
         console.log(jsonVal)
         const isAuth = jsonVal.success
         if (isAuth) {
-            setauthStatus(true)
-        }else{
-            setError("loginError", {message:"Incorrect Username or Password"})
+            const userStatus = {
+                authStatus: isAuth,
+                id: jsonVal.user.user.basics.id,
+                type: jsonVal.user.user.basics.type
+            }
+            userCtx.updateUserStatus(userStatus)
         }
-        console.log(jsonVal)
     }
+
+    useEffect(() => {
+        if(userCtx.authStatus) {
+            if(userCtx.type === "Users") {
+                navigate("/jobseeker/overview", {replace: true})
+            }
+            else if(userCtx.type === "Organizations") {
+                navigate("/company/overview", {replace: true})
+            }
+        }
+    })
 
     return (
         <div className="container log-in">
@@ -44,9 +59,9 @@ function Login(){
                         <Link to="register-company" className="btn btn-success btn-lg">Create new employer account</Link>
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
-        
+
     )
 }
 

@@ -127,10 +127,10 @@ export const updatePicture = async (userId: string, picture: UploadedFile) => {
   try {
     const fileName = userId + path.extname(picture.name);
     await picture.mv(path.resolve('.', 'images', fileName));
-    await connection.query('UPDATE users SET picture = ? WHERE uid = ?', [
-      fileName,
-      userId,
-    ]);
+    await connection.query(
+      'UPDATE applicant_data SET picture = ? WHERE id = ?',
+      [fileName, userId],
+    );
     return {
       name: picture.name,
       size: picture.size,

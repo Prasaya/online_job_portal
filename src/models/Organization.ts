@@ -4,9 +4,9 @@ import {
   Organization,
   NewOrganizationInput,
   NewOrganizationParameters,
-} from '@root/typings/Organization';
+} from '@typings/Organization';
 import connection from '@utils/dbSetup';
-import hashPassword from '@root/utils/password';
+import hashPassword from '@utils/password';
 
 export const organizationRegisterSchema: Schema = {
   email: {

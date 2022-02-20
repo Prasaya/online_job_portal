@@ -1,4 +1,4 @@
-import { Organization } from '@root/typings/Organization';
+import { Organization } from '@typings/Organization';
 import { AuthData } from '@typings/authorization';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';
@@ -16,7 +16,7 @@ export const getAuthUser = async (email: string): Promise<AuthData | null> => {
   ) {
     return null;
   }
-  const socials = result[0].socials ? JSON.parse(result[0].socials) : [];
+  const socials = result[0].socials ? (result[0].socials) : [];
   return { ...result[0][0], socials } as AuthData;
 };
 
@@ -90,8 +90,8 @@ export async function searchUser(
       return null;
     }
     const data = result[0][0];
-    const roles = data.roles ? JSON.parse(result[0].roles) : [];
-    const socials = data.socials ? JSON.parse(result[0].socials) : [];
+    const roles = data.roles ? (result[0].roles) : [];
+    const socials = data.socials ? (result[0].socials) : [];
     const organization: Organization = {
       basics: {
         id: data.id,

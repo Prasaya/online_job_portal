@@ -7,13 +7,13 @@ function Avatar() {
     const fetchAvatar = async () => {
         const res = await fetch("/api/user")
         const data = await res.json()
-        return data.user.basics.picture
+        return data.user.basics.picture ? 'api/user/avatar' : stockPhoto;
     }
 
     useEffect(()=>{
         const getAvatar = async () => {
             const data = await fetchAvatar()
-            setAvatar(data || stockPhoto)
+            setAvatar(data)
         }
         getAvatar()
     },[])

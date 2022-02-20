@@ -26,12 +26,12 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
-      '@root': path.resolve('./src'),
       '@middleware': path.resolve('./src/middleware'),
       '@models': path.resolve('./src/models'),
       '@routes': path.resolve('./src/routes'),
       '@utils': path.resolve('./src/utils'),
       '@typings': path.resolve('./src/typings'),
+      '@root': path.resolve('./src'),
     },
   },
   externalsPresets: { node: true },
