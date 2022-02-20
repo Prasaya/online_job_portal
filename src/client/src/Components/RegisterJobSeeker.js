@@ -1,11 +1,14 @@
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useForm } from 'react-hook-form';
+import { useRef, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../Context/UserContext';
 
 function RegisterJobSeeker() {
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -13,6 +16,8 @@ function RegisterJobSeeker() {
       email: "",
     },
   });
+  const userCtx = useContext(UserContext);
+
   const password = useRef();
   password.current = watch("password", "");
 
@@ -24,8 +29,29 @@ function RegisterJobSeeker() {
       },
       body: JSON.stringify(data),
     });
-    console.log(await res.json());
+    const jsonVal = await res.json();
+    if (!jsonVal.success) {
+      setError('loginError', { message: jsonVal.message });
+    } else {
+      const userStatus = {
+        authStatus: true,
+        id: jsonVal.organization.id,
+        type: jsonVal.organization.type,
+      };
+      userCtx.updateUserStatus(userStatus);
+    }
   };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userCtx.authStatus) {
+      if (userCtx.type === 'Users') {
+        navigate('/jobseeker/overview', { replace: true });
+      } else if (userCtx.type === 'Organizations') {
+        navigate('/company/overview', { replace: true });
+      }
+    }
+  });
 
   return (
     <div className="container register-account">
@@ -213,6 +239,11 @@ function RegisterJobSeeker() {
                 {errors.confirmPassword && errors.confirmPassword.message}
               </div>
             </div>
+            {errors.loginError && (
+              <div className="alert alert-danger my-2">
+                {errors.loginError.message}
+              </div>
+            )}
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
                 Sign Up
