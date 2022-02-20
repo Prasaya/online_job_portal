@@ -51,7 +51,6 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
   passportInstance.serializeUser((data, cb) => {
     const { user } = data;
     const { id, type } = user.basics;
-    console.log(user.basics);
     cb(null, { id, type });
   });
 

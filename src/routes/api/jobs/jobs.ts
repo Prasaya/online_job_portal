@@ -8,12 +8,13 @@ import {
 import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
-import { isLoggedIn } from '@middleware/authentication';
+import { isOrganization } from '@middleware/authorization'
 import logger from '@utils/logger';
+import { fetchOrganizationJobs } from '../organization/organization';
 
 const router = express.Router();
 
-// router.get('/', isLoggedIn,
+// TODO: Implement pagination
 router.get('/', async (req, res) => {
   const [result] = await connection.query('SELECT * FROM jobs ');
   const [result2] = await connection.query('SELECT * FROM skills ');
@@ -29,7 +30,7 @@ router.get('/', async (req, res) => {
 
 router.post(
   '/',
-  // isLoggedIn,
+  isOrganization,
   checkSchema(JobCreationSchema),
   async (req: Request, res: Response) => {
     try {
@@ -41,7 +42,7 @@ router.post(
       }
 
       const jobPostData: JobInput = {
-        companyId: req.body.companyId,
+        companyId: req.user!.user.basics.id,
         title: req.body.title,
         description: req.body.description,
         vacancies: req.body.vacancies,
@@ -64,7 +65,7 @@ router.post(
 
 router.delete(
   '/:id',
-  // isLoggedIn,
+  isOrganization,
   param('id').isString().isLength({ min: 36, max: 36 }),
   async (req: Request, res: Response) => {
     try {
@@ -84,5 +85,28 @@ router.delete(
     res.status(200).json({ message: 'Job deleted', success: true });
   },
 );
+
+
+router.get('/organization/:id',
+  param('id').isString().isLength({ min: 36, max: 36 }),
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array(), success: false });
+        return;
+      }
+      const companyID = req.params.id;
+      res.json(await fetchOrganizationJobs(companyID));
+    } catch (err) {
+      logger.error('Error in getting all jobs posted by company', err);
+      res
+        .status(500)
+        .json({ message: 'Something went wrong!', success: false });
+    }
+  },
+)
+
+
 
 export default router;
