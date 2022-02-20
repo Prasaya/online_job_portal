@@ -22,15 +22,12 @@ function Login() {
       body: JSON.stringify(data),
     });
     const jsonVal = await res.json();
-    console.log(jsonVal);
-    const isAuth = jsonVal.success;
-    if (isAuth) {
-      const userStatus = {
-        authStatus: isAuth,
+    if (jsonVal.success) {
+      userCtx.updateUserStatus({
+        authStatus: jsonVal.success,
         id: jsonVal.user.basics.id,
         type: jsonVal.user.basics.type,
-      };
-      userCtx.updateUserStatus(userStatus);
+      });
     } else {
       setError('loginError', { message: 'Incorrect Username or Password' });
     }
