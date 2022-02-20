@@ -45,13 +45,14 @@ function Nav() {
     },
   ]);
   const [avatar, setAvatar] = useState('');
+  const [userName, setName] = useState('');
   const stockPhoto =
     'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
 
-  const fetchAvatar = async () => {
+  const fetchInfo = async () => {
     const res = await fetch('/api/user');
     const data = await res.json();
-    return data.user.basics.picture ? '/api/user/avatar' : stockPhoto;
+    return data;
   };
 
   function OnClick(e) {
@@ -83,11 +84,11 @@ function Nav() {
   }, []);
 
   useEffect(() => {
-    const getAvatar = async () => {
-      const data = await fetchAvatar();
-      setAvatar(data || stockPhoto);
-    };
-    getAvatar();
+    (async () => {
+      const data = await fetchInfo();
+      setAvatar(data.user.basics.picture ? '/api/user/avatar' : stockPhoto);
+      setName(data.user.basics.firstName + ' ' + data.user.basics.lastName);
+    })();
   }, []);
 
   return (
@@ -136,10 +137,12 @@ function Nav() {
                   className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="dropdownMenuImage"
                 >
+                  <li className="dropdown-item-text">Signed in as</li>
+                  <li className="dropdown-item-text">{userName}</li>
                   <li>
-                    <a className="dropdown-item" onClick={logOut}>
+                    <button className="dropdown-item" onClick={logOut}>
                       Log Out
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </li>
