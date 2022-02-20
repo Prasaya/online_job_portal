@@ -60,7 +60,7 @@ export const isOrganization: Handler = (req, res, next) => {
   if (req.user.user.basics.type !== 'Organizations') {
     res
       .status(403)
-      .json({ message: 'Must be logged in as User!', success: false });
+      .json({ message: 'Must be logged in as Organization!', success: false });
     return;
   }
   next();
