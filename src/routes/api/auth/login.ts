@@ -21,7 +21,7 @@ router.post(
           logger.error(loginError);
           return next(loginError);
         }
-        return res.json({ user, success: true });
+        return res.json({ user: user.user, success: true });
       });
     })(req, res, next);
   },
