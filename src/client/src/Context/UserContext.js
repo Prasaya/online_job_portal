@@ -1,41 +1,53 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from 'react';
 
 const UserContext = createContext({
-    authStatus: false,
-    id: "",
-    type: "",
-    updateUserStatus: ({authStatus: newAuthStatus,
-        id: uid,
-        type: userType}) => {}
+  authStatus: false,
+  id: '',
+  type: '',
+  updateUserStatus: ({
+    authStatus: newAuthStatus,
+    id: uid,
+    type: userType,
+  }) => {},
 });
 
 export function UserContextProvider(props) {
-    const [userAuthStatus, setUserAuthStatus] = useState(false);
-    const [uid, setUid] = useState("");
-    const [userType, setUserType] = useState("");
+  const [userAuthStatus, setUserAuthStatus] = useState(false);
+  const [uid, setUid] = useState('');
+  const [userType, setUserType] = useState('');
 
-    function updateUserStatusHandler({
-        authStatus: newAuthStatus,
-        id: uid,
-        type: userType
-    }) {
-        setUserAuthStatus(newAuthStatus)
-        setUid(uid)
-        setUserType(userType)
-    }
+  useEffect(() => {
+    (async () => {
+      const res = await fetch('/api/user');
+      const data = await res.json();
+      setUserAuthStatus(data.success);
+      setUid(data.success ? data.user.basics.id : '');
+      setUserType(data.success ? data.user.basics.type : '');
+    })();
+  }, []);
 
-    const context = {
-        authStatus: userAuthStatus,
-        id: uid,
-        type: userType,
-        updateUserStatus: updateUserStatusHandler
-    }
+  function updateUserStatusHandler({
+    authStatus: newAuthStatus,
+    id: uid,
+    type: userType,
+  }) {
+    setUserAuthStatus(newAuthStatus);
+    setUid(uid);
+    setUserType(userType);
+  }
 
-    return(
-        <UserContext.Provider value={context}>
-            {props.children}
-        </UserContext.Provider>
-    )
+  const context = {
+    authStatus: userAuthStatus,
+    id: uid,
+    type: userType,
+    updateUserStatus: updateUserStatusHandler,
+  };
+
+  return (
+    <UserContext.Provider value={context}>
+      {props.children}
+    </UserContext.Provider>
+  );
 }
 
 export default UserContext;
