@@ -45,7 +45,7 @@ router.post(
       const organization: Organization = await createNewOrganization(
         organizationData,
       );
-      return res.json(organization);
+      return res.json({ organization, success: true });
     } catch (err) {
       logger.error(err);
       return res
