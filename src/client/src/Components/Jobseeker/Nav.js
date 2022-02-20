@@ -44,30 +44,7 @@ function Nav() {
       status: '',
     },
   ]);
-  const [avatar, setAvatar] = useState('');
-  const [userName, setName] = useState('');
-  const stockPhoto =
-    'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
 
-  const fetchInfo = async () => {
-    const res = await fetch('/api/user');
-    const data = await res.json();
-    return data;
-  };
-
-  function OnClick(e) {
-    const id = e.target.id;
-    const updatedNavElements = navElements.map((element) => {
-      if (element.status === 'active') {
-        element.status = '';
-      }
-      if (element.to === id) {
-        element.status = 'active';
-      }
-      return element;
-    });
-    setNavElements(updatedNavElements);
-  }
   //set active for initial render
   useEffect(() => {
     const updatedNavElements = navElements.map((element) => {
@@ -82,6 +59,31 @@ function Nav() {
     setNavElements(updatedNavElements);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  function OnClick(e) {
+    const id = e.target.id;
+    const updatedNavElements = navElements.map((element) => {
+      if (element.status === 'active') {
+        element.status = '';
+      }
+      if (element.to === id) {
+        element.status = 'active';
+      }
+      return element;
+    });
+    setNavElements(updatedNavElements);
+  }
+
+  const [avatar, setAvatar] = useState('');
+  const [userName, setName] = useState('');
+  const stockPhoto =
+    'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
+
+  const fetchInfo = async () => {
+    const res = await fetch('/api/user');
+    const data = await res.json();
+    return data;
+  };
 
   useEffect(() => {
     (async () => {
