@@ -35,8 +35,8 @@ function RegisterJobSeeker() {
     } else {
       const userStatus = {
         authStatus: true,
-        id: jsonVal.organization.id,
-        type: jsonVal.organization.type,
+        id: jsonVal.user.id,
+        type: jsonVal.user.type,
       };
       userCtx.updateUserStatus(userStatus);
     }
