@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import UserContext from "../Context/UserContext"
 
 function Login(){
-    const {register, handleSubmit} = useForm();
+    const {register, handleSubmit, setError, formState: {errors}} = useForm();
     const userCtx = useContext(UserContext)
     const navigate = useNavigate();
 
@@ -26,6 +26,8 @@ function Login(){
                 type: jsonVal.user.user.basics.type
             }
             userCtx.updateUserStatus(userStatus)
+        }else {
+            setError("loginError", {message:"Incorrect Username or Password"})
         }
     }
 
