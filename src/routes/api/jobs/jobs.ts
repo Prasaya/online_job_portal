@@ -9,6 +9,7 @@ import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket } from 'mysql2';
 import { isLoggedIn } from '@middleware/authentication';
+import { isOrganization } from '@middleware/authorization'
 import logger from '@utils/logger';
 
 const router = express.Router();
@@ -29,7 +30,7 @@ router.get('/', async (req, res) => {
 
 router.post(
   '/',
-  // isLoggedIn,
+  isOrganization,
   checkSchema(JobCreationSchema),
   async (req: Request, res: Response) => {
     try {
@@ -41,7 +42,7 @@ router.post(
       }
 
       const jobPostData: JobInput = {
-        companyId: req.body.companyId,
+        companyId: req.user!.user.basics.id,
         title: req.body.title,
         description: req.body.description,
         vacancies: req.body.vacancies,
@@ -64,7 +65,7 @@ router.post(
 
 router.delete(
   '/:id',
-  // isLoggedIn,
+  isOrganization,
   param('id').isString().isLength({ min: 36, max: 36 }),
   async (req: Request, res: Response) => {
     try {
