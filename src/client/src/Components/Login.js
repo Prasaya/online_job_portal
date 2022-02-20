@@ -57,8 +57,8 @@ function Login(){
                     </form>
                     <hr />
                     <div className="d-grid gap-2">
-                        <Link to="register-jobseeker" className="btn btn-success btn-lg">Create new job seeker account</Link>
-                        <Link to="register-company" className="btn btn-success btn-lg">Create new employer account</Link>
+                        <Link to="/register-jobseeker" className="btn btn-success btn-lg">Create new job seeker account</Link>
+                        <Link to="/register-company" className="btn btn-success btn-lg">Create new employer account</Link>
                     </div>
                 </div>
             </div>
