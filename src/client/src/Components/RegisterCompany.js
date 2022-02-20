@@ -33,13 +33,24 @@ function RegisterCompany() {
     if (!jsonVal.success) {
       setError('loginError', { message: jsonVal.message });
     } else {
-      const userStatus = {
-        authStatus: true,
-        id: jsonVal.organization.id,
-        type: jsonVal.organization.type,
-      };
-      userCtx.updateUserStatus(userStatus);
+      logIn({ username: data.email, password: data.password });
     }
+  };
+
+  const logIn = async (data) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonVal = await res.json();
+    userCtx.updateUserStatus({
+      authStatus: jsonVal.success,
+      id: jsonVal.user.basics.id,
+      type: jsonVal.user.basics.type,
+    });
   };
 
   const navigate = useNavigate();
