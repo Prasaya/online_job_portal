@@ -59,7 +59,7 @@ function Nav() {
     setNavElements(updatedNavElements);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   function OnClick(e) {
     const id = e.target.id;
     const updatedNavElements = navElements.map((element) => {
@@ -104,9 +104,6 @@ function Nav() {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#nav-right"
-          aria-controls="nav-right"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
