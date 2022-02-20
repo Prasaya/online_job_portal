@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
 
 export const fetchOrganizationJobs = async (companyId: string) => {
   const [result] = await connection.execute('CALL getCompanyJobsData(?)', [companyId]);
-  console.log(result);
   if (Array.isArray(result)) {
     return { jobList: result[0], success: true };
   }
