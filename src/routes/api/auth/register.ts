@@ -86,7 +86,7 @@ router.post(
         gender: req.body.gender || null,
       };
       const user: User = await createNewUser(userData);
-      return res.json(user);
+      return res.json({ user, success: true });
     } catch (err) {
       logger.error(`Error in registration: ${err}`);
       return res

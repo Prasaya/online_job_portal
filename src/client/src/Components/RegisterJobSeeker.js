@@ -1,31 +1,68 @@
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useForm } from 'react-hook-form';
+import { useRef, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../Context/UserContext';
 
 function RegisterJobSeeker() {
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm({
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
+  const userCtx = useContext(UserContext);
+
   const password = useRef();
-  password.current = watch("password", "");
+  password.current = watch('password', '');
 
   const onSubmitForm = async (data) => {
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
       body: JSON.stringify(data),
     });
-    console.log(await res.json());
+    const jsonVal = await res.json();
+    if (!jsonVal.success) {
+      setError('loginError', { message: jsonVal.message });
+    } else {
+      logIn({ username: data.email, password: data.password });
+    }
   };
+
+  const logIn = async (data) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonVal = await res.json();
+    userCtx.updateUserStatus({
+      authStatus: jsonVal.success,
+      id: jsonVal.user.basics.id,
+      type: jsonVal.user.basics.type,
+    });
+  };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userCtx.authStatus) {
+      if (userCtx.type === 'Users') {
+        navigate('/jobseeker/overview', { replace: true });
+      } else if (userCtx.type === 'Organizations') {
+        navigate('/company/overview', { replace: true });
+      }
+    }
+  });
 
   return (
     <div className="container register-account">
@@ -37,12 +74,12 @@ function RegisterJobSeeker() {
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div className="form-floating mb-3">
               <input
-                {...register("firstName", {
-                  required: "Please fill out this field",
+                {...register('firstName', {
+                  required: 'Please fill out this field',
                 })}
                 type="text"
                 className={`form-control form-control-lg ${
-                  errors.firstName ? "is-invalid" : ""
+                  errors.firstName ? 'is-invalid' : ''
                 }`}
                 placeholder="First Name"
                 id="firstName"
@@ -54,7 +91,7 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("middleName")}
+                {...register('middleName')}
                 type="text"
                 className="form-control form-control-lg"
                 placeholder="Middle Name"
@@ -64,12 +101,12 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("lastName", {
-                  required: "Please fill out this field",
+                {...register('lastName', {
+                  required: 'Please fill out this field',
                 })}
                 type="text"
                 className={`form-control form-control-lg ${
-                  errors.lastName ? "is-invalid" : ""
+                  errors.lastName ? 'is-invalid' : ''
                 }`}
                 placeholder="Last Name"
                 id="lastName"
@@ -81,16 +118,16 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("email", {
-                  required: "Please fill out this field",
+                {...register('email', {
+                  required: 'Please fill out this field',
                   validate: (value) =>
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-                      value
-                    ) || "Invalid Email",
+                      value,
+                    ) || 'Invalid Email',
                 })}
                 type="email"
                 className={`form-control form-control-lg ${
-                  errors.email ? "is-invalid" : ""
+                  errors.email ? 'is-invalid' : ''
                 }`}
                 placeholder="Email"
                 id="email"
@@ -102,16 +139,16 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("phone", {
-                  required: "Please fill out this field",
+                {...register('phone', {
+                  required: 'Please fill out this field',
                   pattern: {
                     value: /^[0-9\b]+$/,
-                    message: "Phone number must be a number",
+                    message: 'Phone number must be a number',
                   },
                 })}
                 type="text"
                 className={`form-control form-control-lg ${
-                  errors.phone ? "is-invalid" : ""
+                  errors.phone ? 'is-invalid' : ''
                 }`}
                 placeholder="Phone Number"
                 id="phoneNumber"
@@ -123,12 +160,12 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("birthday", {
-                  required: "Please fill out this field",
+                {...register('birthday', {
+                  required: 'Please fill out this field',
                 })}
                 type="date"
                 className={`form-control form-control-lg ${
-                  errors.birthday ? "is-invalid" : ""
+                  errors.birthday ? 'is-invalid' : ''
                 }`}
                 placeholder="Birthday"
                 id="birthday"
@@ -140,10 +177,10 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <select
-                {...register("gender", {
-                  required: "Please choose a valid option",
+                {...register('gender', {
+                  required: 'Please choose a valid option',
                 })}
-                className={`form-select ${errors.gender ? "is-invalid" : ""}`}
+                className={`form-select ${errors.gender ? 'is-invalid' : ''}`}
                 id="gender"
               >
                 <option selected disabled value="">
@@ -171,7 +208,7 @@ function RegisterJobSeeker() {
             </div> */}
             <div className="form-floating mb-3">
               <input
-                {...register("password", {
+                {...register('password', {
                   required: true,
                   pattern: {
                     value:
@@ -180,7 +217,7 @@ function RegisterJobSeeker() {
                 })}
                 type="password"
                 className={`form-control form-control-lg ${
-                  errors.password ? "is-invalid" : ""
+                  errors.password ? 'is-invalid' : ''
                 }`}
                 placeholder="Password"
                 id="password"
@@ -188,7 +225,7 @@ function RegisterJobSeeker() {
               <label htmlFor="password">Password</label>
               <div
                 className={`form-text ${
-                  errors.password ? "invalid-feedback" : ""
+                  errors.password ? 'invalid-feedback' : ''
                 }`}
               >
                 Password must be 8-20 characters and must be a mix of small and
@@ -197,13 +234,13 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
-                {...register("confirmPassword", {
+                {...register('confirmPassword', {
                   validate: (value) =>
-                    value === password.current || "Passwords do not match",
+                    value === password.current || 'Passwords do not match',
                 })}
                 type="password"
                 className={`form-control form-control-lg ${
-                  errors.confirmPassword ? "is-invalid" : ""
+                  errors.confirmPassword ? 'is-invalid' : ''
                 }`}
                 placeholder="Confirm Password"
                 id="confirmPassword"
@@ -213,6 +250,11 @@ function RegisterJobSeeker() {
                 {errors.confirmPassword && errors.confirmPassword.message}
               </div>
             </div>
+            {errors.loginError && (
+              <div className="alert alert-danger my-2">
+                {errors.loginError.message}
+              </div>
+            )}
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
                 Sign Up
