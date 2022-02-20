@@ -4,11 +4,14 @@ import authRoute from './auth/auth';
 import userRoute from './user/user';
 import jobs from './jobs/jobs';
 import academicsRoute from './academics';
-import organizationRoute from './organization/organization'
+import organizationRoute from './organization/organization';
+import applicantRoute from './applicant/applicant';
 
 const router = express.Router();
 
 router.use('/academics', academicsRoute);
+
+router.use('/applicant', applicantRoute);
 
 router.use('/jobs', jobs);
 

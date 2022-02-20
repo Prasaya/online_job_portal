@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
 import './nav.css';
 
+// TODO: Use common state for nav bar and profile
 function Nav() {
   const userCtx = useContext(UserContext);
 
@@ -80,7 +81,7 @@ function Nav() {
     'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
 
   const fetchInfo = async () => {
-    const res = await fetch('/api/user');
+    const res = await fetch('/api/applicant');
     const data = await res.json();
     return data;
   };
@@ -88,7 +89,9 @@ function Nav() {
   useEffect(() => {
     (async () => {
       const data = await fetchInfo();
-      setAvatar(data.user.basics.picture ? '/api/user/avatar' : stockPhoto);
+      setAvatar(
+        data.user.basics.picture ? '/api/applicant/avatar' : stockPhoto,
+      );
       setName(data.user.basics.firstName + ' ' + data.user.basics.lastName);
     })();
   }, []);
