@@ -1,5 +1,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
+
 function titleCase(str) {
   return str
     .toLowerCase()
@@ -23,14 +25,12 @@ function MyProfile() {
   };
 
   useEffect(() => {
-    const stockPhoto =
-      'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
     const getInfo = async () => {
       const user = await fetchInfo();
       setBasicInfo(user.basics);
       setSkills(user.skills);
       setEducation(user.academics);
-      setPicture(user.basics.picture ? '/api/applicant/avatar' : stockPhoto);
+      setPicture(user.basics.picture ? '/api/applicant/avatar' : defaultAvatar);
     };
     getInfo();
   }, []);

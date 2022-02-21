@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
+import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
 import './nav.css';
 
 function CompanyNav() {
@@ -70,8 +71,6 @@ function CompanyNav() {
 
   const [avatar, setAvatar] = useState('');
   const [userName, setName] = useState('');
-  const stockPhoto =
-    'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
 
   const fetchInfo = async () => {
     const res = await fetch('/api/user');
@@ -82,7 +81,7 @@ function CompanyNav() {
   useEffect(() => {
     (async () => {
       const data = await fetchInfo();
-      setAvatar(data.user.basics.picture ? '/api/user/avatar' : stockPhoto);
+      setAvatar(data.user.basics.picture ? '/api/user/avatar' : defaultAvatar);
       setName(data.user.basics.name);
     })();
   }, []);

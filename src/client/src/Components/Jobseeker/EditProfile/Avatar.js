@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
+import defaultAvatar from "../../../Assets/Img/defaultAvatar.png"
 
 function Avatar() {
   const [avatar, setAvatar] = useState('');
-  const stockPhoto =
-    'http://stock.wikimini.org/w/images/9/95/Gnome-stock_person-avatar-profile.png';
 
   const fetchAvatar = async () => {
     const res = await fetch('/api/applicant');
     const data = await res.json();
-    return data.user.basics.picture ? '/api/applicant/avatar' : stockPhoto;
+    return data.user.basics.picture ? '/api/applicant/avatar' : defaultAvatar;
   };
 
   useEffect(() => {
