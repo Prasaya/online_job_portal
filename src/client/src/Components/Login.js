@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import UserContext from '../Context/UserContext';
+import loginWallpaer from "../Assets/Img/loginWallpaper.jpg"
 
 function Login() {
   const {
@@ -44,10 +45,13 @@ function Login() {
   });
 
   return (
-    <div className="container log-in">
-      <div className="row justify-content-center my-5">
+    <div className="container">
+      <div className="row justify-content-around my-5">
         <div className="col-lg-4">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <img className='img img-fluid' src={loginWallpaer} alt="wallpaper" />
+        </div>
+        <div className="col-lg-4 shadow-lg rounded-3 border border-white">
+          <form className='my-4' onSubmit={handleSubmit(onSubmit)}>
             <input
               {...register('username', { required: true })}
               type="text"
@@ -66,7 +70,7 @@ function Login() {
                 {errors.loginError.message}
               </div>
             )}
-            <div className="d-grid gap-2">
+            <div className="d-grid gap-2 my-4">
               <button className="btn btn-primary btn-lg" type="submit">
                 Log In
               </button>
