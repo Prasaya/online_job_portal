@@ -17,6 +17,7 @@ function MyProfile() {
   const [education, setEducation] = useState([]);
   const [picture, setPicture] = useState('');
   let basicEntries = [];
+  const notDisplay = ['id', 'roles', 'type'];
 
   const fetchInfo = async () => {
     const res = await fetch('/api/applicant');
@@ -63,7 +64,7 @@ function MyProfile() {
                     {basicEntries.map((entry) => {
                       return (
                         <Fragment key={entry[0]}>
-                          {entry[1] && (
+                          {entry[1] && !notDisplay.includes(entry[0].toLowerCase()) && (
                             <tr>
                               <td>{titleCase(entry[0])}</td>
                               <td>:</td>
