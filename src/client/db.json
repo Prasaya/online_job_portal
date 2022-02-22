@@ -29,6 +29,9 @@
       "lastName": "Doe",
       "email": "johndoe@email.com",
       "phone": "0123456789",
+      "roles": "",
+      "id": "jo3joqiwjmd12lol",
+      "type": "Users",
       "birthday": "1995-01-11",
       "gender": "male"
     },
@@ -62,5 +65,20 @@
       }
     ],
     "picture": "https://www.proheadshots.ca/wp-content/uploads/2016/02/studio-background-dark-1.jpg"
+  },
+  "company": {
+    "basics": {
+      "name": "Organization",
+      "description": "Very Cool Company",
+      "address": "5th Street",
+      "city": "Kathamndu",
+      "email": "johndoe@email.com",
+      "phone": "9850091279",
+      "roles": "",
+      "id": "jo3joqiwjmd12lol",
+      "type": "Organizations",
+      "website": "https://qwe.com",
+      "logo": "https://www.proheadshots.ca/wp-content/uploads/2016/02/studio-background-dark-1.jpg"
+    }
   }
 }
