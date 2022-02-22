@@ -7,7 +7,7 @@ import {
 } from '@models/Jobs';
 import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
-import { RowDataPacket } from 'mysql2';
+import { RowDataPacket, FieldPacket } from 'mysql2';
 import { isOrganization } from '@middleware/authorization'
 import logger from '@utils/logger';
 import { fetchOrganizationJobs } from '../organization/organization';
@@ -27,6 +27,32 @@ router.get('/', async (req, res) => {
   });
   res.json(Object.values(jobList));
 });
+
+
+router.get(
+  '/:id',
+  param('id').isString().isLength({ min: 36, max: 36 }),
+  async (req: Request, res: Response) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array(), success: false });
+        return;
+      }
+      const jobID = req.params.id;
+      const [result]: [RowDataPacket[], FieldPacket[]]
+        = await connection.execute('CALL getJobFromId(?)', [jobID]);
+      console.log(result);
+      res.json({ jobDetails: result[0][0], success: true });
+    } catch (err) {
+      logger.error('Error in Getting single Job', err);
+      res
+        .status(500)
+        .json({ message: 'Something went wrong!', success: false });
+    }
+  },
+);
+
 
 router.post(
   '/',
