@@ -173,7 +173,8 @@ CREATE PROCEDURE getCompanyJobsData(
     IN oid CHAR(36)
 )
 BEGIN
-	SELECT j.jobId AS jobId, j.companyId as companyId, title, description, vacancies, experience, address, district,
+	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description, 
+		j.vacancies, j.experience, j.address, j.district,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
@@ -187,10 +188,11 @@ BEGIN
         ) as qualifications
     FROM jobs AS j
     LEFT JOIN skills AS s ON s.jobId = j.jobId
+    INNER JOIN organization_data as od ON j.companyId = od.id
     WHERE j.companyId = oid
     GROUP BY j.jobId;
 END |
-DELIMITER ;	
+DELIMITER ;		
 
 DELIMITER |
 DROP PROCEDURE IF EXISTS getJobFromId |
@@ -198,7 +200,8 @@ CREATE PROCEDURE getJobFromId(
     IN jId CHAR(36)
 )
 BEGIN
-	SELECT j.*,
+	SELECT j.jobId, j.companyId, organization_data.name as companyName, j.title,
+		j.description, j.vacancies, j.experience, j.address, j.district,
 		(SELECT
 			JSON_ARRAYAGG(
 				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
@@ -218,6 +221,7 @@ BEGIN
 			GROUP BY q.jobId
         ) as qualifications
 	FROM jobs as j
+    INNER JOIN organization_data on organization_data.id = j.companyId
     GROUP BY j.jobId
     HAVING j.jobId = jId;
 END |
