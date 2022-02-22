@@ -5,7 +5,7 @@ import {
   deleteJobPost,
   JobCreationSchema,
 } from '@models/Jobs';
-import DBJob, { Job, JobInput } from '@typings/Jobs';
+import DBJob, { Job, JobInput, JobReturn } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket, FieldPacket } from 'mysql2';
 import { isOrganization } from '@middleware/authorization'
@@ -133,6 +133,73 @@ router.get('/organization/:id',
   },
 )
 
+
+router.get('/test/1', async (req, res) => {
+  const [result] = await connection.query('SELECT * from allJobs');
+
+  let x: JobReturn = {
+    "jobId": "",
+    "companyId": "",
+    "title": "",
+    "description": "Be a senior developer",
+    "vacancies": 3,
+    "experience": 5,
+    "address": "",
+    "district": "",
+    "skills": [],
+    "qualifications": [],
+  }
+  const to_send: { [id: string]: typeof x } = {};
+
+  let xskills = {
+    "skillName": "",
+    "proficiency": ""
+  }
+  let xqualifications = {
+    "qid": "",
+    "level": "",
+    "degree": "",
+    discipline: ""
+  };
+  (result as RowDataPacket[]).forEach(a => {
+    xskills.skillName = a.skillName;
+    xskills.proficiency = a.proficiency;
+    xqualifications.qid = a.qid;
+    xqualifications.level = a.level;
+    if (a.jobId in to_send) {
+      console.log(a.skillName, to_send[a.jobId].skills.filter(s => s.skillName === a.skillName));
+      if (to_send[a.jobId].skills.filter(s => s.skillName === a.skillName).length === 0) {
+        to_send[a.jobId].skills.push({ ...xskills });
+      }
+      if (to_send[a.jobId].qualifications.filter(q => q.qid === a.qid).length === 0) {
+        to_send[a.jobId].qualifications.push({ ...xqualifications });
+      }
+    }
+
+    else {
+      let x = {
+        "jobId": a.jobId,
+        "companyId": a.companyId,
+        "title": a.title,
+        "description": a.description,
+        "vacancies": a.vacancies,
+        "experience": a.experience,
+        "address": a.address,
+        "district": "",
+        "skills": [xskills],
+        "qualifications": [xqualifications],
+      }
+      to_send[a.jobId] = x;
+    }
+  });
+
+  res.json({ to_send });
+});
+
+router.get('/test1/1', async (req, res) => {
+  const [result] = await connection.query('SELECT * from allJobsFromDatabase');
+  res.json({ result });
+});
 
 
 export default router;

@@ -18,8 +18,21 @@ export interface Skill {
   skillName: string;
   proficiency: string;
 }
+
+export interface Qualifications {
+  qid: string;
+  level: string;
+  degree: string;
+  discipline: string;
+}
+
 export interface Job extends DBJob {
   qualifications: string[];
+  skills: Skill[];
+}
+
+export interface JobReturn extends DBJob {
+  qualifications: Qualifications[];
   skills: Skill[];
 }
 
