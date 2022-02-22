@@ -53,7 +53,7 @@ router.post(
         skills: req.body.skills,
       };
       const user = await createNewJobPost(jobPostData);
-      return res.json({ ...user });
+      return res.json({ jobDetails: user, success: true });
     } catch (err) {
       logger.error(err);
       return res
