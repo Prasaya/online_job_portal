@@ -1,12 +1,12 @@
 export type social =
   | {
-      provider: string;
-      identifier: string;
-    }
+    provider: string;
+    identifier: string;
+  }
   | {
-      provider: null;
-      identifier: null;
-    };
+    provider: null;
+    identifier: null;
+  };
 
 export interface Skill {
   name: string;
@@ -42,8 +42,9 @@ export interface User {
 }
 
 export interface NewUserParameters
-  extends Omit<User['basics'], 'type' | 'roles' | 'socials' | 'password'> {
+  extends Omit<User['basics'], 'type' | 'roles' | 'socials' | 'password' | 'picture'> {
   password: string;
 }
 
 export type NewUserInput = Omit<NewUserParameters, 'id'>;
+export type UpdateUser = Omit<NewUserParameters, 'password' | 'email' | 'type'>;
