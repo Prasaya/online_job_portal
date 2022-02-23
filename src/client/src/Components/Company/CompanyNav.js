@@ -90,7 +90,7 @@ function CompanyNav() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
-      <div className="container d-flex flex-row justify-content-between">
+      <div className="container-fluid">
         <Link className="navbar-brand left" to="/">
           Job Portal
         </Link>
