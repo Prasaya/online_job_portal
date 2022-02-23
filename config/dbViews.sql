@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW allJobsFromDatabase AS
-SELECT j.jobId, j.companyId, j.title, j.description, j.vacancies, j.experience, j.address,
+SELECT j.jobId, c.name as companyName, j.companyId, j.title, j.description, j.vacancies, j.experience, j.address,
 	(SELECT
 		JSON_ARRAYAGG(
 			JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
@@ -19,4 +19,5 @@ SELECT j.jobId, j.companyId, j.title, j.description, j.vacancies, j.experience, 
 		GROUP BY q.jobId
 	) as qualifications
 FROM jobs as j
+INNER JOIN organization_data as c ON c.id = j.companyID
 GROUP BY j.jobId;
