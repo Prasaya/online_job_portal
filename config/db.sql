@@ -120,6 +120,7 @@ CREATE TABLE jobs (
     experience int,
     address varchar(1000),
     district varchar(1000),
+    deadline date,
     primary key (jobId),
     foreign key (companyId) references organization_data(id)
 );

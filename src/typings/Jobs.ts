@@ -7,6 +7,7 @@ export default interface DBJob {
   experience: number | null;
   address: string | null;
   district: string | null;
+  deadline: Date | null;
 }
 
 export interface DBSkill {

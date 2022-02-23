@@ -95,6 +95,7 @@ router.post(
         district: req.body.district,
         qualifications: req.body.qualifications,
         skills: req.body.skills,
+        deadline: req.body.deadline
       };
       const user = await createNewJobPost(jobPostData);
       return res.json({ jobDetails: user, success: true });
@@ -164,6 +165,7 @@ router.get('/test/1', async (req, res) => {
     "experience": 5,
     "address": "",
     "district": "",
+    "deadline": "",
     "skills": [],
     "qualifications": [],
   }

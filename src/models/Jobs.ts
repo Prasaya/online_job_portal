@@ -74,13 +74,14 @@ export const createNewJobPost = async (
     experience: jobPostData.experience || null,
     address: jobPostData.address || null,
     district: jobPostData.district || null,
+    deadline: jobPostData.deadline || null,
   };
 
   const { qualifications, skills } = jobPostData;
   await connection.execute(
     'INSERT INTO jobs ' +
-      '(jobId, companyId, title, description, vacancies, experience, address, district) ' +
-      'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
+    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [...Object.values(jobData)],
   );
 
@@ -119,7 +120,7 @@ export const createNewJobPost = async (
     // This is to avoid the max bytes limitation of mysql
     if (
       Math.floor(index / 20) ===
-        PromiseArray.length - initialPromiseArrayLength &&
+      PromiseArray.length - initialPromiseArrayLength &&
       index !== skills.length - 1
     ) {
       query += '(?, ?, ?), ';
