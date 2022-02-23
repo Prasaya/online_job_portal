@@ -5,7 +5,7 @@ function Overview() {
     const [jobs, setJobs] = useState([])
 
     async function fetchJobs(){
-        const res = await fetch("http://localhost:4000/jobs")
+        const res = await fetch("/api/jobs?page=1")
         const data = await res.json()
         return data
     }
@@ -13,7 +13,7 @@ function Overview() {
     useEffect(() => {
         async function getJobs(){
             const overviewJobs = await fetchJobs()
-            setJobs(overviewJobs) 
+            setJobs(overviewJobs.jobs) 
         }
         getJobs()
     }, [])
@@ -43,11 +43,11 @@ function Overview() {
     return ( 
         <div className="overview ">
             <h1>Overview</h1>
-            <div className="jobs container bg-light">
-                <ul>
+            <div className="jobs container">
+                <ul className=" list-group">
                     {jobs.map((job) => {
                         return (
-                            <li key={job.jobId}>
+                            <li key={job.jobId} className="p-3 my-3 bg-light list-group-item">
                                 <Job job={job} OnClick={toggleApply} />
                             </li>
                             
