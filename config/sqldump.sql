@@ -16,22 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `academic_qualifications`
---
-
-DROP TABLE IF EXISTS `academic_qualifications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `academic_qualifications` (
-  `qid` int NOT NULL AUTO_INCREMENT,
-  `level` varchar(30) DEFAULT NULL,
-  `discipline` varchar(100) DEFAULT NULL,
-  `degree` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`qid`)
-) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `applicant_academics`
 --
 
@@ -668,4 +652,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-21  0:53:08
+-- Dump completed on 2022-02-23  7:41:32
