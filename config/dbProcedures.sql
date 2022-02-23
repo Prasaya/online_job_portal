@@ -51,11 +51,11 @@ BEGIN
 		GROUP BY id
 	) AS socials ON socials.id = a.id
 	LEFT JOIN (
-		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('provider', providerName, 'identifier', identifier)) AS roles
-		FROM federated_credentials AS fc
-		INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
-		WHERE id = uid
-		GROUP BY id
+		SELECT ur.id, JSON_ARRAYAGG(JSON_OBJECT('roleName', r.name, 'level', r.level)) AS roles
+		FROM user_roles as ur
+		INNER JOIN roles AS r ON r.id = ur.roleId
+		WHERE ur.id = uid
+		GROUP BY ur.id
 	) AS ur_o ON ur_o.id = a.id
 	LEFT JOIN (
 		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('name', name, 'proficiency', proficiency, 'experience',experience)) AS skills
@@ -65,7 +65,7 @@ BEGIN
 	) AS as_o ON as_o.id = a.id
 	LEFT join (
 		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('qid', aa.qid, 'level', level, 'discipline', discipline, 'degree', degree)) AS academics
-		FROM applicant_academics AS aaSET
+		FROM applicant_academics AS aa
 		INNER JOIN academic_qualifications AS aq on aq.qid = aa.qid
 		WHERE id = uid
 		GROUP BY id
@@ -221,5 +221,33 @@ BEGIN
     INNER JOIN organization_data on organization_data.id = j.companyId
     WHERE j.jobId = jId
     GROUP BY j.jobId;
+END |
+DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS applyForJob |
+CREATE PROCEDURE applyForJob (
+	applicantId char(36),
+    jobId char(36)
+)
+BEGIN
+	INSERT INTO applicant_jobs (applicantId, jobId) VALUES (applicantId, jobId);
+END |
+DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS getApplicantJobs |
+CREATE PROCEDURE getApplicantJobs (
+	applicantId char(36)
+)
+BEGIN
+	SELECT JSON_ARRAYAGG(JSON_OBJECT('jobId', aj.jobId, 'companyId', companyId, 'companyName', od.name,
+		'title', title, 'vacancies', vacancies
+	)) AS jobs
+    FROM applicant_jobs AS aj
+    INNER JOIN jobs AS j ON j.jobId = aj.jobId
+    INNER JOIN organization_data AS od ON od.id = j.companyId
+    WHERE aj.applicantId = applicantId
+    GROUP BY aj.applicantId;
 END |
 DELIMITER ;

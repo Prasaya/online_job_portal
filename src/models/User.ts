@@ -170,3 +170,27 @@ export const addApplicantSkills = async (
   }
   return { status: 200, skills: toAdd, success: true };
 };
+
+export const replaceApplicantSkills = async (
+  userId: string,
+  skills: Skill | Skill[],
+) => {
+  await connection.execute('DELETE from applicant_skills where id = ?', [
+    userId,
+  ]);
+  return addApplicantSkills(userId, skills, false);
+};
+
+export const applyForJob = async (userId: string, jobId: string) => {
+  try {
+    await connection.execute('CALL applyForJob(?, ?)', [userId, jobId]);
+  } catch (err) {
+    logger.error('Error when applying for job: ', err);
+    return { status: 500, message: 'Something went wrong!', success: false };
+  }
+  return {
+    status: 200,
+    message: 'You have applied for this job!',
+    success: true,
+  };
+};

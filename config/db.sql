@@ -140,3 +140,11 @@ CREATE TABLE job_qualifications (
     foreign key (qId) references academic_qualifications(qId)
 );
 
+CREATE TABLE applicant_jobs (
+    applicantId char(36) not null,
+    jobId char(36) not null,
+    primary key (applicantId, jobId),
+    foreign key (applicantId) references applicant_data(id),
+    foreign key (jobId) references jobs(jobId)
+);
+
