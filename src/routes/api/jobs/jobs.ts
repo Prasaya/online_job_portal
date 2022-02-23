@@ -36,7 +36,7 @@ router.get('/',
         totalJobs: numRows,
         jobs: result
       }
-      res.json({ jobList: to_send, success: true });
+      res.json({ ...to_send, success: true });
     } catch (err) {
       logger.error('Error in Getting all jobs by page', err);
       res
