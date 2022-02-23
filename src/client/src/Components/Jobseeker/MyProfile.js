@@ -17,7 +17,7 @@ function MyProfile() {
   const [education, setEducation] = useState([]);
   const [picture, setPicture] = useState('');
   let basicEntries = [];
-  const notDisplay = ['id', 'roles', 'type'];
+  const notDisplay = ['id', 'roles', 'type', 'picture'];
 
   const fetchInfo = async () => {
     const res = await fetch('/api/applicant');
@@ -41,7 +41,7 @@ function MyProfile() {
       <h1>
         My Profile{' '}
         <span>
-          <Link className="btn btn-secondary" to="/jobseeker/editprofile">
+          <Link className="btn btn-secondary" to="/jobseeker/editprofile/basics">
             Edit
           </Link>
         </span>

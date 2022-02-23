@@ -5,9 +5,9 @@ function Avatar() {
   const [avatar, setAvatar] = useState('');
 
   const fetchAvatar = async () => {
-    const res = await fetch('/api/applicant');
+    const res = await fetch('/api/company');
     const data = await res.json();
-    return data.user.basics.picture ? '/api/applicant/avatar' : defaultAvatar;
+    return data.user.basics.picture ? '/api/company/avatar' : defaultAvatar;
   };
 
   useEffect(() => {
@@ -19,7 +19,7 @@ function Avatar() {
   }, []);
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const fileInput = document.querySelector('#picture');
     const formData = new FormData();
     formData.append('avatar', fileInput.files[0]);
@@ -27,7 +27,7 @@ function Avatar() {
       method: 'PUT',
       body: formData,
     };
-    fetch(`/api/applicant/avatar`, options);
+    fetch(`/api/company/avatar`, options);
   };
   const handleChange = (e) => {
     if (e.target.files[0].size > 1024 * 1024) {

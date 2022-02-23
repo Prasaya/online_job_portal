@@ -3,6 +3,8 @@ import Header from "./Components/Header";
 import Login from "./Components/Login";
 import RegisterJobSeeker from "./Components/RegisterJobSeeker";
 import RegisterCompany from "./Components/RegisterCompany";
+import PageNotFound from "./Components/PageNotFound";
+import Job from "./Components/Job";
 
 //Jobseeker 
 import JobseekerHome from "./Components/Jobseeker/Home";
@@ -23,6 +25,8 @@ import CompanyProfile from "./Components/Company/Profile";
 import CompanySettings from "./Components/Company/Settings";
 import JobPost from "./Components/Company/JobPost";
 import CompanyEditProfile from "./Components/Company/EditProfile";
+import CompanyAvatar from "./Components/Company/EditProfile/Avatar";
+import CompanyBasics from "./Components/Company/EditProfile/Basics";
 
 function App() {
   return (
@@ -34,6 +38,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register-jobseeker" element={<RegisterJobSeeker />} />
           <Route path="/register-company" element={<RegisterCompany />} />
+          <Route path="/jobs/:id" element={<Job />} /> 
           <Route path="/jobseeker" element={<JobseekerHome />} > 
             <Route path="overview" element={<JobseekerOverview/>} />
             <Route path="mystatus" element={<JobseekerMyStatus/>} />
@@ -49,10 +54,14 @@ function App() {
           <Route path="/company" element={<CompanyHome />}>
             <Route path="overview" element={<CompanyOverview/>} />
             <Route path="profile" element={<CompanyProfile/>} />
-            <Route path="editprofile" element={<CompanyEditProfile/>} />
+            <Route path="editprofile" element={<CompanyEditProfile/>}>
+              <Route path="avatar" element={<CompanyAvatar/>}/>
+              <Route path="basics" element={<CompanyBasics/>}/>
+            </Route>
             <Route path="settings" element={<CompanySettings/>} />
             <Route path="jobpost" element={<JobPost/>} />
           </Route> 
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
       </div>
     </BrowserRouter>

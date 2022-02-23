@@ -1,6 +1,6 @@
 import { isTemplateExpression } from 'typescript';
 
-function Job({ job, OnClick }) {
+function Job({ job }) {
   return (
     <>
       <div className="job d-flex flex-row justify-content-between align-items-center my-2">
@@ -10,14 +10,6 @@ function Job({ job, OnClick }) {
           <h6>Deadline: 2022-03-10</h6>
         </div>
         <div>
-          <button
-            id={job.jobId}
-            data-job-id={job.jobId}
-            className="btn btn-primary"
-            onClick={OnClick}
-          >
-            {job.applied ? 'Unapply' : 'Apply'}
-          </button>
           <button
             type="button"
             className="btn btn-secondary mx-2"
@@ -125,9 +117,8 @@ function Job({ job, OnClick }) {
                 type="button"
                 data-job-id={job.jobId}
                 className="btn btn-primary"
-                onClick={OnClick}
               >
-                {job.applied ? 'Unapply' : 'Apply'}
+                View Applicants
               </button>
             </div>
           </div>
