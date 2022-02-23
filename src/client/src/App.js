@@ -23,6 +23,8 @@ import CompanyProfile from "./Components/Company/Profile";
 import CompanySettings from "./Components/Company/Settings";
 import JobPost from "./Components/Company/JobPost";
 import CompanyEditProfile from "./Components/Company/EditProfile";
+import CompanyAvatar from "./Components/Company/EditProfile/Avatar";
+import CompanyBasics from "./Components/Company/EditProfile/Basics";
 
 function App() {
   return (
@@ -49,7 +51,10 @@ function App() {
           <Route path="/company" element={<CompanyHome />}>
             <Route path="overview" element={<CompanyOverview/>} />
             <Route path="profile" element={<CompanyProfile/>} />
-            <Route path="editprofile" element={<CompanyEditProfile/>} />
+            <Route path="editprofile" element={<CompanyEditProfile/>}>
+              <Route path="avatar" element={<CompanyAvatar/>}/>
+              <Route path="basics" element={<CompanyBasics/>}/>
+            </Route>
             <Route path="settings" element={<CompanySettings/>} />
             <Route path="jobpost" element={<JobPost/>} />
           </Route> 
