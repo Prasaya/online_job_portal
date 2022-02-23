@@ -28,6 +28,7 @@ function Header() {
 
   if (!(path==="/" || path===('/login'))) {
     return <></>;
+  }
   if (userCtx.type === 'Users') {
     return <JobSeekerNav />;
   } else if (userCtx.type === 'Organizations') {
