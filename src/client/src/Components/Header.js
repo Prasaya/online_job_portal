@@ -14,7 +14,7 @@ function Header() {
       } else if (userCtx.type === 'Users' && path.startsWith('/company')) {
         navigate('/jobseeker/overview', { replace: true });
       }
-    } else {
+    } else if(!userCtx.authStatus && (path.startsWith('/company') || path.startsWith('/jobseeker'))) {
       navigate('/login', { replace: true });
     }
   }, []);
