@@ -18,7 +18,6 @@ function Skills() {
     return data.user;
   };
   const onSubmitForm = (data) => {
-    console.log(data);
     fetch(`/api/applicant/skills`, {
       method: 'PUT',
       headers: {

@@ -25,7 +25,6 @@ function Education() {
     return data;
   };
   const onSubmitForm = (data) => {
-    console.log(data);
     // let info = allInfo
     // info.education = data
     // fetch(`http://localhost:4000/profile`,{
