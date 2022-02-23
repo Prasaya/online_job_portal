@@ -2,7 +2,7 @@ import {useState, useEffect} from "react"
 import {Link, useLocation, Outlet} from "react-router-dom"
 
 
-function MyProfile() {
+function EditProfile() {
     const path = useLocation().pathname
     const [navElements, setNavElements] = useState([
         {
@@ -83,4 +83,4 @@ function MyProfile() {
     )
 }
 
-export default MyProfile;
+export default EditProfile;
