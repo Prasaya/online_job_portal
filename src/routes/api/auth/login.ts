@@ -1,11 +1,14 @@
 import logger from '@utils/logger';
 import express from 'express';
+import { body } from 'express-validator';
 import passport from 'passport';
 
 const router = express.Router();
 
 router.post(
   '/',
+  body('username').isEmail().normalizeEmail().isLength({ min: 1, max: 255 }),
+  body('password').isString(),
   // TODO: Add isNotLoggedIn middleware
   (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {

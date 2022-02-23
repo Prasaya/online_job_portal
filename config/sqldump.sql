@@ -55,6 +55,23 @@ CREATE TABLE `applicant_data` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `applicant_jobs`
+--
+
+DROP TABLE IF EXISTS `applicant_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `applicant_jobs` (
+  `applicantId` char(36) NOT NULL,
+  `jobId` char(36) NOT NULL,
+  PRIMARY KEY (`applicantId`,`jobId`),
+  KEY `jobId` (`jobId`),
+  CONSTRAINT `applicant_jobs_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`),
+  CONSTRAINT `applicant_jobs_ibfk_2` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `applicant_skills`
 --
 
@@ -328,6 +345,28 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `applyForJob` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `applyForJob`(
+	applicantId char(36),
+    jobId char(36)
+)
+BEGIN
+	INSERT INTO applicant_jobs (applicantId, jobId) VALUES (applicantId, jobId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `checkExistingUser` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -446,6 +485,34 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getApplicantJobs` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getApplicantJobs`(
+	applicantId char(36)
+)
+BEGIN
+	SELECT JSON_ARRAYAGG(JSON_OBJECT('jobId', aj.jobId, 'companyId', companyId, 'companyName', od.name,
+		'title', title, 'vacancies', vacancies
+	)) AS jobs
+    FROM applicant_jobs AS aj
+    INNER JOIN jobs AS j ON j.jobId = aj.jobId
+    INNER JOIN organization_data AS od ON od.id = j.companyId
+    WHERE aj.applicantId = applicantId
+    GROUP BY aj.applicantId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getAuthDetails` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -461,7 +528,7 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getAuthDetails`(
 )
 BEGIN
 	SELECT a.id, email, password, type,
-		(SELECT 
+		(SELECT
 		JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
         FROM federated_credentials AS fc
         INNER JOIN federated_credentials_provider AS fcp ON fc.providerId = fcp.providerId
@@ -469,10 +536,90 @@ BEGIN
         GROUP BY fc.id
         )AS socials
 	FROM auth AS a
-    -- LEFT JOIN federated_credentials AS fc ON fc.id = a.id
--- 	LEFT JOIN federated_credentials_provider AS fcp on fcp.providerId = fc.providerID
 	WHERE email = inputEmail
 	GROUP BY a.id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getCompanyJobsData` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getCompanyJobsData`(
+    IN oid CHAR(36)
+)
+BEGIN
+	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
+		j.vacancies, j.experience, j.address, j.district,
+		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
+        (SELECT
+			JSON_ARRAYAGG(
+				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
+			)
+			FROM job_qualifications AS q
+			INNER JOIN jobs AS jb on jb.jobId = q.jobId
+			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
+            WHERE jb.companyId = oid AND q.jobId = j.jobId
+			GROUP BY q.jobId
+        ) as qualifications
+    FROM jobs AS j
+    LEFT JOIN skills AS s ON s.jobId = j.jobId
+    INNER JOIN organization_data as od ON j.companyId = od.id
+    WHERE j.companyId = oid
+    GROUP BY j.jobId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getJobFromId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getJobFromId`(
+    IN jId CHAR(36)
+)
+BEGIN
+	SELECT j.jobId, j.companyId, organization_data.name as companyName, j.title,
+		j.description, j.vacancies, j.experience, j.address, j.district,
+		(SELECT
+			JSON_ARRAYAGG(
+				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
+			)
+            FROM skills AS s
+            GROUP BY s.jobId
+            HAVING s.jobId = jId
+		) AS skills,
+        (SELECT
+			JSON_ARRAYAGG(
+				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
+			)
+			FROM job_qualifications AS q
+			INNER JOIN jobs AS jb on jb.jobId = q.jobId
+			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
+            WHERE q.jobId = j.jobId
+			GROUP BY q.jobId
+        ) as qualifications
+	FROM jobs as j
+    INNER JOIN organization_data on organization_data.id = j.companyId
+    GROUP BY j.jobId
+    HAVING j.jobId = jId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -551,46 +698,43 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getUserData`(
     IN uid CHAR(36)
 )
 BEGIN
-	SELECT basics.*,
-		(SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('name', us.name, 'proficiency', proficiency, 'experience', experience)
-			)
-            FROM applicant_skills AS us
-            WHERE us.id = uid
-            GROUP BY us.id
-		) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', aq.qid, 'level', level, 'discipline', discipline, 'degree', degree)
-			)
-            FROM applicant_academics AS ua
-            INNER JOIN academic_qualifications AS aq ON aq.qid = ua.qid
-            WHERE ua.id = uid
-            GROUP BY ua.id
- 		) AS academics
-	FROM
-	(
-		SELECT a.id AS id, email, NULL AS password, type, firstName, middleName, lastName,
-			picture, birthday, phone, gender,
-            (SELECT JSON_ARRAYAGG(r.name)
-				FROM user_roles AS ur
-                INNER JOIN roles AS r ON r.id = ur.roleId
-                WHERE ur.id = uid
-                GROUP BY ur.id
-			) AS roles,
-            (SELECT JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
-				FROM federated_credentials AS fc
-                INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
-                WHERE id = uid
-                GROUP BY id
-			) AS socials
-		FROM auth AS a
-        INNER JOIN applicant_data AS ad ON ad.id = a.id
-        WHERE a.id = uid
-	) AS basics
-    WHERE basics.id = uid
-    GROUP BY basics.id;
+	SELECT
+    	a.id, a.email, NULL AS password, a.type, ad.firstName, ad.middleName, ad.lastName, ad.picture, ad.birthday, ad.phone,
+		ad.gender,
+     	ur_o.roles,
+		socials.socials,
+		as_o.skills,
+		aa_o.academics
+	FROM auth AS a
+	INNER JOIN applicant_data AS ad ON ad.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('provider', fcp.providerName, 'identifier', fc.identifier)) AS socials
+		FROM federated_credentials AS fc
+		INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
+		WHERE id = uid
+		GROUP BY id
+	) AS socials ON socials.id = a.id
+	LEFT JOIN (
+		SELECT ur.id, JSON_ARRAYAGG(JSON_OBJECT('roleName', r.name, 'level', r.level)) AS roles
+		FROM user_roles as ur
+		INNER JOIN roles AS r ON r.id = ur.roleId
+		WHERE ur.id = uid
+		GROUP BY ur.id
+	) AS ur_o ON ur_o.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('name', name, 'proficiency', proficiency, 'experience',experience)) AS skills
+		FROM applicant_skills AS ask
+		WHERE ask.id = uid
+		GROUP BY id
+	) AS as_o ON as_o.id = a.id
+	LEFT join (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('qid', aa.qid, 'level', level, 'discipline', discipline, 'degree', degree)) AS academics
+		FROM applicant_academics AS aa
+		INNER JOIN academic_qualifications AS aq on aq.qid = aa.qid
+		WHERE id = uid
+		GROUP BY id
+	) AS aa_o ON aa_o.id = a.id
+	WHERE a.id = uid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -652,4 +796,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23 12:14:09
+-- Dump completed on 2022-02-23 17:18:41

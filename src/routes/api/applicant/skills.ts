@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { userSkillsSchema, addApplicantSkills } from '@models/User';
+import { userSkillsSchema, addApplicantSkills, replaceApplicantSkills } from '@models/User';
 import { User } from '@typings/User';
 import { checkSchema, validationResult } from 'express-validator';
 
@@ -35,10 +35,9 @@ router.put(
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array(), success: false });
     }
-    const { status, ...message } = await addApplicantSkills(
+    const { status, ...message } = await replaceApplicantSkills(
       req.user!.user.basics.id,
       req.body.skills,
-      true,
     );
     res.json(message);
   },
