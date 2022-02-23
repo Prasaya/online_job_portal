@@ -557,8 +557,8 @@ BEGIN
 				JSON_OBJECT('name', us.name, 'proficiency', proficiency, 'experience', experience)
 			)
             FROM applicant_skills AS us
+            WHERE us.id = uid
             GROUP BY us.id
-            HAVING us.id = uid
 		) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
@@ -566,8 +566,8 @@ BEGIN
 			)
             FROM applicant_academics AS ua
             INNER JOIN academic_qualifications AS aq ON aq.qid = ua.qid
+            WHERE ua.id = uid
             GROUP BY ua.id
-            HAVING ua.id = uid
  		) AS academics
 	FROM
 	(
@@ -576,21 +576,21 @@ BEGIN
             (SELECT JSON_ARRAYAGG(r.name)
 				FROM user_roles AS ur
                 INNER JOIN roles AS r ON r.id = ur.roleId
+                WHERE ur.id = uid
                 GROUP BY ur.id
-                HAVING ur.id = uid
 			) AS roles,
             (SELECT JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
 				FROM federated_credentials AS fc
                 INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
+                WHERE id = uid
                 GROUP BY id
-                HAVING id = uid
 			) AS socials
 		FROM auth AS a
         INNER JOIN applicant_data AS ad ON ad.id = a.id
         WHERE a.id = uid
 	) AS basics
-    GROUP BY basics.id
-    HAVING basics.id = uid;
+    WHERE basics.id = uid
+    GROUP BY basics.id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -652,4 +652,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-23  7:41:32
+-- Dump completed on 2022-02-23 12:04:41
