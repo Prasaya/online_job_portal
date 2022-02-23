@@ -5,7 +5,6 @@ function Home() {
 
   return (
     <>
-      <Nav />
       <div className="container">
         <Outlet />
       </div>
