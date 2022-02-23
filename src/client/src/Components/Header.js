@@ -1,3 +1,6 @@
+import JobSeekerNav from './Jobseeker/Nav';
+import CompanyNav from './Company/CompanyNav';
+
 import { useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
@@ -19,8 +22,10 @@ function Header() {
     }
   }, []);
 
-  if (path.startsWith('/jobseeker') || path.startsWith('/company')) {
-    return <></>;
+  if (userCtx.type === 'Users') {
+    return <JobSeekerNav />;
+  } else if (userCtx.type === 'Organizations') {
+    return <CompanyNav />
   } else {
     return (
       <header className="header text-center container my-5">
