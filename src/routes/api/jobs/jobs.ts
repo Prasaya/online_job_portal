@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { param, validationResult, checkSchema } from 'express-validator';
+import { param, query, validationResult, checkSchema } from 'express-validator';
 import {
   createNewJobPost,
   deleteJobPost,
@@ -14,19 +14,37 @@ import { fetchOrganizationJobs } from '../organization/organization';
 
 const router = express.Router();
 
-// TODO: Implement pagination
-router.get('/', async (req, res) => {
-  const [result] = await connection.query('SELECT * FROM jobs ');
-  const [result2] = await connection.query('SELECT * FROM skills ');
-  const jobList: unknown = {};
-  (result as RowDataPacket[]).forEach((job) => {
-    jobList[job.jobId] = { ...job, skills: [] };
-  });
-  (result2 as RowDataPacket[]).forEach((skill) => {
-    jobList[skill.jobId].skills.push(skill);
-  });
-  res.json(Object.values(jobList));
-});
+router.get('/',
+  async (req, res) => {
+    try {
+      let numPerPage = 10;
+      let page = 1;
+      try {
+        page = req.query.page ? parseInt(req.query.page as string) : 1;
+      } catch (error) { }
+      const [count_result]: [RowDataPacket[], FieldPacket[]]
+        = await connection.execute('SELECT count(*) as numRows FROM allJobsFromDatabase');
+      var numRows = count_result[0].numRows;
+      var numPages = Math.ceil(numRows / numPerPage);
+      let skip = (page - 1) * numPerPage;
+      let limit = skip + ',' + numPerPage;
+      const [result]: [RowDataPacket[], FieldPacket[]]
+        = await connection.execute('SELECT * FROM allJobsFromDatabase LIMIT ' + limit)
+      let to_send = {
+        page: page,
+        numPages: numPages,
+        totalJobs: numRows,
+        jobs: result
+      }
+      res.json({ ...to_send, success: true });
+    } catch (err) {
+      logger.error('Error in Getting all jobs by page', err);
+      res
+        .status(500)
+        .json({ message: 'Something went wrong!', success: false });
+    }
+  },
+);
 
 
 router.get(

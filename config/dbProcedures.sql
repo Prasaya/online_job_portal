@@ -34,46 +34,43 @@ CREATE PROCEDURE getUserData(
     IN uid CHAR(36)
 )
 BEGIN
-	SELECT basics.*,
-		(SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('name', us.name, 'proficiency', proficiency, 'experience', experience)
-			)
-            FROM applicant_skills AS us
-            GROUP BY us.id
-            HAVING us.id = uid
-		) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', aq.qid, 'level', level, 'discipline', discipline, 'degree', degree)
-			)
-            FROM applicant_academics AS ua
-            INNER JOIN academic_qualifications AS aq ON aq.qid = ua.qid
-            GROUP BY ua.id
-            HAVING ua.id = uid
- 		) AS academics
-	FROM
-	(
-		SELECT a.id AS id, email, NULL AS password, type, firstName, middleName, lastName,
-			picture, birthday, phone, gender,
-            (SELECT JSON_ARRAYAGG(r.name)
-				FROM user_roles AS ur
-                INNER JOIN roles AS r ON r.id = ur.roleId
-                GROUP BY ur.id
-                HAVING ur.id = uid
-			) AS roles,
-            (SELECT JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
-				FROM federated_credentials AS fc
-                INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
-                GROUP BY id
-                HAVING id = uid
-			) AS socials
-		FROM auth AS a
-        INNER JOIN applicant_data AS ad ON ad.id = a.id
-        WHERE a.id = uid
-	) AS basics
-    GROUP BY basics.id
-    HAVING basics.id = uid;
+	SELECT
+    	a.id, a.email, NULL AS password, a.type, ad.firstName, ad.middleName, ad.lastName, ad.picture, ad.birthday, ad.phone,
+		ad.gender,
+     	ur_o.roles,
+		socials.socials,
+		as_o.skills,
+		aa_o.academics
+	FROM auth AS a
+	INNER JOIN applicant_data AS ad ON ad.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('provider', fcp.providerName, 'identifier', fc.identifier)) AS socials
+		FROM federated_credentials AS fc
+		INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
+		WHERE id = uid
+		GROUP BY id
+	) AS socials ON socials.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('provider', providerName, 'identifier', identifier)) AS roles
+		FROM federated_credentials AS fc
+		INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
+		WHERE id = uid
+		GROUP BY id
+	) AS ur_o ON ur_o.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('name', name, 'proficiency', proficiency, 'experience',experience)) AS skills
+		FROM applicant_skills AS ask
+		WHERE ask.id = uid
+		GROUP BY id
+	) AS as_o ON as_o.id = a.id
+	LEFT join (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('qid', aa.qid, 'level', level, 'discipline', discipline, 'degree', degree)) AS academics
+		FROM applicant_academics AS aaSET
+		INNER JOIN academic_qualifications AS aq on aq.qid = aa.qid
+		WHERE id = uid
+		GROUP BY id
+	) AS aa_o ON aa_o.id = a.id
+	WHERE a.id = uid;
 END |
 DELIMITER ;
 
@@ -173,17 +170,17 @@ CREATE PROCEDURE getCompanyJobsData(
     IN oid CHAR(36)
 )
 BEGIN
-	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description, 
+	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
 		j.vacancies, j.experience, j.address, j.district,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
 				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)	
-			FROM job_qualifications AS q 
+			)
+			FROM job_qualifications AS q
 			INNER JOIN jobs AS jb on jb.jobId = q.jobId
 			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE jb.companyId = oid AND q.jobId = j.jobId 
+            WHERE jb.companyId = oid AND q.jobId = j.jobId
 			GROUP BY q.jobId
         ) as qualifications
     FROM jobs AS j
@@ -192,7 +189,7 @@ BEGIN
     WHERE j.companyId = oid
     GROUP BY j.jobId;
 END |
-DELIMITER ;		
+DELIMITER ;
 
 DELIMITER |
 DROP PROCEDURE IF EXISTS getJobFromId |
@@ -207,22 +204,22 @@ BEGIN
 				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
 			)
             FROM skills AS s
+            WHERE s.jobId = jId
             GROUP BY s.jobId
-            HAVING s.jobId = jId
 		) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
 				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)	
-			FROM job_qualifications AS q 
+			)
+			FROM job_qualifications AS q
 			INNER JOIN jobs AS jb on jb.jobId = q.jobId
 			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE q.jobId = j.jobId 
+            WHERE q.jobId = j.jobId
 			GROUP BY q.jobId
         ) as qualifications
 	FROM jobs as j
     INNER JOIN organization_data on organization_data.id = j.companyId
-    GROUP BY j.jobId
-    HAVING j.jobId = jId;
+    WHERE j.jobId = jId
+    GROUP BY j.jobId;
 END |
 DELIMITER ;
