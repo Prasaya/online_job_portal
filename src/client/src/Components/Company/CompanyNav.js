@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
 import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
@@ -6,6 +6,7 @@ import './nav.css';
 
 function CompanyNav() {
   const userCtx = useContext(UserContext);
+  const navigate = useNavigate();
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
@@ -19,6 +20,7 @@ function CompanyNav() {
         id: '',
         type: '',
       });
+      navigate('/login', { replace: true });
     }
   };
 
@@ -26,17 +28,17 @@ function CompanyNav() {
   const [navElements, setNavElements] = useState([
     {
       name: 'Overview',
-      to: 'overview',
+      to: 'company/overview',
       status: '',
     },
     {
       name: 'Profile',
-      to: 'profile',
+      to: 'company/profile',
       status: '',
     },
     {
       name: 'Settings',
-      to: 'settings',
+      to: 'company/settings',
       status: '',
     },
   ]);
@@ -88,7 +90,7 @@ function CompanyNav() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
-      <div className="container d-flex flex-row justify-content-between">
+      <div className="container-fluid">
         <Link className="navbar-brand left" to="/">
           Job Portal
         </Link>

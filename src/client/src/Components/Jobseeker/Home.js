@@ -4,7 +4,6 @@ import Nav from './Nav';
 function Home() {
   return (
     <>
-      <Nav />
       <div className="container">
         <Outlet />
       </div>

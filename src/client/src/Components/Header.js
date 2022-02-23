@@ -1,3 +1,7 @@
+import JobSeekerNav from './Jobseeker/Nav';
+import CompanyNav from './Company/CompanyNav';
+import DefaultNav from './DefaultNav';
+
 import { useContext, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
@@ -14,23 +18,22 @@ function Header() {
       } else if (userCtx.type === 'Users' && path.startsWith('/company')) {
         navigate('/jobseeker/overview', { replace: true });
       }
-    } else {
+    } else if (
+      !userCtx.authStatus &&
+      (path.startsWith('/company') || path.startsWith('/jobseeker'))
+    ) {
       navigate('/login', { replace: true });
     }
   }, []);
 
   if (!(path==="/" || path===('/login'))) {
     return <></>;
+  if (userCtx.type === 'Users') {
+    return <JobSeekerNav />;
+  } else if (userCtx.type === 'Organizations') {
+    return <CompanyNav />;
   } else {
-    return (
-      <header className="header text-center container my-5">
-        <h3>
-          <Link to="/" id="header">
-            Job Portal
-          </Link>
-        </h3>
-      </header>
-    );
+    return <DefaultNav />;
   }
 }
 export default Header;
