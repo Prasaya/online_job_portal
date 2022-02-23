@@ -81,6 +81,7 @@ function watchFiles() {
         './src/public',
         './dist',
         './node_modules',
+        '**/node_modules',
         './images',
         './logs',
         './scripts',
