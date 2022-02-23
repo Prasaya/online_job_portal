@@ -28,17 +28,17 @@ function CompanyNav() {
   const [navElements, setNavElements] = useState([
     {
       name: 'Overview',
-      to: 'overview',
+      to: 'company/overview',
       status: '',
     },
     {
       name: 'Profile',
-      to: 'profile',
+      to: 'company/profile',
       status: '',
     },
     {
       name: 'Settings',
-      to: 'settings',
+      to: 'company/settings',
       status: '',
     },
   ]);

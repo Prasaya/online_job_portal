@@ -29,22 +29,22 @@ function Nav() {
   const [navElements, setNavElements] = useState([
     {
       name: 'Overview',
-      to: 'overview',
+      to: 'jobseeker/overview',
       status: '',
     },
     {
       name: 'My Status',
-      to: 'mystatus',
+      to: 'jobseeker/mystatus',
       status: '',
     },
     {
       name: 'My Profile',
-      to: 'myprofile',
+      to: 'jobseeker/myprofile',
       status: '',
     },
     {
       name: 'Settings',
-      to: 'settings',
+      to: 'jobseeker/settings',
       status: '',
     },
   ]);
