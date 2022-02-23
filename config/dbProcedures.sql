@@ -251,3 +251,35 @@ BEGIN
     GROUP BY aj.applicantId;
 END |
 DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS updateApplicant |
+CREATE PROCEDURE updateApplicant(
+    IN uid CHAR(36),
+    IN ufirstName VARCHAR(50),
+    IN umiddleName VARCHAR(50),
+    IN ulastName VARCHAR(50),
+    IN ubirthday DATE,
+    IN uphone VARCHAR(20),
+    IN ugender VARCHAR(10)
+)
+BEGIN
+    DECLARE userType ENUM('Users', 'Organizations');
+    SELECT type into userType FROM auth WHERE auth.id = uid;
+    IF (ISNULL(userType) OR userType <> 'Users') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid value for user id!';
+    END IF;
+    SELECT 
+		IFNULL(ufirstName, ad.firstName),IFNULL(umiddleName, ad.middleName),IFNULL(ulastName, ad.lastName),
+        IFNULL(ubirthday, ad.birthday),IFNULL(uphone, ad.phone),
+        IFNULL(ugender, ad.gender)
+    FROM auth
+    INNER JOIN applicant_data AS ad ON ad.id = auth.id
+    WHERE auth.id = uid
+    INTO ufirstName, umiddleName, ulastName, ubirthday,uphone, ugender;
+
+    UPDATE applicant_data
+    SET firstName = ufirstName, middleName = umiddleName, lastName = ulastName, birthday = ubirthday, phone = uphone, gender = ugender
+    WHERE applicant_data.id = uid;
+END |
+DELIMITER ;
