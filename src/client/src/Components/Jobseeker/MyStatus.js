@@ -13,7 +13,7 @@ function MyStatus() {
   useEffect(() => {
     async function getJobs() {
       const overviewJobs = await fetchJobs();
-      setJobs(overviewJobs);
+      setJobs(overviewJobs.jobs);
     }
     getJobs();
   }, []);

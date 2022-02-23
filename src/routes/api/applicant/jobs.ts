@@ -13,11 +13,12 @@ router.get('/', async (req, res) => {
     if (
       !Array.isArray(rows) ||
       !rows.length ||
-      !Array.isArray(rows[0] || !rows[0].length)
+      !Array.isArray(rows[0]) ||
+      !rows[0].length
     ) {
       jobs = [];
     } else {
-      jobs = rows[0][0];
+      jobs = rows[0][0].jobs || [];
     }
     res.json({ jobs, success: true });
   } catch (error) {
