@@ -1,3 +1,4 @@
+drop table if exists applicant_jobs;
 drop table if exists job_qualifications;
 drop table if exists skills;
 drop table if exists jobs;
