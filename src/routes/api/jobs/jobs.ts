@@ -11,6 +11,7 @@ import { RowDataPacket, FieldPacket } from 'mysql2';
 import { isOrganization } from '@middleware/authorization'
 import logger from '@utils/logger';
 import { fetchOrganizationJobs } from '../organization/organization';
+import { formatDate } from '@utils/date';
 
 const router = express.Router();
 
@@ -26,10 +27,16 @@ router.get('/',
         = await connection.execute('SELECT count(*) as numRows FROM allJobsFromDatabase');
       var numRows = count_result[0].numRows;
       var numPages = Math.ceil(numRows / numPerPage);
+      if (page > numPages) {
+        page = numPages;
+      }
       let skip = (page - 1) * numPerPage;
       let limit = skip + ',' + numPerPage;
       const [result]: [RowDataPacket[], FieldPacket[]]
-        = await connection.execute('SELECT * FROM allJobsFromDatabase LIMIT ' + limit)
+        = await connection.execute('SELECT * FROM allJobsFromDatabase LIMIT ' + limit);
+      (result as RowDataPacket).forEach(entry => {
+        entry.deadline = formatDate(entry.deadline);
+      });
       let to_send = {
         page: page,
         numPages: numPages,
@@ -60,7 +67,9 @@ router.get(
       const jobID = req.params.id;
       const [result]: [RowDataPacket[], FieldPacket[]]
         = await connection.execute('CALL getJobFromId(?)', [jobID]);
-      console.log(result);
+      (result as RowDataPacket)[0].forEach(entry => {
+        entry.deadline = formatDate(entry.deadline);
+      });
       res.json({ jobDetails: result[0][0], success: true });
     } catch (err) {
       logger.error('Error in Getting single Job', err);
@@ -187,7 +196,6 @@ router.get('/test/1', async (req, res) => {
     xqualifications.qid = a.qid;
     xqualifications.level = a.level;
     if (a.jobId in to_send) {
-      console.log(a.skillName, to_send[a.jobId].skills.filter(s => s.skillName === a.skillName));
       if (to_send[a.jobId].skills.filter(s => s.skillName === a.skillName).length === 0) {
         to_send[a.jobId].skills.push({ ...xskills });
       }
