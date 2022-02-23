@@ -204,8 +204,8 @@ BEGIN
 				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
 			)
             FROM skills AS s
+            WHERE s.jobId = jId
             GROUP BY s.jobId
-            HAVING s.jobId = jId
 		) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
@@ -219,8 +219,8 @@ BEGIN
         ) as qualifications
 	FROM jobs as j
     INNER JOIN organization_data on organization_data.id = j.companyId
-    GROUP BY j.jobId
-    HAVING j.jobId = jId;
+    WHERE j.jobId = jId
+    GROUP BY j.jobId;
 END |
 DELIMITER ;
 
