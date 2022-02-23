@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
 import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
@@ -7,6 +7,7 @@ import './nav.css';
 // TODO: Use common state for nav bar and profile
 function Nav() {
   const userCtx = useContext(UserContext);
+  const navigate = useNavigate();
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
@@ -20,6 +21,7 @@ function Nav() {
         id: '',
         type: '',
       });
+      navigate('/login', { replace: true });
     }
   };
 
