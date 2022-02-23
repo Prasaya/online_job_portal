@@ -3,6 +3,7 @@ import Header from "./Components/Header";
 import Login from "./Components/Login";
 import RegisterJobSeeker from "./Components/RegisterJobSeeker";
 import RegisterCompany from "./Components/RegisterCompany";
+import PageNotFound from "./Components/PageNotFound";
 
 //Jobseeker 
 import JobseekerHome from "./Components/Jobseeker/Home";
@@ -58,6 +59,7 @@ function App() {
             <Route path="settings" element={<CompanySettings/>} />
             <Route path="jobpost" element={<JobPost/>} />
           </Route> 
+          <Route path="*" element={<PageNotFound/>} />
         </Routes>
       </div>
     </BrowserRouter>
