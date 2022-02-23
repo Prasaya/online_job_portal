@@ -32,7 +32,7 @@ export interface User {
     middleName: string | null;
     lastName: string | null;
     picture: string | null;
-    birthday: Date | null;
+    birthday: string | null;
     phone: string | null;
     gender: string | null;
     socials: social[];

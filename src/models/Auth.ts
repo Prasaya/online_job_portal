@@ -3,6 +3,7 @@ import { AuthData } from '@typings/authorization';
 import { User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { RowDataPacket, FieldPacket } from 'mysql2';
+import { formatDate } from '@utils/date';
 
 export const getAuthUser = async (email: string): Promise<AuthData | null> => {
   const [result]: [RowDataPacket[], FieldPacket[]] = await connection.query(
@@ -56,6 +57,8 @@ export async function searchUser(
     const socials = data.socials ? data.socials : [];
     const skills = data.skills ? data.skills : [];
     const academics = data.academics ? data.academics : [];
+    const birthday = formatDate(data.birthday);
+
     const user: User = {
       basics: {
         id: data.id,
@@ -66,7 +69,7 @@ export async function searchUser(
         middleName: data.middleName,
         lastName: data.lastName,
         picture: data.picture,
-        birthday: data.birthday,
+        birthday,
         phone: data.phone,
         gender: data.gender,
         roles,
