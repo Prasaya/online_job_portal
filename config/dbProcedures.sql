@@ -171,7 +171,7 @@ CREATE PROCEDURE getCompanyJobsData(
 )
 BEGIN
 	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
-		j.vacancies, j.experience, j.address, j.district,
+		j.vacancies, j.experience, j.address, j.district, j.deadline,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
         (SELECT
 			JSON_ARRAYAGG(
@@ -198,7 +198,7 @@ CREATE PROCEDURE getJobFromId(
 )
 BEGIN
 	SELECT j.jobId, j.companyId, organization_data.name as companyName, j.title,
-		j.description, j.vacancies, j.experience, j.address, j.district,
+		j.description, j.vacancies, j.experience, j.address, j.district, j.deadline,
 		(SELECT
 			JSON_ARRAYAGG(
 				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
@@ -242,7 +242,7 @@ CREATE PROCEDURE getApplicantJobs (
 )
 BEGIN
 	SELECT JSON_ARRAYAGG(JSON_OBJECT('jobId', aj.jobId, 'companyId', companyId, 'companyName', od.name,
-		'title', title, 'vacancies', vacancies
+		'title', title, 'vacancies', vacancies, 'deadline', deadline
 	)) AS jobs
     FROM applicant_jobs AS aj
     INNER JOIN jobs AS j ON j.jobId = aj.jobId
@@ -269,7 +269,7 @@ BEGIN
     IF (ISNULL(userType) OR userType <> 'Users') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid value for user id!';
     END IF;
-    SELECT 
+    SELECT
 		IFNULL(ufirstName, ad.firstName),IFNULL(umiddleName, ad.middleName),IFNULL(ulastName, ad.lastName),
         IFNULL(ubirthday, ad.birthday),IFNULL(uphone, ad.phone),
         IFNULL(ugender, ad.gender)
