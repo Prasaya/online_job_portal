@@ -4,6 +4,7 @@ function Job({job, OnClick}) {
             <div className="job d-flex flex-row justify-content-between align-items-center my-2">
                 <div className="d-flex flex-column">
                     <h3>{job.title}</h3>
+                    <h6>Company: {job.companyName}</h6>
                     <h6>Deadline: {job.deadline}</h6>
                 </div>
                 <div>
