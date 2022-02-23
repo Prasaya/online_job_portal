@@ -14,6 +14,7 @@ const UserContext = createContext({
 export function UserContextProvider(props) {
   const [userAuthStatus, setUserAuthStatus] = useState(false);
   const [uid, setUid] = useState('');
+  const [isLoading, setLoading] = useState(true);
   const [userType, setUserType] = useState('');
 
   useEffect(() => {
@@ -23,6 +24,7 @@ export function UserContextProvider(props) {
       setUserAuthStatus(data.success);
       setUid(data.success ? data.user.basics.id : '');
       setUserType(data.success ? data.user.basics.type : '');
+      setLoading(false);
     })();
   }, []);
 
@@ -42,6 +44,10 @@ export function UserContextProvider(props) {
     type: userType,
     updateUserStatus: updateUserStatusHandler,
   };
+
+  if(isLoading) {
+    return <div className='text-center'>Loading...</div>
+  }
 
   return (
     <UserContext.Provider value={context}>

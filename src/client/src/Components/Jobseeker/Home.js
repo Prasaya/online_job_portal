@@ -7,14 +7,13 @@ function Home() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
   const path = useLocation().pathname;
-
   useEffect(() => {
-    if (!userCtx.authStatus) {
-      navigate('/login', { replace: true });
-    } else {
-      if (userCtx.type === 'Organizations' && path.startsWith('/jobseeker')) {
+    if (userCtx.authStatus) {
+      if (userCtx.type === 'Organizations') {
         navigate('/company/overview', { replace: true });
       }
+    } else {
+      navigate('/login', { replace: true });
     }
   });
 
