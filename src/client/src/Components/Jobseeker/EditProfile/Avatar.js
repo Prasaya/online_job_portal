@@ -19,7 +19,7 @@ function Avatar() {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const fileInput = document.querySelector('#picture');
     const formData = new FormData();
     formData.append('avatar', fileInput.files[0]);
