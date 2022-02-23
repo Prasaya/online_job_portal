@@ -17,7 +17,7 @@ function Profile() {
   const notDisplay = ['id', 'roles', 'type', 'logo'];
 
   const fetchInfo = async () => {
-    const res = await fetch('http://localhost:4000/company');
+    const res = await fetch('/api/user');
     const data = await res.json();
     return data;
   };
@@ -25,7 +25,7 @@ function Profile() {
   useEffect(() => {
     const getInfo = async () => {
       const user = await fetchInfo();
-      setBasicInfo(user.basics);
+      setBasicInfo(user.user.basics);
     };
     getInfo();
   }, []);
