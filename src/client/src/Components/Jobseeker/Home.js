@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import Nav from './Nav';
 import UserContext from '../../Context/UserContext';
@@ -6,7 +6,6 @@ import UserContext from '../../Context/UserContext';
 function Home() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
-  const path = useLocation().pathname;
   useEffect(() => {
     if (userCtx.authStatus) {
       if (userCtx.type === 'Organizations') {
