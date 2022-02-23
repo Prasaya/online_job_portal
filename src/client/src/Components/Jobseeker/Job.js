@@ -7,7 +7,7 @@ function Job({ job, OnClick }) {
         <div className="d-flex flex-column">
           <h3>{job.title}</h3>
           <h6>Company: {job.companyName}</h6>
-          <h6>Deadline: {job.deadline}</h6>
+          <h6>Deadline: 2022-03-10</h6>
         </div>
         <div>
           <button
@@ -65,7 +65,7 @@ function Job({ job, OnClick }) {
                         <b>Deadline</b>
                       </td>
                       <td className='px-0'>:</td>
-                      <td>{job.deadline}</td>
+                      <td>2022-03-10</td>
                     </tr>
                   </tbody>
                 </table>
