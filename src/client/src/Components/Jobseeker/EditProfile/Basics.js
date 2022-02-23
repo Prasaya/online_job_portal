@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 // TODO: Add constraints for birthday
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
-  const [allInfo, setAllInfo] = useState({}); //becasuse json server doesnt allow directly nested objects
   const {
     register,
     reset,
@@ -15,26 +14,22 @@ function Basics() {
   const fetchInfo = async () => {
     const res = await fetch('/api/applicant');
     const data = await res.json();
-    return data.user;
+    return data.user.basics;
   };
 
   const onSubmitForm = (data) => {
-    let info = allInfo;
-    info.basics = data;
     fetch(`/api/applicant`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
-      body: JSON.stringify(info),
+      body: JSON.stringify(basicInfo),
     });
   };
 
   useEffect(() => {
     const getInfo = async () => {
-      const info = await fetchInfo();
-      setAllInfo(info);
-      setBasicInfo(info['basics']);
+      setBasicInfo(await fetchInfo());
     };
     getInfo();
   }, []);
