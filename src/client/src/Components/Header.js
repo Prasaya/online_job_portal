@@ -19,7 +19,7 @@ function Header() {
     }
   }, []);
 
-  if (path.startsWith('/jobseeker') || path.startsWith('/company')) {
+  if (!(path==="/" || path===('/login'))) {
     return <></>;
   } else {
     return (
