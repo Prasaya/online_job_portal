@@ -3,7 +3,7 @@ import CompanyNav from './Company/CompanyNav';
 import DefaultNav from './DefaultNav';
 
 import { useContext, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
 
 function Header() {
@@ -26,9 +26,6 @@ function Header() {
     }
   }, []);
 
-  if (!(path==="/" || path===('/login'))) {
-    return <></>;
-  }
   if (userCtx.type === 'Users') {
     return <JobSeekerNav />;
   } else if (userCtx.type === 'Organizations') {
