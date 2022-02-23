@@ -35,7 +35,7 @@ function Profile() {
       <h1>
         My Profile{' '}
         <span>
-          <Link className="btn btn-secondary" to="/company/editprofile">
+          <Link className="btn btn-secondary" to="/company/editprofile/avatar">
             Edit
           </Link>
         </span>
