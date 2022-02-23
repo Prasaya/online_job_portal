@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NewUserInput, NewUserParameters, Skill, User } from '@typings/User';
+import { NewUserInput, NewUserParameters, UpdateUser, Skill, User } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
@@ -69,6 +69,10 @@ export const userRegisterSchema: Schema = {
     isLength: { options: [{ max: 10 }] },
   },
 };
+const updateUserSchema: Schema = { ...userRegisterSchema };
+delete updateUserSchema.password;
+delete updateUserSchema.email;
+export { updateUserSchema };
 
 export const userSkillsSchema: Schema = {
   skills: {
@@ -193,4 +197,21 @@ export const applyForJob = async (userId: string, jobId: string) => {
     message: 'You have applied for this job!',
     success: true,
   };
+};
+
+export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
+  const user: UpdateUser = {
+    id: userData.id,
+    firstName: userData.firstName,
+    middleName: userData.middleName,
+    lastName: userData.lastName,
+    birthday: userData.birthday,
+    phone: userData.phone,
+    gender: userData.gender,
+  };
+  await connection.execute(
+    'CALL updateApplicant(?, ?, ?, ?, ?, ?, ?)',
+    [...Object.values(user)],
+  );
+  return { ...user };
 };
