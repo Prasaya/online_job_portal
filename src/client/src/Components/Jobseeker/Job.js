@@ -28,7 +28,7 @@ function Job({ job, OnClick }) {
           </button>
         </div>
       </div>
-      <div className="modal fade" id={`modal-${job.jobId}`} tabIndex="-1">
+      {/* <div className="modal fade" id={`modal-${job.jobId}`} tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
           <div className="modal-content">
             <div className="modal-header">
@@ -132,7 +132,7 @@ function Job({ job, OnClick }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
