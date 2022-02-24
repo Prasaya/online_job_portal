@@ -1,7 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import JobSeekerOptions from './JobSeekerOptions';
+import CompanyOptions from './CompanyOptions';
+import UserContext from '../../Context/UserContext';
 
 function Job() {
+  const userCtx = useContext(UserContext);
   const [job, setJob] = useState();
   const { id } = useParams();
   const [isLoading, setLoading] = useState(true);
@@ -40,6 +44,20 @@ function Job() {
         <h6>Job doesn't exist.</h6>
       </div>
     );
+  }
+
+  let buttons = null;
+
+  if (!userCtx.authStatus) {
+    buttons = (
+      <Link to="/login" className="btn btn-secondary">
+        Sign In to Apply
+      </Link>
+    );
+  } else if (userCtx.type === 'Users') {
+    buttons = <JobSeekerOptions id={job} />;
+  } else if (userCtx.type === 'Organizations') {
+    buttons = <CompanyOptions />;
   }
 
   return (
@@ -102,7 +120,9 @@ function Job() {
           </table>
         </div>
       </div>
-      <div className="buttons"></div>
+      <div className="buttons my-3">
+        <JobSeekerOptions id={job} />
+      </div>
     </div>
   );
 }
