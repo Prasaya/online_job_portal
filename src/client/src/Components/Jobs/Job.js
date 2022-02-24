@@ -33,14 +33,14 @@ function Job() {
 
   if (isLoading) {
     return (
-      <div className="container">
+      <div className="container m-5">
         <h6>Loading...</h6>
       </div>
     );
   }
   if (!isValid) {
     return (
-      <div className="container">
+      <div className="container m-5">
         <h6>Job doesn't exist.</h6>
       </div>
     );
@@ -120,9 +120,7 @@ function Job() {
           </table>
         </div>
       </div>
-      <div className="buttons my-3">
-        <JobSeekerOptions id={job} />
-      </div>
+      <div className="buttons my-3">{buttons}</div>
     </div>
   );
 }
