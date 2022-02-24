@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Job from './Job';
 
 function Overview() {
   const [jobs, setJobs] = useState([]);
@@ -31,7 +30,7 @@ function Overview() {
                   <div className="d-flex flex-column">
                     <h3>{job.title}</h3>
                     <h6>Company: {job.companyName}</h6>
-                    <h6>Deadline: 2022-03-10</h6>
+                    <h6>Deadline: {job.deadline}</h6>
                   </div>
                   <div>
                     <Link
