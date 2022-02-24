@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
+import {useForm} from "react-hook-form";
 import UserContext from '../../Context/UserContext';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 import './nav.css';
@@ -7,6 +8,14 @@ import './nav.css';
 function CompanyNav() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const onSubmitForm = (data) => console.log(data)
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
@@ -93,9 +102,15 @@ function CompanyNav() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
       <div className="container-fluid">
-        <Link className="navbar-brand left" to="/">
-          Job Portal
-        </Link>
+        <div className="left d-inline-flex">
+          <Link className="navbar-brand px-2" to="/">
+            Job Portal
+          </Link>
+          <form class="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
+            <input {...register("search", {required:true})} class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+          </form>
+        </div>
         <button
           className="navbar-toggler"
           type="button"
