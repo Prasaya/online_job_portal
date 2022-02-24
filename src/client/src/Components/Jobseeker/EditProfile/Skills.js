@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 function Skills() {
   const [allInfo, setAllInfo] = useState({}); //for use with json-server
   const [skills, setSkills] = useState([]);
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
+  const [isUpdateFail, setIsUpdateFail] = useState(false)
+
   const { register, setValue, control, handleSubmit } = useForm({
     mode: 'onBlur',
   });
@@ -17,8 +20,8 @@ function Skills() {
     const data = await res.json();
     return data.user;
   };
-  const onSubmitForm = (data) => {
-    fetch(`/api/applicant/skills`, {
+  const onSubmitForm = async (data) => {
+    const res = await fetch(`/api/applicant/skills`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
@@ -26,6 +29,11 @@ function Skills() {
       // TODO: Wut dis?
       body: JSON.stringify(data),
     });
+    if(res.status === 200){
+      setIsUpdateSuccess(true)
+    }else{
+      setIsUpdateFail(true)
+    }
   };
   useEffect(() => {
     const getInfo = async () => {
@@ -89,20 +97,28 @@ function Skills() {
                 <button
                   type="button"
                   className="btn btn-sm btn-danger col-2"
-                  onClick={() => remove(index)}
+                  onClick={() => {
+                    remove(index)
+                    setIsUpdateFail(false)
+                    setIsUpdateSuccess(false)
+                  }}
                 >
                   Delete
                 </button>
               </div>
             ))}
           </div>
+          {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
+          {isUpdateFail && <p className='text-danger'>Update Failed</p>}
           <div className="d-grid gap-2 m-auto mt-4">
             <button
               className="btn btn-secondary btn-md"
               type="button"
-              onClick={() =>
+              onClick={() =>{
                 append({ skill: '', proficiency: '', experience: '' })
-              }
+                setIsUpdateFail(false)
+                setIsUpdateSuccess(false)
+              }}
             >
               Add
             </button>
