@@ -29,7 +29,7 @@ function Avatar() {
       method: 'PUT',
       body: formData,
     };
-    const res = fetch(`/api/organization/logo`, options);
+    const res = await fetch(`/api/organization/logo`, options);
     if(res.status === 200){
       setIsUpdateSuccess(true)
     }else{
