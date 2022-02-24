@@ -9,6 +9,9 @@ import connection from '@utils/dbSetup';
 import hashPassword from '@utils/password';
 import { formatDate } from '@utils/date';
 import { RowDataPacket } from 'mysql2/promise';
+import { UploadedFile } from 'express-fileupload';
+import path from 'path';
+import logger from '@utils/logger';
 
 export const organizationRegisterSchema: Schema = {
   email: {
@@ -123,4 +126,29 @@ export const fetchOrganizationJobs = async (companyId: string) => {
     return { jobList: result[0], success: true };
   }
   return { jobList: [], success: false };
+};
+
+export const updateLogo = async (
+  organizationId: string,
+  picture: UploadedFile,
+) => {
+  try {
+    const fileName = organizationId + path.extname(picture.name);
+    await picture.mv(path.resolve('.', 'images', fileName));
+    await connection.query(
+      'UPDATE organization_data SET logo = ? WHERE id = ?',
+      [fileName, organizationId],
+    );
+    return {
+      name: picture.name,
+      size: picture.size,
+      encoding: picture.encoding,
+      mimetype: picture.mimetype,
+      truncated: picture.truncated,
+      url: fileName,
+    };
+  } catch (err) {
+    logger.error(err);
+    return { message: 'Something went wrong!', success: false };
+  }
 };

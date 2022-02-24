@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
+import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 
 function titleCase(str) {
   return str
@@ -25,6 +25,9 @@ function Profile() {
   useEffect(() => {
     const getInfo = async () => {
       const user = await fetchInfo();
+      user.user.basics.logo = user.user.basics.logo
+        ? '/api/organization/logo'
+        : defaultAvatar;
       setBasicInfo(user.user.basics);
     };
     getInfo();
@@ -45,7 +48,7 @@ function Profile() {
           <div className="col-10 col-sm-2">
             <img
               className="img-fluid img-thumbnail rounded float-start"
-              src={basicInfo.logo || defaultAvatar}
+              src={basicInfo.logo}
               alt="profile pic"
             />
           </div>
@@ -58,13 +61,14 @@ function Profile() {
                     {basicEntries.map((entry) => {
                       return (
                         <Fragment key={entry[0]}>
-                          {entry[1] && !notDisplay.includes(entry[0].toLowerCase()) && (
-                            <tr>
-                              <td>{titleCase(entry[0])}</td>
-                              <td>:</td>
-                              <td>{entry[1]}</td>
-                            </tr>
-                          )}
+                          {entry[1] &&
+                            !notDisplay.includes(entry[0].toLowerCase()) && (
+                              <tr>
+                                <td>{titleCase(entry[0])}</td>
+                                <td>:</td>
+                                <td>{entry[1]}</td>
+                              </tr>
+                            )}
                         </Fragment>
                       );
                     })}

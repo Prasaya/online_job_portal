@@ -1,10 +1,13 @@
 import express from 'express';
 import { isOrganization } from '@middleware/authorization';
 import logger from '@utils/logger';
-import {fetchOrganizationJobs} from '@models/Organization';
+import { fetchOrganizationJobs } from '@models/Organization';
+import logoRouter from './logo';
 
 const router = express.Router();
 router.use(isOrganization);
+
+router.use('/logo', logoRouter);
 
 router.get('/', (req, res) => {
   res.json({

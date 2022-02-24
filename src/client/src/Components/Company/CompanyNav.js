@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
-import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
+import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 import './nav.css';
 
 function CompanyNav() {
@@ -83,7 +83,9 @@ function CompanyNav() {
   useEffect(() => {
     (async () => {
       const data = await fetchInfo();
-      setAvatar(data.user.basics.picture ? '/api/user/avatar' : defaultAvatar);
+      setAvatar(
+        data.user.basics.logo ? '/api/organization/logo' : defaultAvatar,
+      );
       setName(data.user.basics.name);
     })();
   }, []);

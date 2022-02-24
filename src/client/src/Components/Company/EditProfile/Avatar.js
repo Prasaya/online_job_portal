@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import defaultAvatar from "../../../Assets/Img/defaultAvatar.png"
+import defaultAvatar from '../../../Assets/Img/defaultAvatar.png';
 
 function Avatar() {
   const [avatar, setAvatar] = useState('');
 
   const fetchAvatar = async () => {
-    const res = await fetch('/api/company');
+    const res = await fetch('/api/organization');
     const data = await res.json();
-    return data.user.basics.picture ? '/api/company/avatar' : defaultAvatar;
+    return data.user.basics.logo ? '/api/organization/logo' : defaultAvatar;
   };
 
   useEffect(() => {
@@ -22,12 +22,12 @@ function Avatar() {
     e.preventDefault();
     const fileInput = document.querySelector('#picture');
     const formData = new FormData();
-    formData.append('avatar', fileInput.files[0]);
+    formData.append('logo', fileInput.files[0]);
     const options = {
       method: 'PUT',
       body: formData,
     };
-    fetch(`/api/company/avatar`, options);
+    fetch(`/api/organization/logo`, options);
   };
   const handleChange = (e) => {
     if (e.target.files[0].size > 1024 * 1024) {
