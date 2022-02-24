@@ -19,7 +19,6 @@ function Avatar() {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     const fileInput = document.querySelector('#picture');
     const formData = new FormData();
     formData.append('logo', fileInput.files[0]);
