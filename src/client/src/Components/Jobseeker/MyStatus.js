@@ -18,16 +18,6 @@ function MyStatus() {
     getJobs();
   }, []);
 
-  async function toggleApply(e) {
-    // const jobId = Number(e.target.dataset.jobId);
-    // fetch(`/api/applicant/jobs`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ jobId }),
-    // });
-  }
   return (
     <div className="mystatus">
       <h1>Applied Jobs</h1>
