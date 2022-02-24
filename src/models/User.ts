@@ -1,5 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NewUserInput, NewUserParameters, UpdateUser, Skill, User } from '@typings/User';
+import {
+  NewUserInput,
+  NewUserParameters,
+  UpdateUser,
+  Skill,
+  User,
+} from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
 import hashPassword from '../utils/password';
@@ -35,36 +41,36 @@ export const userRegisterSchema: Schema = {
   },
   firstName: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isString: true,
     isLength: { options: [{ max: 50 }] },
   },
   middleName: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isString: true,
     isLength: { options: [{ max: 50 }] },
   },
   lastName: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isString: true,
     isLength: { options: [{ max: 50 }] },
   },
   birthday: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isDate: true,
   },
   phone: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isString: true,
     isLength: { options: [{ max: 20 }] },
   },
   gender: {
     in: ['body'],
-    optional: true,
+    optional: { options: { checkFalsy: true } },
     isString: true,
     isLength: { options: [{ max: 10 }] },
   },
@@ -209,9 +215,8 @@ export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
     phone: userData.phone,
     gender: userData.gender,
   };
-  await connection.execute(
-    'CALL updateApplicant(?, ?, ?, ?, ?, ?, ?)',
-    [...Object.values(user)],
-  );
+  await connection.execute('CALL updateApplicant(?, ?, ?, ?, ?, ?, ?)', [
+    ...Object.values(user),
+  ]);
   return { ...user };
 };
