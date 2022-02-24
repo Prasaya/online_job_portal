@@ -309,3 +309,14 @@ BEGIN
     WHERE applicant_data.id = uid;
 END |
 DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS deleteApplicantJob |
+CREATE PROCEDURE deleteApplicantJob(
+	userId char(36),
+    delJobId char(36)
+)
+BEGIN
+	DELETE FROM applicant_jobs WHERE applicantID = userId and jobID = delJobId;
+END |
+DELIMITER ;
