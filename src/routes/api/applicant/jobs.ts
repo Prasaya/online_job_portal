@@ -52,4 +52,17 @@ router.post(
   },
 );
 
+router.delete('/:id', async (req, res) => {
+  try {
+    await connection.execute('CALL deleteApplicantJob(?, ?)', [
+      req.user?.user.basics.id,
+      req.params.id,
+    ]);
+    res.json({ success: true });
+  } catch (error) {
+    logger.error('Error in deleteApplicantJob', error);
+    res.status(500).json({ message: 'Something went wrong!', success: false });
+  }
+});
+
 export default router;
