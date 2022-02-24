@@ -12,6 +12,8 @@ import JobseekerOverview from './Components/Jobseeker/Overview';
 import JobseekerMyStatus from './Components/Jobseeker/MyStatus';
 import JobseekerMyProfile from './Components/Jobseeker/MyProfile';
 import JobseekerSettings from './Components/Jobseeker/Settings';
+import JobseekerChangeEmail from './Components/Jobseeker/Settings/ChangeEmail';
+import JobseekerChangePassword from './Components/Jobseeker/Settings/ChangePassword';
 import JobseekerEditProfile from './Components/Jobseeker/EditProfile';
 import JobseekerAvatar from './Components/Jobseeker/EditProfile/Avatar';
 import JobseekerBasics from './Components/Jobseeker/EditProfile/Basics';
