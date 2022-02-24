@@ -28,7 +28,9 @@ function JobSeekerOptions({ id }) {
         method: 'DELETE',
       });
       const jsonVal = await res.json();
-      console.log(jsonVal);
+      if (jsonVal.success) {
+        setApplied(false);
+      }
     } else {
       const res = await fetch('/api/applicant/jobs', {
         method: 'POST',
