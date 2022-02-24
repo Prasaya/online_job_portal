@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 // TODO: Add constraints for birthday
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
+  const [isUpdateFail, setIsUpdateFail] = useState(false)
+
   const {
     register,
     reset,
@@ -17,14 +20,24 @@ function Basics() {
     return data.user.basics;
   };
 
-  const onSubmitForm = (data) => {
-    fetch(`/api/applicant`, {
+  const onSubmitForm = async (data) => {
+    const res = await fetch(`/api/applicant`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
       body: JSON.stringify(data),
     });
+    if(res.status === 200){
+      setIsUpdateSuccess(true)
+    }else{
+      setIsUpdateFail(true)
+    }
+    //stop displaying after 3 seconds
+    setTimeout(() => {
+      setIsUpdateFail(false)
+      setIsUpdateSuccess(false)
+    }, 3000);
   };
 
   useEffect(() => {
@@ -146,6 +159,8 @@ function Basics() {
               {errors.gender && errors.gender.message}
             </div>
           </div>
+          {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
+          {isUpdateFail && <p className='text-danger'>Update Failed</p>}
           <div className="d-grid gap-2">
             <button className="btn btn-success btn-lg" type="submit">
               Update

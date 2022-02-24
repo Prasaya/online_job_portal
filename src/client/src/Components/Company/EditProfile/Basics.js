@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
+  const [isUpdateFail, setIsUpdateFail] = useState(false)
   const {
     register,
     reset,
@@ -15,14 +17,24 @@ function Basics() {
     return data;
   };
 
-  const onSubmitForm = (data) => {
-    fetch(`http://localhost:4000/company`, {
+  const onSubmitForm = async (data) => {
+    const res = await fetch(`http://localhost:4000/company`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
       body: JSON.stringify(data),
     });
+    if(res.status === 200){
+        setIsUpdateSuccess(true)
+      }else{
+        setIsUpdateFail(true)
+      }
+      //stop displaying after 3 seconds
+      setTimeout(() => {
+        setIsUpdateFail(false)
+        setIsUpdateSuccess(false)
+      }, 3000);
   };
 
   useEffect(() => {
@@ -140,6 +152,9 @@ function Basics() {
                 Company Description
               </label>
             </div>
+            
+            {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
+            {isUpdateFail && <p className='text-danger'>Update Failed</p>}
 
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
