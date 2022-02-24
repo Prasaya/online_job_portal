@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Job from "./Job"
 
 function Overview() {
   const [jobs, setJobs] = useState([]);
@@ -29,7 +28,20 @@ function Overview() {
           {jobs.map((job) => {
             return (
               <li key={job.jobId} className="p-3 my-3 bg-light list-group-item">
-                <Job job={job}/>
+                <div className="job d-flex flex-row justify-content-between align-items-center my-2">
+                  <div className="d-flex flex-column">
+                    <h3>{job.title}</h3>
+                    <h6>Deadline: {job.deadline}</h6>
+                  </div>
+                  <div>
+                    <Link
+                      to={`/jobs/${job.jobId}`}
+                      className="btn btn-secondary btn-lg mx-2"
+                    >
+                      View Job
+                    </Link>
+                  </div>
+                </div>
               </li>
             );
           })}
