@@ -9,6 +9,7 @@ function RegisterJobSeeker() {
     handleSubmit,
     watch,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     mode: 'onBlur',
@@ -31,7 +32,7 @@ function RegisterJobSeeker() {
     });
     const jsonVal = await res.json();
     if (!jsonVal.success) {
-      setError('loginError', { message: jsonVal.message });
+      setError('registerError', { message: jsonVal.message });
     } else {
       logIn({ username: data.email, password: data.password });
     }
@@ -120,6 +121,7 @@ function RegisterJobSeeker() {
               <input
                 {...register('email', {
                   required: 'Please fill out this field',
+                  onChange: () => clearErrors('registerError'),
                   validate: (value) =>
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                       value,
@@ -250,9 +252,9 @@ function RegisterJobSeeker() {
                 {errors.confirmPassword && errors.confirmPassword.message}
               </div>
             </div>
-            {errors.loginError && (
+            {errors.registerError && (
               <div className="alert alert-danger my-2">
-                {errors.loginError.message}
+                {errors.registerError.message}
               </div>
             )}
             <div className="d-grid gap-2">
