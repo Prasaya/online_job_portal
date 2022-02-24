@@ -2,13 +2,14 @@ import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import UserContext from '../Context/UserContext';
-import loginWallpaer from "../Assets/Img/loginWallpaper.png"
+import loginWallpaer from '../Assets/Img/loginWallpaper.png';
 
 function Login() {
   const {
     register,
     handleSubmit,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm();
   const userCtx = useContext(UserContext);
@@ -48,19 +49,25 @@ function Login() {
     <div className="container">
       <div className="row justify-content-around my-5">
         <div className="col-lg-6 mt-5">
-          <img className='img img-fluid' src={loginWallpaer} alt="wallpaper"/>
+          <img className="img img-fluid" src={loginWallpaer} alt="wallpaper" />
         </div>
         <div className="col-lg-4 shadow-lg rounded-3 border border-white px-3 py-4">
-          <form className='my-4' onSubmit={handleSubmit(onSubmit)}>
+          <form className="my-4" onSubmit={handleSubmit(onSubmit)}>
             <input
-              {...register('username', { required: true })}
+              {...register('username', {
+                required: true,
+                onChange: () => clearErrors(),
+              })}
               type="text"
               className="form-control form-control-lg my-2"
               placeholder="Email or Username"
             />
 
             <input
-              {...register('password', { required: true })}
+              {...register('password', {
+                required: true,
+                onChange: () => clearErrors(),
+              })}
               type="password"
               className="form-control form-control-lg my-2"
               placeholder="Password"
