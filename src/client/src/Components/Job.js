@@ -41,54 +41,44 @@ function Job() {
       </div>
     );
   }
+
   return (
-    <div className="container job">
+    <div className="container job bg-light p-4 my-4">
       <h2>{job.title}</h2>
       <div className="job-details mb-4">
-        <table className="my-1 table table-borderless">
-          <tbody>
-            <tr>
-              <td>
-                <b>Company</b>
-              </td>
-              <td className="px-0">:</td>
-              <td>{job.companyName}</td>
-            </tr>
-            <tr>
-              <td>
-                <b>Address</b>
-              </td>
-              <td className="px-0">:</td>
-              <td>
-                {job.address} {job.district}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Deadline</b>
-              </td>
-              <td className="px-0">:</td>
-              <td>2022-03-10</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="basic-details mt-3">
+          <h6>Posted By:</h6>
+          <p>{job.companyName}</p>
+          <h6>Address:</h6>
+          <p>
+            {job.address}, {job.district}
+          </p>
+          <h6>Deadline:</h6>
+          <p>{job.deadline}</p>
+        </div>
         <div className="job-description my-2">
           <h6>Job Description:</h6>
           <p>{job.description}</p>
         </div>
       </div>
-      <div className="job-requirements">
+      <div className="job-requirements row">
         <h5>Job Requirements:</h5>
-        <p>Experience: {job.experience}</p>
-        <div className="my-3 education">
+        <div className="experience mt-3">
+          <h6>Experience:</h6>
+          <p>{job.experience} years</p>
+        </div>
+
+        <div className="mt-3 education col-lg-6">
           <h6>Education:</h6>
-          <ul className="list-group">
+          <ul className="list-group-flush">
             {job.qualifications.map((education) => {
-              return <li className="list-group-item">{education.degree}</li>;
+              return (
+                <li className="list-group-item bg-light">{education.degree}</li>
+              );
             })}
           </ul>
         </div>
-        <div className="my-3 skills">
+        <div className="mt-3 skills col-lg-7">
           <h6>Skills:</h6>
           <table className="table">
             <thead>
@@ -112,6 +102,7 @@ function Job() {
           </table>
         </div>
       </div>
+      <div className="buttons"></div>
     </div>
   );
 }
