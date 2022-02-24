@@ -54,7 +54,7 @@ router.post(
 
 router.delete('/:id', async (req, res) => {
   try {
-    await connection.execute('CALL deleteApplicantJob(?, ?)', [
+    const [result] = await connection.execute('CALL deleteApplicantJob(?, ?)', [
       req.user?.user.basics.id,
       req.params.id,
     ]);

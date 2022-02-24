@@ -4,6 +4,7 @@ import {
   Organization,
   NewOrganizationInput,
   NewOrganizationParameters,
+  UpdateOrganization,
 } from '@typings/Organization';
 import connection from '@utils/dbSetup';
 import hashPassword from '@utils/password';
@@ -75,13 +76,12 @@ export const organizationRegisterSchema: Schema = {
     isString: true,
     isLength: { options: [{ max: 20 }] },
   },
-  logo: {
-    in: ['body'],
-    optional: true,
-    isString: true,
-    isLength: { options: [{ max: 200 }] },
-  },
 };
+
+const updateOrganizationSchema = { ...organizationRegisterSchema };
+delete updateOrganizationSchema.email;
+delete updateOrganizationSchema.password;
+export { updateOrganizationSchema };
 
 export const createNewOrganization = async (
   organizationData: NewOrganizationInput,
@@ -100,7 +100,6 @@ export const createNewOrganization = async (
     city: organizationData.city,
     website: organizationData.website,
     phone: organizationData.phone,
-    logo: organizationData.logo,
   };
   await connection.execute(
     'CALL createOrganization(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -151,4 +150,22 @@ export const updateLogo = async (
     logger.error(err);
     return { message: 'Something went wrong!', success: false };
   }
+};
+
+export const updateOrganization = async (
+  organizationData: UpdateOrganization,
+) => {
+  const organization = {
+    id: organizationData.id,
+    name: organizationData.name,
+    description: organizationData.description,
+    address: organizationData.address,
+    city: organizationData.city,
+    website: organizationData.website,
+    phone: organizationData.phone,
+  };
+  await connection.execute('CALL updateOrganization(?, ?, ?, ?, ?, ?, ?)', [
+    ...Object.values(organization),
+  ]);
+  return { ...organization };
 };

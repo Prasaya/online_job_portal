@@ -21,9 +21,13 @@ export interface Organization {
 export interface NewOrganizationParameters
   extends Omit<
     Organization['basics'],
-    'type' | 'roles' | 'socials' | 'password'
+    'type' | 'roles' | 'socials' | 'password' | 'logo'
   > {
   password: string;
 }
 
 export type NewOrganizationInput = Omit<NewOrganizationParameters, 'id'>;
+export type UpdateOrganization = Omit<
+  NewOrganizationParameters,
+  'email' | 'password'
+>;
