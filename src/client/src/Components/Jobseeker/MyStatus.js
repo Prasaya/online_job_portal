@@ -5,7 +5,7 @@ function MyStatus() {
   const [jobs, setJobs] = useState([]);
 
   async function fetchJobs() {
-    const res = await fetch('/api/jobs');
+    const res = await fetch('/api/applicant/jobs');
     const data = await res.json();
     return data;
   }
