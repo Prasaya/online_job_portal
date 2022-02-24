@@ -64,7 +64,7 @@ function MyProfile() {
                     {basicEntries.map((entry) => {
                       return (
                         <Fragment key={entry[0]}>
-                          {entry[1] && !notDisplay.includes(entry[0].toLowerCase()) && (
+                          {!!(entry[1] && entry[1].length) && !notDisplay.includes(entry[0].toLowerCase()) && (
                             <tr>
                               <td>{titleCase(entry[0])}</td>
                               <td>:</td>
