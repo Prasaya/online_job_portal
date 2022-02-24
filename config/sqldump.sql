@@ -584,21 +584,58 @@ BEGIN
 	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
 		j.vacancies, j.experience, j.address, j.district, j.deadline,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)
-			FROM job_qualifications AS q
-			INNER JOIN jobs AS jb on jb.jobId = q.jobId
-			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE jb.companyId = oid AND q.jobId = j.jobId
-			GROUP BY q.jobId
-        ) as qualifications
+        qualifications.data as qualifications,
+        applicants.data as applicants
     FROM jobs AS j
     LEFT JOIN skills AS s ON s.jobId = j.jobId
     INNER JOIN organization_data as od ON j.companyId = od.id
+    LEFT JOIN (SELECT
+		jb.jobId, JSON_ARRAYAGG(
+			JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
+		) as data
+		FROM job_qualifications AS q
+		INNER JOIN jobs AS jb on jb.jobId = q.jobId
+		INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
+		WHERE jb.companyId = oid
+		GROUP BY q.jobId
+	) as qualifications ON qualifications.jobId = j.jobId
+    LEFT JOIN (
+		SELECT jb.jobId, JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS data
+		FROM jobs as jb
+		INNER JOIN applicant_jobs as aj ON aj.jobId = jb.jobId
+		INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+		INNER JOIN auth as a ON a.id = aj.applicantId
+        WHERE jb.companyId = oid
+        GROUP BY jb.jobId
+	) AS applicants on applicants.jobId = j.jobId
     WHERE j.companyId = oid
     GROUP BY j.jobId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getJobApplicants` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getJobApplicants`(
+	IN jId CHAR(36)
+)
+BEGIN
+	SELECT JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS applicants
+	FROM jobs as j
+	INNER JOIN applicant_jobs as aj ON aj.jobId = j.jobId
+    INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+	INNER JOIN auth as a ON a.id = aj.applicantId
+	WHERE j.jobId = jId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -835,4 +872,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-24  9:03:13
+-- Dump completed on 2022-02-24 10:28:34

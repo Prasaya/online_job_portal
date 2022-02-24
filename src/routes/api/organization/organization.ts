@@ -1,11 +1,7 @@
-import { isLoggedIn } from '@middleware/authentication';
-import { param, validationResult, checkSchema } from 'express-validator';
 import express from 'express';
-import connection from '@utils/dbSetup';
 import { isOrganization } from '@middleware/authorization';
 import logger from '@utils/logger';
-import { formatDate } from '@utils/date';
-import { RowDataPacket } from 'mysql2';
+import {fetchOrganizationJobs} from '@models/Organization';
 
 const router = express.Router();
 router.use(isOrganization);
@@ -16,19 +12,6 @@ router.get('/', (req, res) => {
     success: true,
   });
 });
-
-export const fetchOrganizationJobs = async (companyId: string) => {
-  const [result] = await connection.execute('CALL getCompanyJobsData(?)', [
-    companyId,
-  ]);
-  (result as RowDataPacket)[0].forEach((entry) => {
-    entry.deadline = formatDate(entry.deadline);
-  });
-  if (Array.isArray(result)) {
-    return { jobList: result[0], success: true };
-  }
-  return { jobList: [], success: false };
-};
 
 // TODO: Add/Merge applicant
 router.get('/jobs', async (req, res) => {

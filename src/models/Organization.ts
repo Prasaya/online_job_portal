@@ -7,6 +7,8 @@ import {
 } from '@typings/Organization';
 import connection from '@utils/dbSetup';
 import hashPassword from '@utils/password';
+import { formatDate } from '@utils/date';
+import { RowDataPacket } from 'mysql2/promise';
 
 export const organizationRegisterSchema: Schema = {
   email: {
@@ -108,4 +110,17 @@ export const createNewOrganization = async (
     socials: [],
     password: null,
   };
+};
+
+export const fetchOrganizationJobs = async (companyId: string) => {
+  const [result] = await connection.execute('CALL getCompanyJobsData(?)', [
+    companyId,
+  ]);
+  (result as RowDataPacket)[0].forEach((entry) => {
+    entry.deadline = formatDate(entry.deadline);
+  });
+  if (Array.isArray(result)) {
+    return { jobList: result[0], success: true };
+  }
+  return { jobList: [], success: false };
 };
