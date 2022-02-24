@@ -309,3 +309,13 @@ BEGIN
     WHERE applicant_data.id = uid;
 END |
 DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS deleteExpiredJobs |
+CREATE PROCEDURE deleteExpiredJobs()
+BEGIN
+	SET SQL_SAFE_UPDATES = 0;
+	DELETE FROM jobs WHERE jobs.deadline < current_date();
+	SET SQL_SAFE_UPDATES = 1;
+END |
+DELIMITER ;
