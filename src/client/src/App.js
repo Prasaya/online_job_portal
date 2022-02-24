@@ -49,7 +49,10 @@ function App() {
               <Route path="education" element={<JobseekerEducation />} />
               <Route path="skills" element={<JobseekerSkills />} />
             </Route>
-            <Route path="settings" element={<JobseekerSettings />} />
+            <Route path="settings" element={<JobseekerSettings />}>
+              <Route path="email" element={<JobseekerChangeEmail />} />
+              <Route path="password" element={<JobseekerChangePassword />} />
+            </Route>
           </Route>
           <Route path="/company" element={<CompanyHome />}>
             <Route path="overview" element={<CompanyOverview />} />
