@@ -45,6 +45,10 @@ function Login() {
     }
   });
 
+  if (userCtx.authStatus) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="container">
       <div className="row justify-content-around my-5">
