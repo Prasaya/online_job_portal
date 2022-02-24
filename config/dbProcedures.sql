@@ -173,19 +173,30 @@ BEGIN
 	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
 		j.vacancies, j.experience, j.address, j.district, j.deadline,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)
-			FROM job_qualifications AS q
-			INNER JOIN jobs AS jb on jb.jobId = q.jobId
-			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE jb.companyId = oid AND q.jobId = j.jobId
-			GROUP BY q.jobId
-        ) as qualifications
+        qualifications.data as qualifications,
+        applicants.data as applicants
     FROM jobs AS j
     LEFT JOIN skills AS s ON s.jobId = j.jobId
     INNER JOIN organization_data as od ON j.companyId = od.id
+    LEFT JOIN (SELECT
+		jb.jobId, JSON_ARRAYAGG(
+			JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
+		) as data
+		FROM job_qualifications AS q
+		INNER JOIN jobs AS jb on jb.jobId = q.jobId
+		INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
+		WHERE jb.companyId = oid
+		GROUP BY q.jobId
+	) as qualifications ON qualifications.jobId = j.jobId
+    LEFT JOIN (
+		SELECT jb.jobId, JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS data
+		FROM jobs as jb
+		INNER JOIN applicant_jobs as aj ON aj.jobId = jb.jobId
+		INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+		INNER JOIN auth as a ON a.id = aj.applicantId
+        WHERE jb.companyId = oid
+        GROUP BY jb.jobId
+	) AS applicants on applicants.jobId = j.jobId
     WHERE j.companyId = oid
     GROUP BY j.jobId;
 END |
@@ -221,6 +232,21 @@ BEGIN
     INNER JOIN organization_data on organization_data.id = j.companyId
     WHERE j.jobId = jId
     GROUP BY j.jobId;
+END |
+DELIMITER ;
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS getJobApplicants |
+CREATE PROCEDURE getJobApplicants(
+	IN jId CHAR(36)
+)
+BEGIN
+	SELECT JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS applicants
+	FROM jobs as j
+	INNER JOIN applicant_jobs as aj ON aj.jobId = j.jobId
+    INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+	INNER JOIN auth as a ON a.id = aj.applicantId
+	WHERE j.jobId = jId;
 END |
 DELIMITER ;
 
