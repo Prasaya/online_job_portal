@@ -1,97 +1,76 @@
-import {useForm} from "react-hook-form"
-import {useRef} from "react"
-function Settings() {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-      } = useForm({
-        mode: "onBlur",
-      });
-    const password = useRef();
-    password.current = watch("password", "");
+import {useState, useEffect} from "react"
+import {Link, useLocation, Outlet} from "react-router-dom"
 
-    const onSubmitForm = (data) => console.log(data)
-    return ( 
+
+function Settings() {
+    const path = useLocation().pathname
+    const [navElements, setNavElements] = useState([
+        {
+            name: "Email",
+            to:"email",
+            status: "" 
+        },
+        {
+            name: "Password",
+            to:"password",
+            status: ""
+        }]
+    )
+    function OnClick(e){
+        const id = e.target.id
+        const updatedNavElements = navElements.map((element) => {
+            if (element.status === "table-active"){
+                element.status = ""
+            }
+            if (element.to === id){
+                element.status = "table-active"
+            }
+            return element
+        })
+        setNavElements(updatedNavElements)
+    }
+    //set active for initial render
+    useEffect(() => {
+        const updatedNavElements = navElements.map((element) => {
+            if (element.status === "table-active"){
+                element.status = ""
+            }
+            if (path.includes(element.to) ){
+                element.status = "table-active"
+            }
+            return element
+        })
+        setNavElements(updatedNavElements)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    
+    return (
         <div className="settings">
             <h1>Settings</h1>
-            <div className="container settings">
-                <div className="row d-flex justify-content-center">
-                    <form action="#" onSubmit={handleSubmit(onSubmitForm)}>
-                        <div className="form-floating mb-3">
-                            <input {...register("currentPassword", {
-                                required: true,
-                                pattern: {
-                                    value:
-                                    /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%^&*()\-_=+[\]{};:\x27.,\x22\\|/?><])(?=.*[0-9]).{8,20}/,
-                                },
+            <div className="bg-light container">
+                <div className="row">
+                    <div className="col-12 col-lg-3">
+                        <table className="table table-hover">
+                            <tbody>
+                                {navElements.map((element) => {
+                                    return(
+                                        <tr className="">
+                                            <td className={`${element.status}`}>
+                                                <Link onClick={OnClick} className={`nav-link link-dark`} to={element.to} id={`${element.to}`}>{element.name}</Link>
+                                            </td>
+                                        </tr>
+                                    )
                                 })}
-                                type="password"
-                                className={`form-control form-control-lg ${
-                                errors.currentPassword ? "is-invalid" : ""
-                                }`}
-                                placeholder="Current Password"
-                                id="currentPassword" />
-                            <label htmlFor="currentPassword">Current Password</label>
-                            <div
-                                className={`form-text invalid-feedback ${
-                                errors.currentPassword ? "invalid-feedback" : ""
-                                }`}
-                            >
-                                {errors.currentPassword && "Incorrect Password"}
-                            </div>
-                        </div>
-
-                        <div className="form-floating mb-3">
-                            <input
-                                {...register("newPassword", {
-                                required: true,
-                                pattern: {
-                                    value:
-                                    /(?=.*)(?=.*[a-z])(?=.*[A-Z])(?=.*?[~`!@#$%^&*()\-_=+[\]{};:\x27.,\x22\\|/?><])(?=.*[0-9]).{8,20}/,
-                                },
-                                })}
-                                type="password"
-                                className={`form-control form-control-lg ${
-                                errors.newPassword ? "is-invalid" : ""
-                                }`}
-                                placeholder="New Password"
-                                id="newPassword"
-                            />
-                            <label htmlFor="newPassword">Password</label>
-                            <div
-                                className={`form-text invalid-feedback ${
-                                errors.newPassword ? "invalid-feedback" : ""
-                                }`}
-                            >
-                                {errors.newPassword && "Password must be 8-20 characters and must be a mix of small and capital letters, numbers and symbols"}
-                            </div>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input
-                                {...register("confirmPassword", {
-                                validate: (value) =>
-                                    value === password.current || "Passwords do not match",
-                                })}
-                                type="password"
-                                className={`form-control form-control-lg ${
-                                errors.confirmPassword ? "is-invalid" : ""
-                                }`}
-                                placeholder="Confirm Password"
-                                id="confirmPassword"
-                            />
-                            <label htmlFor="confirmPassword">Confirm Password</label>
-                            <div className="invalid-feedback">
-                                {errors.confirmPassword && errors.confirmPassword.message}
-                            </div>
-                        </div>
-                        <button className="btn btn-primary" type="submit">Update</button>
-                    </form>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="col-12 col-lg-9">
+                        <Outlet/>
+                    </div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default Settings;
