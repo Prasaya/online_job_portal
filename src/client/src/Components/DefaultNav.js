@@ -1,12 +1,26 @@
 import { Link } from 'react-router-dom';
-
+import {useForm} from 'react-hook-form';
 function DefaultNav() {
+  const {
+    register,
+    handleSubmit,
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const onSubmitForm = (data) => console.log(data)
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
       <div className="container-fluid">
-        <Link className="navbar-brand left" to="/">
-          Job Portal
-        </Link>
+        <div className="left d-inline-flex">
+          <Link className="navbar-brand px-2" to="/">
+            Job Portal
+          </Link>
+          <form class="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
+            <input {...register("search", {required:true})} class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+          </form>
+        </div>
         
         <div className="buttons" id="nav-right">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
