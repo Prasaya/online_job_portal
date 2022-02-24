@@ -43,7 +43,7 @@ function Profile() {
           </Link>
         </span>
       </h1>
-      <div className="container bg-light profile">
+      <div className="container bg-light profile p-4 my-3">
         <div className="row">
           <div className="col-10 col-sm-2">
             <img

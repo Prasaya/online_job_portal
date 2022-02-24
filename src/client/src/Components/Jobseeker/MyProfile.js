@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
+import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 
 function titleCase(str) {
   return str
@@ -41,12 +41,15 @@ function MyProfile() {
       <h1>
         My Profile{' '}
         <span>
-          <Link className="btn btn-secondary" to="/jobseeker/editprofile/basics">
+          <Link
+            className="btn btn-secondary"
+            to="/jobseeker/editprofile/basics"
+          >
             Edit
           </Link>
         </span>
       </h1>
-      <div className="container bg-light profile">
+      <div className="container bg-light profile p-4 my-3">
         <div className="row">
           <div className="col-10 col-sm-2">
             <img
@@ -64,13 +67,14 @@ function MyProfile() {
                     {basicEntries.map((entry) => {
                       return (
                         <Fragment key={entry[0]}>
-                          {!!(entry[1] && entry[1].length) && !notDisplay.includes(entry[0].toLowerCase()) && (
-                            <tr>
-                              <td>{titleCase(entry[0])}</td>
-                              <td>:</td>
-                              <td>{entry[1]}</td>
-                            </tr>
-                          )}
+                          {!!(entry[1] && entry[1].length) &&
+                            !notDisplay.includes(entry[0].toLowerCase()) && (
+                              <tr>
+                                <td>{titleCase(entry[0])}</td>
+                                <td>:</td>
+                                <td>{entry[1]}</td>
+                              </tr>
+                            )}
                         </Fragment>
                       );
                     })}
