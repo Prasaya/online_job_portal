@@ -18,31 +18,30 @@ router.get('/', (req, res) => {
 });
 
 export const fetchOrganizationJobs = async (companyId: string) => {
-  const [result] = await connection.execute('CALL getCompanyJobsData(?)', [companyId]);
-  (result as RowDataPacket)[0].forEach(entry => {
+  const [result] = await connection.execute('CALL getCompanyJobsData(?)', [
+    companyId,
+  ]);
+  (result as RowDataPacket)[0].forEach((entry) => {
     entry.deadline = formatDate(entry.deadline);
   });
   if (Array.isArray(result)) {
     return { jobList: result[0], success: true };
   }
   return { jobList: [], success: false };
-}
+};
 
-// TODO: Add/Merge applicant 
-router.get(
-  '/jobs',
-  async (req, res) => {
-    try {
-      const companyID = req.user!.user.basics.id;
-      const result = (await fetchOrganizationJobs(companyID));
-      res.json(result);
-    } catch (err) {
-      logger.error('Error in getting all jobs posted by company', err);
-      res
-        .status(500)
-        .json({ message: 'Something went wrong!', success: false });
-    }
-  },
-);
+// TODO: Add/Merge applicant
+router.get('/jobs', async (req, res) => {
+  try {
+    const companyID = req.user!.user.basics.id;
+    const result = await fetchOrganizationJobs(companyID);
+    res.json(result);
+  } catch (err) {
+    logger.error('Error in getting all jobs posted by company', err);
+    res.status(500).json({ message: 'Something went wrong!', success: false });
+  }
+});
+
+router.put('/', (req, res) => {});
 
 export default router;
