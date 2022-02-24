@@ -23,16 +23,24 @@ function JobSeekerOptions({ id }) {
 
   const jobApply = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/applicant/jobs', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(id),
-    });
-    const jsonVal = await res.json();
-    if (jsonVal.success) {
-      setApplied(true);
+    if (jobApplied) {
+      const res = await fetch(`/api/applicant/jobs/${id.jobId}`, {
+        method: 'DELETE',
+      });
+      const jsonVal = await res.json();
+      console.log(jsonVal);
+    } else {
+      const res = await fetch('/api/applicant/jobs', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(id),
+      });
+      const jsonVal = await res.json();
+      if (jsonVal.success) {
+        setApplied(true);
+      }
     }
   };
 
