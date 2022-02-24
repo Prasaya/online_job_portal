@@ -5,3 +5,5 @@ CREATE EVENT deleteExpiredJobsEvent
     COMMENT 'Deletes expired job each day.'
     DO
       CALL deleteExpiredJobs();
+
+      
