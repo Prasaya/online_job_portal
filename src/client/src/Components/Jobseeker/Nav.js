@@ -1,22 +1,19 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {useForm} from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
-import defaultAvatar from "../../Assets/Img/defaultAvatar.png"
+import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 import './nav.css';
 
 // TODO: Use common state for nav bar and profile
 function Nav() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-  } = useForm({
-    mode: "onBlur",
+  const { register, handleSubmit } = useForm({
+    mode: 'onBlur',
   });
 
-  const onSubmitForm = (data) => console.log(data)
+  const onSubmitForm = (data) => console.log(data);
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
@@ -106,8 +103,6 @@ function Nav() {
     })();
   }, []);
 
-  
-
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
       <div className="container-fluid">
@@ -116,8 +111,16 @@ function Nav() {
             Job Portal
           </Link>
           <form class="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
-            <input {...register("search", {required:true})} class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-primary" type="submit">Search</button>
+            <input
+              {...register('search', {})}
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button className="btn btn-outline-primary" type="submit">
+              Search
+            </button>
           </form>
         </div>
         <button
