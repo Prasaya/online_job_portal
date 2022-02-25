@@ -2,15 +2,6 @@ import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 
-function titleCase(str) {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map(function (word) {
-      return word.replace(word[0], word[0].toUpperCase());
-    })
-    .join(' ');
-}
 function MyProfile() {
   const [basicInfo, setBasicInfo] = useState({});
   const [skills, setSkills] = useState([]);
@@ -70,7 +61,7 @@ function MyProfile() {
                           {!!(entry[1] && entry[1].length) &&
                             !notDisplay.includes(entry[0].toLowerCase()) && (
                               <tr>
-                                <td>{titleCase(entry[0])}</td>
+                                <td className='text-capitalize'>{entry[0]}</td>
                                 <td>:</td>
                                 <td>{entry[1]}</td>
                               </tr>
