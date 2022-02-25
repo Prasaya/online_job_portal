@@ -2,7 +2,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
 function Skills() {
-  const [allInfo, setAllInfo] = useState({}); //for use with json-server
   const [skills, setSkills] = useState([]);
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
   const [isUpdateFail, setIsUpdateFail] = useState(false)
@@ -21,6 +20,9 @@ function Skills() {
     return data.user;
   };
   const onSubmitForm = async (data) => {
+    const uniqueData = data.skills.reduce((items, item) => items.find(x => x.name === item.name) ? [...items] : [...items, item], []) 
+    data.skills = uniqueData
+    setSkills(uniqueData)
     const res = await fetch(`/api/applicant/skills`, {
       method: 'PUT',
       headers: {
@@ -38,7 +40,6 @@ function Skills() {
   useEffect(() => {
     const getInfo = async () => {
       const info = await fetchInfo();
-      setAllInfo(info);
       setSkills(info.skills);
     };
     getInfo();
