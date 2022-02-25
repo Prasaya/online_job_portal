@@ -169,7 +169,7 @@ function RegisterJobSeeker() {
                     const birthday = parse(value, "yyyy-MM-dd", new Date())
                     const today = new Date()
                     const duration = intervalToDuration({start:birthday, end:today})
-                    if (duration.years < 16 ){
+                    if (duration.years < 16 || birthday.getFullYear() > today.getFullYear()){
                       return "Should be older than 16."
                     }else if(duration.years > 100){
                       return "Should be younger than 100."
