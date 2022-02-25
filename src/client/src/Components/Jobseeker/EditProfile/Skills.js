@@ -20,7 +20,7 @@ function Skills() {
     return data.user;
   };
   const onSubmitForm = async (data) => {
-    const uniqueData = data.skills.reduce((items, item) => items.find(x => x.name === item.name) ? [...items] : [...items, item], []) 
+    const uniqueData = data.skills.reduce((items, item) => items.find(x => x.name.toLowerCase() === item.name.toLowerCase()) ? [...items] : [...items, item], []) 
     data.skills = uniqueData
     setSkills(uniqueData)
     const res = await fetch(`/api/applicant/skills`, {
