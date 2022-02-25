@@ -16,7 +16,6 @@ function Overview() {
   useEffect(() => {
     async function getJobs() {
       const overviewJobs = await fetchJobs(curPage);
-      console.log(overviewJobs)
       setJobs(overviewJobs.jobs);
       setNumPages(overviewJobs.numPages)
     }
