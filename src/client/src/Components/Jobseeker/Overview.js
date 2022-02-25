@@ -1,22 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ReactPaginate from "react-paginate"
 
 function Overview() {
   const [jobs, setJobs] = useState([]);
+  const [numPages, setNumPages] = useState([0]);
+  const [curPage, setCurPage] = useState([1]);
 
-  async function fetchJobs() {
-    const res = await fetch('/api/jobs?page=1');
+  async function fetchJobs(curPage) {
+    const res = await fetch(`/api/jobs?page=${curPage}`);
     const data = await res.json();
     return data;
   }
 
   useEffect(() => {
     async function getJobs() {
-      const overviewJobs = await fetchJobs();
+      const overviewJobs = await fetchJobs(curPage);
+      console.log(overviewJobs)
       setJobs(overviewJobs.jobs);
+      setNumPages(overviewJobs.numPages)
     }
     getJobs();
-  }, []);
+  }, [curPage]);
 
   return (
     <div className="overview ">
@@ -45,6 +50,27 @@ function Overview() {
             );
           })}
         </ul>
+        <div className='d-flex justify-content-center my-3'>
+          <ReactPaginate
+            className='pagination'
+            onPageChange={(e)=>{setCurPage(e.selected + 1)}}
+            pageClassName='page-item'
+            pageLinkClassName='page-link'
+            activeClassName='active'
+            disabledClassName='disabled'
+            breakLabel="..."
+            breakClassName='page-item'
+            nextLabel="Next >"
+            nextClassName='page-item'
+            nextLinkClassName='page-link'
+            previousLabel="Previous <"
+            previousClassName='page-item'
+            previousLinkClassName='page-link'
+            pageRangeDisplayed={5}
+            pageCount={numPages}
+            renderOnZeroPageCount={null}
+          />
+        </div>
       </div>
     </div>
   );
