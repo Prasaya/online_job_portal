@@ -101,6 +101,9 @@ function JobPost() {
             <label className="form-label" htmlFor="deadline">
               Deadline
             </label>
+            <div className="invalid-feedback">
+              {errors.deadline && errors.deadline.message}
+            </div>
             <input
               {...register('deadline', {
                 required: 'Please fill out this field',
