@@ -1,27 +1,38 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { parse } from 'date-fns';
+import { useForm, useFieldArray } from 'react-hook-form';
 
 function JobPost() {
-  const { register, control, handleSubmit } = useForm({
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
     defaultValues: {
-      education: [{
-        level: "",
-        discipline: "",
-        degree: "",
-      }],
-      skills: [{
-        skillName: "",
-        proficiency: "",
-      }]
+      education: [
+        {
+          level: '',
+          discipline: '',
+          degree: '',
+        },
+      ],
+      skills: [
+        {
+          skillName: '',
+          proficiency: '',
+        },
+      ],
     },
   });
 
   const { fields: educationFields, append: educationAppend } = useFieldArray({
     control,
-    name: "education",
+    name: 'education',
   });
   const { fields: skillFields, append: skillAppend } = useFieldArray({
     control,
-    name: "skills",
+    name: 'skills',
   });
 
   const onSubmit = (data) => {
@@ -38,7 +49,7 @@ function JobPost() {
               Job Title
             </label>
             <input
-              {...register("jobTitle")}
+              {...register('jobTitle')}
               className="form-control"
               type="text"
               id="jobTitle"
@@ -50,7 +61,7 @@ function JobPost() {
               Number of Vacancies
             </label>
             <input
-              {...register("vacancy")}
+              {...register('vacancy')}
               className="form-control"
               type="text"
               id="vacancy"
@@ -62,7 +73,7 @@ function JobPost() {
               Job Description
             </label>
             <textarea
-              {...register("description")}
+              {...register('description')}
               className="form-control"
               id="description"
               rows="3"
@@ -74,19 +85,30 @@ function JobPost() {
               Deadline
             </label>
             <input
-              {...register("deadline")}
-              className="form-control"
+              {...register('deadline', {
+                required: 'Enter a deadline',
+                validate: (value) => {
+                  const deadline = parse(value, 'yyyy-MM-dd', new Date());
+                  const today = new Date();
+                  if (deadline.getDate() < today.getDate()) {
+                    return 'Deadline should not be in the past';
+                  }
+                },
+              })}
+              className={`form-control ${errors.deadline ? 'is-invalid' : ''}`}
               type="date"
               id="deadline"
-              required
             />
+            <div className="invalid-feedback">
+              {errors.deadline && errors.deadline.message}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="experience">
               Work Experience
             </label>
             <input
-              {...register("experience")}
+              {...register('experience')}
               className="form-control"
               type="text"
               id="experience"
@@ -172,7 +194,7 @@ function JobPost() {
                 className="btn btn-secondary btn-md"
                 type="button"
                 onClick={() =>
-                  educationAppend({ level: "", discipline: "", degree: "" })
+                  educationAppend({ level: '', discipline: '', degree: '' })
                 }
               >
                 Add Education
@@ -218,7 +240,7 @@ function JobPost() {
               <button
                 className="btn btn-secondary btn-md"
                 type="button"
-                onClick={() => skillAppend({ skillName: "", proficiency: "" })}
+                onClick={() => skillAppend({ skillName: '', proficiency: '' })}
               >
                 Add Skill
               </button>
