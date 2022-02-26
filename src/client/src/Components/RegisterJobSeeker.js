@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {intervalToDuration, parse} from "date-fns";
+import { intervalToDuration, parse } from 'date-fns';
 import UserContext from '../Context/UserContext';
+import District from './District';
 
 function RegisterJobSeeker() {
   const {
@@ -163,18 +164,56 @@ function RegisterJobSeeker() {
             </div>
             <div className="form-floating mb-3">
               <input
+                {...register('address', {
+                  required: 'Please fill out this field',
+                })}
+                type="text"
+                className={`form-control form-control-lg ${
+                  errors.address ? 'is-invalid' : ''
+                }`}
+                placeholder="Address"
+                id="address"
+              />
+              <label htmlFor="address">Address</label>
+              <div className="invalid-feedback">
+                {errors.address && errors.address.message}
+              </div>
+            </div>
+            <div className="form-floating mb-3">
+              <select
+                {...register('city', {
+                  required: 'Please choose a valid option',
+                })}
+                className={`form-select ${errors.city ? 'is-invalid' : ''}`}
+                id="district"
+              >
+                <District />
+              </select>
+              <label htmlFor="district">District</label>
+              <div className="invalid-feedback">
+                {errors.city && errors.city.message}
+              </div>
+            </div>
+            <div className="form-floating mb-3">
+              <input
                 {...register('birthday', {
                   required: 'Please fill out this field',
                   validate: (value) => {
-                    const birthday = parse(value, "yyyy-MM-dd", new Date())
-                    const today = new Date()
-                    const duration = intervalToDuration({start:birthday, end:today})
-                    if (duration.years < 16 || birthday.getFullYear() > today.getFullYear()){
-                      return "Should be older than 16."
-                    }else if(duration.years > 100){
-                      return "Should be younger than 100."
+                    const birthday = parse(value, 'yyyy-MM-dd', new Date());
+                    const today = new Date();
+                    const duration = intervalToDuration({
+                      start: birthday,
+                      end: today,
+                    });
+                    if (
+                      duration.years < 16 ||
+                      birthday.getFullYear() > today.getFullYear()
+                    ) {
+                      return 'Should be older than 16.';
+                    } else if (duration.years > 100) {
+                      return 'Should be younger than 100.';
                     }
-                  }
+                  },
                 })}
                 type="date"
                 className={`form-control form-control-lg ${
