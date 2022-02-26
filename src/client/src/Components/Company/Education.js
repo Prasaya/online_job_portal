@@ -7,15 +7,10 @@ function Education({ form, errors, control }) {
     name: 'education',
   });
 
+  const [isCheckAll, setIsCheckAll] = useState([false]);
+  const [isCheck, setIsCheck] = useState([[]]);
   const [disciplineOptions, setDisciplineOptions] = useState([{}]);
-  const [degreeOptions, setDegreeOptions] = useState([
-    [
-      {
-        id: '',
-        name: '',
-      },
-    ],
-  ]);
+  const [degreeOptions, setDegreeOptions] = useState([[{}]]);
 
   const fetchInfo = async (level) => {
     const encodedLevel = encodeURI(`/api/academics?level[]=${level}`);
@@ -48,9 +43,6 @@ function Education({ form, errors, control }) {
       });
     });
   };
-
-  const [isCheckAll, setIsCheckAll] = useState([false]);
-  const [isCheck, setIsCheck] = useState([[]]);
 
   function handleSelectAll(index) {
     setIsCheckAll((prevChecks) => {
