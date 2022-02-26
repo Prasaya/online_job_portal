@@ -57,6 +57,10 @@ function CompanyNav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
+      }else if (path.includes('login')){
+        if(element.to.includes('overview')){
+          element.status = 'active';
+        }
       }
       return element;
     });

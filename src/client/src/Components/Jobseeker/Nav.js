@@ -63,6 +63,10 @@ function Nav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
+      }else if (path.includes('login')){
+        if(element.to.includes('overview')){
+          element.status = 'active';
+        }
       }
       return element;
     });
@@ -110,7 +114,7 @@ function Nav() {
           <Link className="navbar-brand px-2" to="/">
             Job Portal
           </Link>
-          <form class="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
+          <form className="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
             <input
               {...register('search', {})}
               className="form-control me-2"
