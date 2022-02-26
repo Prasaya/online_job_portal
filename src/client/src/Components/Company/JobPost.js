@@ -145,7 +145,15 @@ function JobPost() {
               <label htmlFor="district" className="form-label">
                 District
               </label>
-              <District form={form} errors={errors.district} />
+              <select
+                {...form.register('district', {
+                  required: 'Please choose a valid option',
+                })}
+                className={`form-select ${errors.district ? 'is-invalid' : ''}`}
+                id="district"
+              >
+                <District />
+              </select>
               <div className="invalid-feedback">
                 {errors.district && errors.district.message}
               </div>

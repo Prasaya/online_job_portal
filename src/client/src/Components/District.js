@@ -1,12 +1,6 @@
-function District({ form, errors }) {
+function District() {
   return (
-    <select
-      {...form.register('district', {
-        required: 'Please choose a valid option',
-      })}
-      className={`form-select ${errors ? 'is-invalid' : ''}`}
-      id="district"
-    >
+    <>
       <option selected disabled value="">
         Choose...
       </option>
@@ -128,7 +122,7 @@ function District({ form, errors }) {
         <option value="Baitadi">Baitadi</option>
         <option value="Darchula">Darchula</option>
       </optgroup>
-    </select>
+    </>
   );
 }
 
