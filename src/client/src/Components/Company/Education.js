@@ -19,7 +19,6 @@ function Education({ form, errors, control }) {
 
   const fetchInfo = async (level) => {
     const encodedLevel = encodeURI(`/api/academics?level[]=${level}`);
-    console.log(encodedLevel);
     const res = await fetch(encodedLevel);
     return res.json();
   };
@@ -96,6 +95,13 @@ function Education({ form, errors, control }) {
                 Choose...
               </option>
               {Object.keys(disciplineOptions[index]).map((item) => {
+                if (item === 'ALL_DISCIPLINES') {
+                  return (
+                    <option value={item} key={item.id}>
+                      Any Discipline
+                    </option>
+                  );
+                }
                 return (
                   <option value={item} key={item.id}>
                     {item}
@@ -108,24 +114,23 @@ function Education({ form, errors, control }) {
             <label className="form-label" htmlFor="degree">
               Degree
             </label>
-            <select
-              {...form.register(`education.${index}.degree`)}
-              className="form-select"
-              id={index}
-              placeholder="Degree"
-              required
-            >
-              <option selected disabled value="">
-                Choose...
-              </option>
-              {degreeOptions[index].map((options) => {
-                return (
-                  <option value={options.id} key={options.id}>
-                    {options.name}
-                  </option>
-                );
-              })}
-            </select>
+            {degreeOptions[index].map((options) => {
+              if (options.name === 'ALL_DEGREES') {
+                return <></>;
+              }
+              return (
+                <div className="form-check" key={options.id}>
+                  <input
+                    {...form.register(`qualification`)}
+                    type="checkbox"
+                    id={options.id}
+                    value={options.id}
+                    className="form-check-input"
+                  />
+                  <label className="form-check-label">{options.name}</label>
+                </div>
+              );
+            })}
           </div>
         </div>
       ))}
@@ -136,7 +141,7 @@ function Education({ form, errors, control }) {
           onClick={() => {
             educationAppend({ level: '', discipline: '', degree: '' });
             setDisciplineOptions([...disciplineOptions, {}]);
-            setDegreeOptions([...degreeOptions, {}]);
+            setDegreeOptions([...degreeOptions, [{}]]);
           }}
         >
           Add Education
