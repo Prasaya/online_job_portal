@@ -1,13 +1,9 @@
 import { parse } from 'date-fns';
 import { useForm, useFieldArray } from 'react-hook-form';
+import District from '../District';
 
 function JobPost() {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const form = useForm({
     mode: 'onBlur',
     defaultValues: {
       education: [
@@ -25,6 +21,12 @@ function JobPost() {
       ],
     },
   });
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const { fields: educationFields, append: educationAppend } = useFieldArray({
     control,
@@ -42,8 +44,8 @@ function JobPost() {
   return (
     <div>
       <h1>Post New Job</h1>
-      <div className="container bg-light d-flex justify-content-center">
-        <form className="col-md-6" onSubmit={handleSubmit(onSubmit)}>
+      <div className="container bg-light d-flex justify-content-center p-4">
+        <form className="col-lg-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label" htmlFor="jobTitle">
               Job Title
@@ -108,7 +110,7 @@ function JobPost() {
                 validate: (value) => {
                   const deadline = parse(value, 'yyyy-MM-dd', new Date());
                   const today = new Date();
-                  if (deadline.getDate() < today.getDate()) {
+                  if (deadline < today) {
                     return 'Invalid Deadline';
                   }
                 },
@@ -143,20 +145,7 @@ function JobPost() {
               <label htmlFor="district" className="form-label">
                 District
               </label>
-              <select
-                {...register('district', {
-                  required: 'Please choose a valid option',
-                })}
-                className={`form-select ${errors.district ? 'is-invalid' : ''}`}
-                id="district"
-              >
-                <option selected disabled value="">
-                  Choose...
-                </option>
-                <option value="bhaktapur">Bhaktapur</option>
-                <option value="kathmandu">Kathmandu</option>
-                <option value="lalitpur">Lalitpur</option>
-              </select>
+              <District form={form} errors={errors.district} />
               <div className="invalid-feedback">
                 {errors.district && errors.district.message}
               </div>
