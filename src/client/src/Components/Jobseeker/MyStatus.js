@@ -19,8 +19,8 @@ function MyStatus() {
   }, []);
 
   return (
-    <div className="mystatus">
-      <h1>Applied Jobs</h1>
+    <div className="mystatus card my-2">
+      <h1 className='card-header'>Applied Jobs</h1>
       <div className="jobs container">
         <ul className=" list-group">
           {jobs.map((job) => {

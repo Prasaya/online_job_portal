@@ -28,8 +28,8 @@ function MyProfile() {
   }, []);
   basicEntries = Object.entries(basicInfo);
   return (
-    <div className="myprofile">
-      <h1>
+    <div className="myprofile card my-2">
+      <h1 className='card-header'>
         My Profile{' '}
         <span>
           <Link
@@ -40,7 +40,7 @@ function MyProfile() {
           </Link>
         </span>
       </h1>
-      <div className="container bg-light profile p-4 my-3">
+      <div className="container profile p-4 my-3">
         <div className="row">
           <div className="col-10 col-sm-2">
             <img

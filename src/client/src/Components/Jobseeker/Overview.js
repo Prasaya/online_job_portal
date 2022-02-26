@@ -23,8 +23,8 @@ function Overview() {
   }, [curPage]);
 
   return (
-    <div className="overview ">
-      <h1>Overview</h1>
+    <div className="overview card my-2">
+      <h1 className='card-header'>Overview</h1>
       <div className="jobs container">
         <ul className=" list-group">
           {jobs.map((job) => {
