@@ -1,7 +1,8 @@
 import { useForm, useFieldArray } from "react-hook-form";
-
+import {getUnixTime, parse} from "date-fns";
+//todo: fix error message not showing
 function JobPost() {
-  const { register, control, handleSubmit } = useForm({
+  const { register, control, handleSubmit, formState: { errors }, } = useForm({
     defaultValues: {
       education: [{
         level: "",
@@ -73,12 +74,24 @@ function JobPost() {
             <label className="form-label" htmlFor="deadline">
               Deadline
             </label>
+            <div className="invalid-feedback">
+              {errors.deadline && errors.deadline.message}
+            </div>
             <input
-              {...register("deadline")}
-              className="form-control"
+              {...register("deadline", {required:"Please fill out this field",
+                validate: (value) => {
+                  const deadline = getUnixTime(parse(value, "yyyy-MM-dd", new Date()))
+                  const today = getUnixTime(new Date())
+                  if (deadline < today){
+                    return "Invalid Deadline"
+                  }
+                }
+              })}
+              className={`form-control ${
+                errors.deadline ? 'is-invalid' : ''
+              }`}
               type="date"
               id="deadline"
-              required
             />
           </div>
           <div className="mb-3">
