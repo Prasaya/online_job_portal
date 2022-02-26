@@ -1,12 +1,16 @@
 import { parse } from 'date-fns';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useContext } from 'react';
 import District from '../District';
 import Education from './Education';
+import UserContext from '../../Context/UserContext';
 
 function JobPost() {
+  const userCtx = useContext(UserContext);
   const form = useForm({
     mode: 'onBlur',
     defaultValues: {
+      companyId: userCtx.id,
       education: [
         {
           level: '',
@@ -34,8 +38,16 @@ function JobPost() {
     name: 'skills',
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const res = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonVal = await res.json();
+    console.log(jsonVal);
   };
 
   return (
@@ -44,39 +56,39 @@ function JobPost() {
       <div className="container bg-light d-flex justify-content-center p-4">
         <form className="col-lg-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
-            <label className="form-label" htmlFor="jobTitle">
+            <label className="form-label" htmlFor="title">
               Job Title
             </label>
             <input
-              {...register('jobTitle', {
+              {...register('title', {
                 required: 'Please fill out this field',
               })}
-              className={`form-control ${errors.jobTitle ? 'is-invalid' : ''}`}
+              className={`form-control ${errors.title ? 'is-invalid' : ''}`}
               type="text"
-              id="jobTitle"
+              id="title"
             />
             <div className="invalid-feedback">
-              {errors.jobTitle && errors.jobTitle.message}
+              {errors.title && errors.title.message}
             </div>
           </div>
           <div className="mb-3">
-            <label className="form-label" htmlFor="vacancy">
+            <label className="form-label" htmlFor="vacancies">
               Number of Vacancies
             </label>
             <input
-              {...register('vacancy', {
+              {...register('vacancies', {
                 required: 'Please fill out this field',
                 pattern: {
                   value: /^[0-9\b]+$/,
                   message: 'Must be a number',
                 },
               })}
-              className={`form-control ${errors.vacancy ? 'is-invalid' : ''}`}
+              className={`form-control ${errors.vacancies ? 'is-invalid' : ''}`}
               type="text"
-              id="vacancy"
+              id="vacancies"
             />
             <div className="invalid-feedback">
-              {errors.vacancy && errors.vacancy.message}
+              {errors.vacancies && errors.vacancies.message}
             </div>
           </div>
           <div className="mb-3">

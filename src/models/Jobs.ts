@@ -55,7 +55,7 @@ export const JobCreationSchema: Schema = {
   'skills.*.proficiency': {
     isString: true,
     isIn: {
-      options: [['Beginner', 'Intermediate', 'Advanced']],
+      options: [['Beginner', 'Intermediate', 'Advanced', 'Expert']],
       errorMessage: 'Invalid Skills Proficiency',
     },
   },
@@ -80,8 +80,8 @@ export const createNewJobPost = async (
   const { qualifications, skills } = jobPostData;
   await connection.execute(
     'INSERT INTO jobs ' +
-    '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
-    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
+      'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [...Object.values(jobData)],
   );
 
@@ -120,7 +120,7 @@ export const createNewJobPost = async (
     // This is to avoid the max bytes limitation of mysql
     if (
       Math.floor(index / 20) ===
-      PromiseArray.length - initialPromiseArrayLength &&
+        PromiseArray.length - initialPromiseArrayLength &&
       index !== skills.length - 1
     ) {
       query += '(?, ?, ?), ';

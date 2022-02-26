@@ -7,15 +7,10 @@ function Education({ form, errors, control }) {
     name: 'education',
   });
 
+  const [isCheckAll, setIsCheckAll] = useState([false]);
+  const [isCheck, setIsCheck] = useState([[]]);
   const [disciplineOptions, setDisciplineOptions] = useState([{}]);
-  const [degreeOptions, setDegreeOptions] = useState([
-    [
-      {
-        id: '',
-        name: '',
-      },
-    ],
-  ]);
+  const [degreeOptions, setDegreeOptions] = useState([[{}]]);
 
   const fetchInfo = async (level) => {
     const encodedLevel = encodeURI(`/api/academics?level[]=${level}`);
@@ -47,6 +42,48 @@ function Education({ form, errors, control }) {
         return index === id ? disciplineOptions[id][discipline] : item;
       });
     });
+  };
+
+  function handleSelectAll(index) {
+    setIsCheckAll((prevChecks) => {
+      return prevChecks.map((check, i) => {
+        return index === i ? !check : check;
+      });
+    });
+    setIsCheck((prevChecks) => {
+      return prevChecks.map((check, i) => {
+        return index === i ? degreeOptions[index].map((li) => li.id) : check;
+      });
+    });
+    if (isCheckAll[index]) {
+      setIsCheck((prevChecks) => {
+        return prevChecks.map((check, i) => {
+          return index === i ? [] : check;
+        });
+      });
+    }
+  }
+
+  const handleClick = (e, index) => {
+    const { checked } = e.target;
+    const id = parseInt(e.target.id);
+    setIsCheck((prevChecks) => {
+      return prevChecks.map((check, i) => {
+        return index === i ? [...check, id] : check;
+      });
+    });
+    setIsCheckAll((prevChecks) => {
+      return prevChecks.map((check, i) => {
+        return index === i ? false : check;
+      });
+    });
+    if (!checked) {
+      setIsCheck((prevChecks) => {
+        return prevChecks.map((check, i) => {
+          return index === i ? check.filter((item) => item !== id) : check;
+        });
+      });
+    }
   };
 
   return (
@@ -116,16 +153,38 @@ function Education({ form, errors, control }) {
             </label>
             {degreeOptions[index].map((options) => {
               if (options.name === 'ALL_DEGREES') {
+                return (
+                  <div className="form-check" key={options.id}>
+                    <input
+                      {...form.register(`qualifications`)}
+                      type="checkbox"
+                      id={options.id}
+                      value={options.id}
+                      className="form-check-input"
+                      onClick={() => handleSelectAll(index)}
+                      checked={isCheckAll[index]}
+                    />
+                    <label className="form-check-label">
+                      Select/Unselect All
+                    </label>
+                  </div>
+                );
+              }
+            })}
+            {degreeOptions[index].map((options) => {
+              if (options.name === 'ALL_DEGREES') {
                 return <></>;
               }
               return (
                 <div className="form-check" key={options.id}>
                   <input
-                    {...form.register(`qualification`)}
+                    {...form.register(`qualifications`)}
                     type="checkbox"
                     id={options.id}
                     value={options.id}
                     className="form-check-input"
+                    onClick={(e) => handleClick(e, index)}
+                    checked={isCheck[index].includes(options.id)}
                   />
                   <label className="form-check-label">{options.name}</label>
                 </div>
@@ -142,6 +201,8 @@ function Education({ form, errors, control }) {
             educationAppend({ level: '', discipline: '', degree: '' });
             setDisciplineOptions([...disciplineOptions, {}]);
             setDegreeOptions([...degreeOptions, [{}]]);
+            setIsCheck([...isCheck, []]);
+            setIsCheckAll([...isCheckAll, false]);
           }}
         >
           Add Education
