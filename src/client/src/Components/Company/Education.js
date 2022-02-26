@@ -164,7 +164,7 @@ function Education({ form, errors, control }) {
                 return (
                   <div className="form-check" key={options.id}>
                     <input
-                      {...form.register(`qualification`)}
+                      {...form.register(`qualifications`)}
                       type="checkbox"
                       id={options.id}
                       value={options.id}
@@ -186,7 +186,7 @@ function Education({ form, errors, control }) {
               return (
                 <div className="form-check" key={options.id}>
                   <input
-                    {...form.register(`qualification`)}
+                    {...form.register(`qualifications`)}
                     type="checkbox"
                     id={options.id}
                     value={options.id}
