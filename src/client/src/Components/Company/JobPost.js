@@ -1,6 +1,7 @@
 import { parse } from 'date-fns';
 import { useForm, useFieldArray } from 'react-hook-form';
 import District from '../District';
+import Education from './Education';
 
 function JobPost() {
   const form = useForm({
@@ -28,10 +29,6 @@ function JobPost() {
     formState: { errors },
   } = form;
 
-  const { fields: educationFields, append: educationAppend } = useFieldArray({
-    control,
-    name: 'education',
-  });
   const { fields: skillFields, append: skillAppend } = useFieldArray({
     control,
     name: 'skills',
@@ -180,90 +177,7 @@ function JobPost() {
             </div>
           </div>
           <div className="education">
-            {educationFields.map((item, index) => (
-              <div className="row" key={item.id}>
-                <div className="col-md-5 mb-3">
-                  <label className="form-label" htmlFor="educationLevel">
-                    Education Level
-                  </label>
-                  <select
-                    {...register(`education.${index}.level`)}
-                    className="form-select"
-                    id="educationLevel"
-                    required
-                  >
-                    <option selected disabled value="">
-                      Choose...
-                    </option>
-                    <option value="Masters">Masters</option>
-                    <option value="Bachelors">Bachelors</option>
-                    <option value="Doctorate">Doctorate</option>
-                    <option value="Diploma">Certificate/Diploma</option>
-                    <option value="Pre-Diploma">Pre-Diploma</option>
-                    <option value="Post Graduate Diploma">
-                      Post Graduate Diploma
-                    </option>
-                    <option value="Chartered Accountant">
-                      Chartered Accountant
-                    </option>
-                    <option value="Master of Philosophy">
-                      Master of Philosophy
-                    </option>
-                  </select>
-                </div>
-                <div className="col-md-7 mb-3">
-                  <label className="form-label" htmlFor="discipline">
-                    Discipline
-                  </label>
-                  <input
-                    {...register(`education.${index}.discipline`)}
-                    className="form-control"
-                    type="text"
-                    id="discipline"
-                    list="disciplineOptions"
-                    placeholder="Discipline"
-                    required
-                  />
-                  <datalist id="disciplineOptions">
-                    <option value="Agriculture" />
-                    <option value="Computer Engineering" />
-                    <option value="Computer and Information Technology" />
-                    <option value="Engineering" />
-                  </datalist>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label" htmlFor="degree">
-                    Degree
-                  </label>
-                  <input
-                    {...register(`education.${index}.degree`)}
-                    className="form-control"
-                    type="text"
-                    id="degree"
-                    list="degreeOptions"
-                    placeholder="Degree"
-                    required
-                  />
-                  <datalist id="degreeOptions">
-                    <option value="BSc Computer Science and Information Technology" />
-                    <option value="Bachelor of Computer Application" />
-                    <option value="Bachelor of Information Technology" />
-                    <option value="Bachelor of Software Engineering" />
-                  </datalist>
-                </div>
-              </div>
-            ))}
-            <div className="mb-3">
-              <button
-                className="btn btn-secondary btn-md"
-                type="button"
-                onClick={() =>
-                  educationAppend({ level: '', discipline: '', degree: '' })
-                }
-              >
-                Add Education
-              </button>
-            </div>
+            <Education form={form} errors={errors} control={control} />
           </div>
           <div className="skills">
             {skillFields.map((item, index) => (
