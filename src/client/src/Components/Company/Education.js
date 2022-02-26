@@ -7,8 +7,15 @@ function Education({ form, errors, control }) {
     name: 'education',
   });
 
-  const [disciplineOptions, setDisciplineOptions] = useState({});
-  const [degreeOptions, setDegreeOptions] = useState();
+  const [disciplineOptions, setDisciplineOptions] = useState([{}]);
+  const [degreeOptions, setDegreeOptions] = useState([
+    [
+      {
+        id: '',
+        name: '',
+      },
+    ],
+  ]);
 
   const fetchInfo = async (level) => {
     const encodedLevel = encodeURI(`/api/academics?level[]=${level}`);
@@ -19,13 +26,28 @@ function Education({ form, errors, control }) {
 
   const levelChangeHandler = (e) => {
     const level = e.target.value;
+    const id = parseInt(e.target.id);
     const getDiscipline = async () => {
       const data = await fetchInfo(level);
       if (data.success) {
-        setDisciplineOptions(data.query[level]);
+        setDisciplineOptions((prevOptions) => {
+          return prevOptions.map((item, index) => {
+            return index === id ? data.query[level] : item;
+          });
+        });
       }
     };
     getDiscipline();
+  };
+
+  const disciplineChangeHandler = (e) => {
+    const discipline = e.target.value;
+    const id = parseInt(e.target.id);
+    setDegreeOptions((prevOptions) => {
+      return prevOptions.map((item, index) => {
+        return index === id ? disciplineOptions[id][discipline] : item;
+      });
+    });
   };
 
   return (
@@ -67,41 +89,43 @@ function Education({ form, errors, control }) {
               className="form-select"
               id={index}
               placeholder="Discipline"
+              onChange={disciplineChangeHandler}
               required
             >
               <option selected disabled value="">
                 Choose...
               </option>
-              {Object.keys(disciplineOptions).map((item) => {
-                return <option value={item}>{item}</option>;
+              {Object.keys(disciplineOptions[index]).map((item) => {
+                return (
+                  <option value={item} key={item.id}>
+                    {item}
+                  </option>
+                );
               })}
             </select>
-            <datalist id="disciplineOptions">
-              <option value="Agriculture" />
-              <option value="Computer Engineering" />
-              <option value="Computer and Information Technology" />
-              <option value="Engineering" />
-            </datalist>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="degree">
               Degree
             </label>
-            <input
+            <select
               {...form.register(`education.${index}.degree`)}
-              className="form-control"
-              type="text"
-              id="degree"
-              list="degreeOptions"
+              className="form-select"
+              id={index}
               placeholder="Degree"
               required
-            />
-            <datalist id="degreeOptions">
-              <option value="BSc Computer Science and Information Technology" />
-              <option value="Bachelor of Computer Application" />
-              <option value="Bachelor of Information Technology" />
-              <option value="Bachelor of Software Engineering" />
-            </datalist>
+            >
+              <option selected disabled value="">
+                Choose...
+              </option>
+              {degreeOptions[index].map((options) => {
+                return (
+                  <option value={options.id} key={options.id}>
+                    {options.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
         </div>
       ))}
@@ -109,9 +133,11 @@ function Education({ form, errors, control }) {
         <button
           className="btn btn-secondary btn-md"
           type="button"
-          onClick={() =>
-            educationAppend({ level: '', discipline: '', degree: '' })
-          }
+          onClick={() => {
+            educationAppend({ level: '', discipline: '', degree: '' });
+            setDisciplineOptions([...disciplineOptions, {}]);
+            setDegreeOptions([...degreeOptions, {}]);
+          }}
         >
           Add Education
         </button>
