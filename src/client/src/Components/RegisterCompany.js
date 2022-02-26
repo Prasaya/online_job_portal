@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
+import District from './District';
 
 function RegisterCompany() {
   const {
@@ -219,12 +220,7 @@ function RegisterCompany() {
                 className={`form-select ${errors.city ? 'is-invalid' : ''}`}
                 id="district"
               >
-                <option selected disabled value="">
-                  Choose...
-                </option>
-                <option value="bhaktapur">Bhaktapur</option>
-                <option value="kathmandu">Kathmandu</option>
-                <option value="lalitpur">Lalitpur</option>
+                <District />
               </select>
               <label htmlFor="district">District</label>
               <div className="invalid-feedback">
