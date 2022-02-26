@@ -45,12 +45,12 @@ function Settings() {
     }, []);
     
     return (
-        <div className="settings">
-            <h1>Settings</h1>
-            <div className="bg-light container">
+        <div className="settings card my-2">
+            <h1 className="card-header mb-0">Settings</h1>
+            <div className="container-fluid m-0">
                 <div className="row">
-                    <div className="col-12 col-lg-3">
-                        <table className="table table-hover">
+                    <div className="col-12 col-lg-3 p-0 border-end">
+                        <table className="table table-hover mb-0">
                             <tbody>
                                 {navElements.map((element) => {
                                     return(

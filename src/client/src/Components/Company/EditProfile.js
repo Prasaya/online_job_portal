@@ -45,12 +45,12 @@ function EditProfile() {
     }, []);
     
     return (
-        <div className="editprofile">
-            <h1>Edit Profile</h1>
-            <div className="bg-light container">
+        <div className="editprofile card my-2">
+            <h1 className="card-header">Edit Profile</h1>
+            <div className="container">
                 <div className="row">
-                    <div className="col-12 col-lg-3">
-                        <table className="table table-hover">
+                    <div className="col-12 col-lg-3 p-0 border-end">
+                        <table className="table table-hover mb-0">
                             <tbody>
                                 {navElements.map((element) => {
                                     return(

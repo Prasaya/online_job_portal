@@ -101,7 +101,7 @@ function CompanyNav() {
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light py-2">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light py-2 shaadow-sm">
       <div className="container-fluid">
         <div className="left d-inline-flex">
           <Link className="navbar-brand px-2" to="/">
