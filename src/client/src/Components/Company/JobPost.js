@@ -49,36 +49,54 @@ function JobPost() {
               Job Title
             </label>
             <input
-              {...register('jobTitle')}
-              className="form-control"
+              {...register('jobTitle', {
+                required: 'Please fill out this field',
+              })}
+              className={`form-control ${errors.jobTitle ? 'is-invalid' : ''}`}
               type="text"
               id="jobTitle"
-              required
             />
+            <div className="invalid-feedback">
+              {errors.jobTitle && errors.jobTitle.message}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="vacancy">
               Number of Vacancies
             </label>
             <input
-              {...register('vacancy')}
-              className="form-control"
+              {...register('vacancy', {
+                required: 'Please fill out this field',
+                pattern: {
+                  value: /^[0-9\b]+$/,
+                  message: 'Must be a number',
+                },
+              })}
+              className={`form-control ${errors.vacancy ? 'is-invalid' : ''}`}
               type="text"
               id="vacancy"
-              required
             />
+            <div className="invalid-feedback">
+              {errors.vacancy && errors.vacancy.message}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="description">
               Job Description
             </label>
             <textarea
-              {...register('description')}
-              className="form-control"
+              {...register('description', {
+                required: 'Please fill out this field',
+              })}
+              className={`form-control ${
+                errors.description ? 'is-invalid' : ''
+              }`}
               id="description"
               rows="3"
-              required
             />
+            <div className="invalid-feedback">
+              {errors.description && errors.description.message}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label" htmlFor="deadline">
@@ -86,12 +104,12 @@ function JobPost() {
             </label>
             <input
               {...register('deadline', {
-                required: 'Enter a deadline',
+                required: 'Please fill out this field',
                 validate: (value) => {
                   const deadline = parse(value, 'yyyy-MM-dd', new Date());
                   const today = new Date();
                   if (deadline.getDate() < today.getDate()) {
-                    return 'Deadline should not be in the past';
+                    return 'Invalid Deadline';
                   }
                 },
               })}
@@ -103,17 +121,66 @@ function JobPost() {
               {errors.deadline && errors.deadline.message}
             </div>
           </div>
+          <div className="address row">
+            <div className="mb-3 col-md-8">
+              <label htmlFor="address" className="form-label">
+                Address
+              </label>
+              <input
+                {...register('address', {
+                  required: 'Please fill out this field',
+                })}
+                type="text"
+                className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+                placeholder="Address"
+                id="address"
+              />
+              <div className="invalid-feedback">
+                {errors.address && errors.address.message}
+              </div>
+            </div>
+            <div className="mb-3 col-md-4">
+              <label htmlFor="district" className="form-label">
+                District
+              </label>
+              <select
+                {...register('district', {
+                  required: 'Please choose a valid option',
+                })}
+                className={`form-select ${errors.district ? 'is-invalid' : ''}`}
+                id="district"
+              >
+                <option selected disabled value="">
+                  Choose...
+                </option>
+                <option value="bhaktapur">Bhaktapur</option>
+                <option value="kathmandu">Kathmandu</option>
+                <option value="lalitpur">Lalitpur</option>
+              </select>
+              <div className="invalid-feedback">
+                {errors.district && errors.district.message}
+              </div>
+            </div>
+          </div>
+
           <div className="mb-3">
             <label className="form-label" htmlFor="experience">
               Work Experience
             </label>
             <input
-              {...register('experience')}
-              className="form-control"
+              {...register('experience', {
+                required: 'Please fill out this field',
+              })}
+              className={`form-control ${
+                errors.experience ? 'is-invalid' : ''
+              }`}
               type="text"
               id="experience"
               required
             />
+            <div className="invalid-feedback">
+              {errors.experience && errors.experience.message}
+            </div>
           </div>
           <div className="education">
             {educationFields.map((item, index) => (
