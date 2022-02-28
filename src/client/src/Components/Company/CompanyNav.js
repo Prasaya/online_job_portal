@@ -57,8 +57,8 @@ function CompanyNav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
-      }else if (path.includes('login')){
-        if(element.to.includes('overview')){
+      } else if (path.includes('login')) {
+        if (element.to.includes('overview')) {
           element.status = 'active';
         }
       }
@@ -132,7 +132,7 @@ function CompanyNav() {
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             {navElements.map((element) => {
               return (
-                <li className="nav-link">
+                <li className="nav-link" key={element.name}>
                   <Link
                     onClick={OnClick}
                     className={`nav-link ${element.status}`}
