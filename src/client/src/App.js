@@ -12,6 +12,7 @@ import JobseekerOverview from './Components/Jobseeker/Overview';
 import JobseekerMyStatus from './Components/Jobseeker/MyStatus';
 import JobseekerMyProfile from './Components/Jobseeker/MyProfile';
 import JobseekerSettings from './Components/Jobseeker/Settings';
+import JobseekerSettingsBasics from './Components/Jobseeker/Settings/Basics';
 import JobseekerChangeEmail from './Components/Jobseeker/Settings/ChangeEmail';
 import JobseekerChangePassword from './Components/Jobseeker/Settings/ChangePassword';
 import JobseekerEditProfile from './Components/Jobseeker/EditProfile';
@@ -54,6 +55,7 @@ function App() {
               <Route path="skills" element={<JobseekerSkills />} />
             </Route>
             <Route path="settings" element={<JobseekerSettings />}>
+              <Route path="basics" element={<JobseekerSettingsBasics />} />
               <Route path="email" element={<JobseekerChangeEmail />} />
               <Route path="password" element={<JobseekerChangePassword />} />
             </Route>

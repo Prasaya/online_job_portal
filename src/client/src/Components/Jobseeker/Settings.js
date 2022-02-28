@@ -6,6 +6,11 @@ function Settings() {
     const path = useLocation().pathname
     const [navElements, setNavElements] = useState([
         {
+            name: "Basics",
+            to:"basics",
+            status: ""
+        },
+        {
             name: "Email",
             to:"email",
             status: "" 
