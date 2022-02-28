@@ -29,6 +29,7 @@ import CompanySettings from './Components/Company/Settings';
 import CompanyChangeEmail from './Components/Company/Settings/ChangeEmail';
 import CompanyChangePassword from './Components/Company/Settings/ChangePassword';
 import JobPost from './Components/Company/JobPost';
+import ApplicantList from './Components/Company/ApplicantList';
 import CompanyEditProfile from './Components/Company/EditProfile';
 import CompanyAvatar from './Components/Company/EditProfile/Avatar';
 import CompanyBasics from './Components/Company/EditProfile/Basics';
@@ -67,11 +68,12 @@ function App() {
               <Route path="avatar" element={<CompanyAvatar />} />
               <Route path="basics" element={<CompanyBasics />} />
             </Route>
-            <Route path="settings" element={<CompanySettings />} >
+            <Route path="settings" element={<CompanySettings />}>
               <Route path="email" element={<CompanyChangeEmail />} />
               <Route path="password" element={<CompanyChangePassword />} />
             </Route>
             <Route path="jobpost" element={<JobPost />} />
+            <Route path="applicants/:id" element={<ApplicantList />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
