@@ -73,6 +73,8 @@ function Job() {
           </p>
           <h6>Deadline:</h6>
           <p>{job.deadline}</p>
+          <h6>No. of Vacancies:</h6>
+          <p>{job.vacancies}</p>
         </div>
         <div className="job-description my-2">
           <h6>Job Description:</h6>
