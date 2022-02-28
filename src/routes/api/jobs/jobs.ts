@@ -3,6 +3,7 @@ import { param, validationResult, checkSchema } from 'express-validator';
 import {
   createNewJobPost,
   deleteJobPost,
+  getApplicantsForJob,
   JobCreationSchema,
 } from '@models/Jobs';
 import { JobInput, JobReturn } from '@typings/Jobs';
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
     let page = 1;
     try {
       page = req.query.page ? parseInt(req.query.page as string) : 1;
-    } catch (error) {}
+    } catch (error) { }
     const [count_result]: [RowDataPacket[], FieldPacket[]] =
       await connection.execute(
         'SELECT count(*) as numRows FROM allJobsFromDatabase',
@@ -169,6 +170,51 @@ router.get(
     }
   },
 );
+
+router.get('/:jobId/applicants',
+  isOrganization,
+  param('jobId').isString().isLength({ min: 36, max: 36 }),
+  async (req: Request, res: Response) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array(), success: false });
+        return;
+      }
+
+      const jobId = req.params.jobId;
+      const [companyIdArray]: [RowDataPacket[], FieldPacket[]] =
+        await connection.execute(
+          'SELECT companyId ' +
+          'FROM jobs ' +
+          'WHERE jobId = ?',
+          [jobId]
+        );
+      console.log(companyIdArray);
+      console.log(companyIdArray[0].companyId);
+      let companyID = companyIdArray[0].companyId;
+      console.log(companyID);
+
+      if (req.user!.user.basics.id !== companyID) {
+        res.status(400).json({
+          message: "Company of job is different from logged in company",
+          success: false
+        });
+        return;
+      }
+
+      const result = await getApplicantsForJob(jobId);
+      res.json({ applicants: result, success: true });
+
+    } catch (err) {
+      logger.error('Error in getting applicants for a posted job ', err);
+      res
+        .status(500)
+        .json({ message: 'Something went wrong getting applicants!', success: false });
+    }
+
+  });
+
 
 router.get('/test/1', async (req, res) => {
   const [result] = await connection.query('SELECT * from allJobs');
