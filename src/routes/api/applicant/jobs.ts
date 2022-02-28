@@ -1,6 +1,6 @@
 import express from 'express';
 import connection from '@utils/dbSetup';
-import { body } from 'express-validator';
+import { param } from 'express-validator';
 import logger from '@utils/logger';
 
 const router = express.Router();
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
 
 router.post(
   '/',
-  body('jobId').isString().isLength({ min: 36, max: 36 }),
+  param('jobId').isString().isLength({ min: 36, max: 36 }),
   async (req, res) => {
     try {
       await connection.execute('CALL applyForJob(?, ?)', [

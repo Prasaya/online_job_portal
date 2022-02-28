@@ -426,9 +426,10 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `applicantsForJob`(
 	IN jId CHAR(36)
 )
 BEGIN
-	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName
+	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName 
     FROM applicant_jobs as aj
-    INNER JOIN applicant_data as ad on ad.id = aj.applicantId;
+    INNER JOIN applicant_data as ad on ad.id = aj.applicantId
+    WHERE aj.jobId = jId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1029,4 +1030,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-28 16:14:02
+-- Dump completed on 2022-02-28 20:01:52

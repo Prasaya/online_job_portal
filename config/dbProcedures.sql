@@ -327,9 +327,10 @@ CREATE PROCEDURE applicantsForJob(
 	IN jId CHAR(36)
 )
 BEGIN
-	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName
+	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName 
     FROM applicant_jobs as aj
-    INNER JOIN applicant_data as ad on ad.id = aj.applicantId;
+    INNER JOIN applicant_data as ad on ad.id = aj.applicantId
+    WHERE aj.jobId = jId;
 END |
 DELIMITER ;
 
