@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
+import logo from '../../Assets/Img/logo.png';
 import './nav.css';
 
 // TODO: Use common state for nav bar and profile
@@ -63,8 +64,8 @@ function Nav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
-      }else if (path.includes('login')){
-        if(element.to.includes('overview')){
+      } else if (path.includes('login')) {
+        if (element.to.includes('overview')) {
           element.status = 'active';
         }
       }
@@ -111,21 +112,25 @@ function Nav() {
     <nav className="navbar navbar-expand-lg navbar-light bg-light py-2 shadow-sm">
       <div className="container-fluid">
         <div className="left d-inline-flex">
-          <Link className="navbar-brand px-2" to="/">
-            Job Portal
-          </Link>
-          <form className="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
-            <input
-              {...register('search', {})}
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-primary" type="submit">
-              Search
-            </button>
-          </form>
+          <div className="logo">
+            <Link className="navbar-brand px-2" to="/">
+              <img className="img img-fluid" src={logo} alt="logo" width="80" />
+            </Link>
+          </div>
+          <div className="search-bar mt-1">
+            <form className="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
+              <input
+                {...register('search', { required: true })}
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-primary" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
         </div>
         <button
           className="navbar-toggler"
