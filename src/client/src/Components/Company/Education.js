@@ -169,6 +169,8 @@ function Education({ form, errors, control }) {
                     </label>
                   </div>
                 );
+              } else {
+                return <></>;
               }
             })}
             {degreeOptions[index].map((options) => {
