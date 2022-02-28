@@ -57,7 +57,7 @@ function Job() {
   } else if (userCtx.type === 'Users') {
     buttons = <JobSeekerOptions id={job} />;
   } else if (userCtx.type === 'Organizations') {
-    buttons = <CompanyOptions />;
+    buttons = <CompanyOptions job={job} />;
   }
 
   return (
