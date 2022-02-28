@@ -52,7 +52,7 @@ function Login() {
   return (
     <div className="container">
       <div className="row justify-content-around my-5">
-        <div className="col-lg-6 mt-5">
+        <div className="col-lg-7 mt-5 me-5">
           <img className="img img-fluid" src={loginWallpaer} alt="wallpaper" />
         </div>
         <div className="col-lg-4 shadow-lg rounded-3 border border-white px-3 py-4">
