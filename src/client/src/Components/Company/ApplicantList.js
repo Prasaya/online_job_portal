@@ -34,7 +34,7 @@ function ApplicantList() {
           setValidApplicant(true);
         } else {
           setValidApplicant(false);
-          setErrorMessage('Error getting applicants');
+          setErrorMessage(overviewApplicants.message);
         }
       } else {
         setValidJob(false);
@@ -52,7 +52,7 @@ function ApplicantList() {
       </div>
     );
   }
-  if (!isValidJob && !isValidApplicant) {
+  if (!isValidJob || !isValidApplicant) {
     return (
       <div className="container m-5">
         <h6>{errorMessage}</h6>
@@ -60,10 +60,26 @@ function ApplicantList() {
     );
   }
   return (
-    <div className="container m-5">
-      <div className="job-details">
+    <div className="container m-2">
+      <div className="job-details my-3 py-2">
         <h3>{job.title}</h3>
         <h6>Deadline: {job.deadline}</h6>
+      </div>
+      <div className="sort-by my-3 ms-1 row">
+        <form className="col-md-4">
+          <div className="input-group mb-3">
+            <label className="input-group-text" for="sortOptions">
+              Sort By
+            </label>
+            <select className="form-select" id="sortOptions">
+              <option selected value="qualification">
+                Qualification
+              </option>
+              <option value="skills">Skills</option>
+              <option value="experience">Experience</option>
+            </select>
+          </div>
+        </form>
       </div>
       <div className="applicants container">
         <ul className="list-group">
@@ -75,10 +91,11 @@ function ApplicantList() {
               >
                 <div className="job d-flex flex-row justify-content-between align-items-center my-2">
                   <div className="d-flex flex-column">
-                    <h3>
+                    <h4>
                       {applicant.firstName} {applicant.middleName}{' '}
                       {applicant.lastName}
-                    </h3>
+                    </h4>
+                    <h6>Email: {applicant.email}</h6>
                   </div>
                   <div>
                     <Link to={``} className="btn btn-primary btn-lg mx-2">
