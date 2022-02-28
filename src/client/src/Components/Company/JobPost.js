@@ -1,12 +1,14 @@
 import { parse } from 'date-fns';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import District from '../District';
 import Education from './Education';
 import UserContext from '../../Context/UserContext';
 
 function JobPost() {
   const userCtx = useContext(UserContext);
+  const navigate = useNavigate();
   const form = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -29,6 +31,8 @@ function JobPost() {
   const {
     register,
     control,
+    setError,
+    clearErrors,
     handleSubmit,
     formState: { errors },
   } = form;
@@ -47,7 +51,11 @@ function JobPost() {
       body: JSON.stringify(data),
     });
     const jsonVal = await res.json();
-    console.log(jsonVal);
+    if (jsonVal.success) {
+      navigate(`/jobs/${jsonVal.jobDetails.jobId}`, { replace: true });
+    } else {
+      setError('error', { message: jsonVal.message });
+    }
   };
 
   return (
@@ -62,6 +70,7 @@ function JobPost() {
             <input
               {...register('title', {
                 required: 'Please fill out this field',
+                onChange: () => clearErrors(),
               })}
               className={`form-control ${errors.title ? 'is-invalid' : ''}`}
               type="text"
@@ -78,6 +87,7 @@ function JobPost() {
             <input
               {...register('vacancies', {
                 required: 'Please fill out this field',
+                onChange: () => clearErrors(),
                 pattern: {
                   value: /^[0-9\b]+$/,
                   message: 'Must be a number',
@@ -98,6 +108,7 @@ function JobPost() {
             <textarea
               {...register('description', {
                 required: 'Please fill out this field',
+                onChange: () => clearErrors(),
               })}
               className={`form-control ${
                 errors.description ? 'is-invalid' : ''
@@ -116,6 +127,7 @@ function JobPost() {
             <input
               {...register('deadline', {
                 required: 'Please fill out this field',
+                onChange: () => clearErrors(),
                 validate: (value) => {
                   const deadline = parse(value, 'yyyy-MM-dd', new Date());
                   const today = new Date();
@@ -140,6 +152,7 @@ function JobPost() {
               <input
                 {...register('address', {
                   required: 'Please fill out this field',
+                  onChange: () => clearErrors(),
                 })}
                 type="text"
                 className={`form-control ${errors.address ? 'is-invalid' : ''}`}
@@ -157,6 +170,7 @@ function JobPost() {
               <select
                 {...form.register('district', {
                   required: 'Please choose a valid option',
+                  onChange: () => clearErrors(),
                 })}
                 className={`form-select ${errors.district ? 'is-invalid' : ''}`}
                 id="district"
@@ -176,6 +190,7 @@ function JobPost() {
             <input
               {...register('experience', {
                 required: 'Please fill out this field',
+                onChange: () => clearErrors(),
               })}
               className={`form-control ${
                 errors.experience ? 'is-invalid' : ''
@@ -236,7 +251,12 @@ function JobPost() {
               </button>
             </div>
           </div>
-          <div className="">
+          {errors.error && (
+            <div className="alert alert-danger my-2">
+              {errors.error.message}
+            </div>
+          )}
+          <div className="submit-button">
             <button className="btn btn-primary btn-lg" type="submit">
               Submit
             </button>
