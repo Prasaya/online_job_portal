@@ -100,6 +100,7 @@ export const createNewOrganization = async (
     city: organizationData.city,
     website: organizationData.website,
     phone: organizationData.phone,
+    logo: null,
   };
   await connection.execute(
     'CALL createOrganization(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
