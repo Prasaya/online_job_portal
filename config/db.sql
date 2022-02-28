@@ -45,8 +45,8 @@ CREATE TABLE user_roles (
     id char(36) not null,
     roleId int not null,
     primary key(id, roleId),
-    foreign key (id) references auth(id),
-    foreign key (roleId) references roles(id)
+    foreign key (id) references auth(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (roleId) references roles(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- One to one relationship with auth
@@ -60,7 +60,7 @@ CREATE TABLE organization_data (
     phone varchar(20),
     logo varchar(200),
     primary key (id),
-    foreign key (id) references auth(id)
+    foreign key (id) references auth(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- One to one relationship with auth
@@ -74,7 +74,7 @@ CREATE TABLE applicant_data (
     phone varchar(20),
     gender varchar(10),
     primary key (id),
-    foreign key (id) references auth(id)
+    foreign key (id) references auth(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- One to many relationship (applicant_data to applicant_academics)
@@ -82,8 +82,8 @@ CREATE TABLE applicant_academics (
 	id char(36) not null,
     qid int not null,
     primary key(id, qid),
-    foreign key (id) references applicant_data(id),
-    foreign key (qid) references academic_qualifications(qid)
+    foreign key (id) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (qid) references academic_qualifications(qid) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- One to many relationship (applicant_data to applicant_skills)
@@ -93,7 +93,7 @@ CREATE TABLE applicant_skills (
     proficiency ENUM('Beginner', 'Intermediate', 'Advanced', 'Expert') not null,
     experience int not null,
     primary key(id, name),
-    foreign key (id) references applicant_data(id)
+    foreign key (id) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE federated_credentials_provider (
@@ -108,8 +108,8 @@ CREATE TABLE federated_credentials (
     providerId int not null,
     identifier varchar(2048) not null,
     primary key (id, providerId),
-    foreign key (id) references auth(id),
-    foreign key (providerId) references federated_credentials_provider(providerId)
+    foreign key (id) references auth(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (providerId) references federated_credentials_provider(providerId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE jobs (
@@ -123,7 +123,7 @@ CREATE TABLE jobs (
     district varchar(1000),
     deadline date,
     primary key (jobId),
-    foreign key (companyId) references organization_data(id)
+    foreign key (companyId) references organization_data(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE skills (
@@ -131,22 +131,22 @@ CREATE TABLE skills (
     jobId char(36) not null,
     proficiency ENUM('Beginner', 'Intermediate', 'Advanced') not null,
     primary key (skillName, jobId),
-    foreign key (jobId) references jobs(jobId)
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE job_qualifications (
     jobId char(36) not null,
     qId int not null,
     primary key (jobId, qId),
-    foreign key (jobId) references jobs(jobId),
-    foreign key (qId) references academic_qualifications(qId)
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (qId) references academic_qualifications(qId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE applicant_jobs (
     applicantId char(36) not null,
     jobId char(36) not null,
     primary key (applicantId, jobId),
-    foreign key (applicantId) references applicant_data(id),
-    foreign key (jobId) references jobs(jobId)
+    foreign key (applicantId) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 

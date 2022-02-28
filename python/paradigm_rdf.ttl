@@ -1,0 +1,1082 @@
+@prefix dbp:	<http://dbpedia.org/property/> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+dbr:AmbientTalk	dbp:paradigm	"object-oriented , Concurrent, Event-driven, Reflective"@en .
+dbr:Incr_Tcl	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Event-driven_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Vala_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Structured_programming .
+dbr:CoffeeScript	dbp:paradigm	dbr:Prototype-based_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Scripting_language .
+<http://dbpedia.org/resource/Haskell_(programming_language)>	dbp:paradigm	dbr:Purely_functional_programming .
+<http://dbpedia.org/resource/Joyce_(programming_language)>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming ,
+		dbr:Concurrent_computing .
+dbr:QML	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Reactive_programming ,
+		dbr:Scripting_language .
+<http://dbpedia.org/resource/Alice_(programming_language)>	dbp:paradigm	dbr:Distributed_computing ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Programming_paradigm .
+dbr:Grasshopper_3D	dbp:paradigm	dbr:Visual_programming_language .
+<http://dbpedia.org/resource/Kojo_(learning_environment)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+dbr:LiveCode	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Nemerle	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Metaprogramming .
+dbr:OpenMx	dbp:paradigm	dbr:Structural_equation_modeling .
+dbr:Profile_Scripting_Language	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/Atom_(programming_language)>	dbp:paradigm	dbr:Reactive_programming ,
+		dbr:Functional_programming ,
+		dbr:Synchronous_programming_language .
+dbr:CEEMAC	dbp:paradigm	"Visual composition language"@en .
+<http://dbpedia.org/resource/Janus_(concurrent_constraint_programming_language)>	dbp:paradigm	dbr:Concurrent_constraint_logic_programming .
+<http://dbpedia.org/resource/Janus_(time-reversible_computing_programming_language)>	dbp:paradigm	dbr:Reversible_computing ,
+		dbr:Imperative_programming .
+dbr:ABAP	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Object-oriented_programming .
+dbr:ACL2	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Metaprogramming .
+dbr:AspectJ	dbp:paradigm	dbr:Aspect-oriented_programming .
+<http://dbpedia.org/resource/BETA_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Clean_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:DBase	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/D_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+dbr:ECMAScript	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Prototype-based_programming .
+<http://dbpedia.org/resource/F_Sharp_(programming_language)>	dbp:paradigm	dbr:Metaprogramming ,
+		dbr:Concurrent_computing ,
+		dbr:Functional_programming ,
+		dbr:Reflective_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming .
+dbr:ISWIM	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming .
+dbr:Inform	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/Limbo_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing .
+dbr:MATH-MATIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Make_(software)>	dbp:paradigm	dbr:Declarative_programming ,
+		<http://dbpedia.org/resource/Macro_(computer_science)> .
+dbr:MetaPost	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Typesetting .
+<http://dbpedia.org/resource/Oz_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Distributed_computing ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Logic_programming ,
+		dbr:Constraint_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Concurrent_computing .
+dbr:Rc	dbp:paradigm	<http://dbpedia.org/resource/Pipeline_(software)> ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/SPARK_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm .
+dbr:TADS	dbp:paradigm	dbr:Domain-specific_language ,
+		dbr:Prototype-based_programming .
+dbr:Unlambda	dbp:paradigm	"Nearly pure functional"@en .
+<http://dbpedia.org/resource/Visual_Basic_.NET>	dbp:paradigm	"Multi-paradigm: structured, imperative, object-oriented, declarative, generic, reflective and event-driven"@en .
+dbr:ActionScript	dbp:paradigm	"Multi-paradigm: object-oriented , functional, imperative, scripting"@en .
+dbr:Apache_Groovy	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Scripting_language ,
+		dbr:Object-oriented_programming .
+dbr:BLISS	dbp:paradigm	"Structured, imperative"@en .
+dbr:ChucK	dbp:paradigm	dbr:Programming_paradigm .
+dbr:ColorForth	dbp:paradigm	dbr:Stack-oriented_programming ,
+		dbr:Procedural_programming .
+dbr:Control_Language	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Curry_(programming_language)>	dbp:paradigm	"functional, logic, non-strict, modular"@en .
+dbr:Dartmouth_BASIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Io_(programming_language)>	dbp:paradigm	dbr:Prototype-based_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Lasso_(programming_language)>	dbp:paradigm	"Multi-paradigm: structured object-oriented ,\nimperative: procedural, \nconcurrent,  \nexp-oriented,\nMeta: reflective"@en .
+dbr:MIRC_scripting_language	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Procedural_programming .
+dbr:MSX_BASIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Max_(software)>	dbp:paradigm	dbr:Visual_programming_language ,
+		dbr:Declarative_programming ,
+		dbr:Domain-specific_language ,
+		dbr:Flow-based_programming .
+@prefix ns2:	<http://dbpedia.org/resource/PL/> .
+ns2:C	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Pico_(programming_language)>	dbp:paradigm	dbr:Reflective_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/Pizza_(programming_language)>	dbp:paradigm	dbr:Generic_programming ,
+		dbr:Algebraic_data_type .
+dbr:Pure_Data	dbp:paradigm	dbr:Dataflow .
+<http://dbpedia.org/resource/S2_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Sinclair_BASIC	dbp:paradigm	dbr:Imperative_programming .
+dbr:Unreal_Engine	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Generic_programming .
+dbr:Visual_J_Sharp	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+dbr:Absys	dbp:paradigm	dbr:Logic_programming .
+dbr:Malbolge	dbp:paradigm	"Esoteric, imperative, scalar, value-level"@en .
+dbr:CMS_Pipelines	dbp:paradigm	dbr:Dataflow .
+<http://dbpedia.org/resource/Joy_(programming_language)>	dbp:paradigm	dbr:Stack-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Concatenative_programming_language .
+dbr:Logtalk	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Prototype-based_programming ,
+		dbr:Logic_programming .
+<http://dbpedia.org/resource/P\u2032\u2032>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Ceylon_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Charm_(programming_language)>	dbp:paradigm	dbr:Structured_programming .
+<http://dbpedia.org/resource/Ciao_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Modular_programming ,
+		dbr:Logic_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Emerald_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Pascal_Script	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Scripting_language .
+<http://dbpedia.org/resource/Dart_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Reflective_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Opa_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/Pan_(programming_language)>	dbp:paradigm	dbr:Declarative_programming .
+<http://dbpedia.org/resource/Qore_(programming_language)>	dbp:paradigm	"multi-paradigm: thread safe/parallel/shared memory, functional, imperative, object-oriented , procedural, functional"@en .
+dbr:Urbiscript	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Functional_programming ,
+		dbr:Reflective_programming ,
+		dbr:Event-driven_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Sense_(programming)>	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:List_of_educational_programming_languages ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Snap!_(programming_language)>	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:List_of_educational_programming_languages .
+<http://dbpedia.org/resource/Etoys_(programming_language)>	dbp:paradigm	dbr:Prototype-based_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:List_of_educational_programming_languages .
+dbr:ToonTalk	dbp:paradigm	dbr:Concurrent_constraint_logic_programming .
+<http://dbpedia.org/resource/TXL_(programming_language)>	dbp:paradigm	"Pattern-matching and Term-rewriting"@en .
+<http://dbpedia.org/resource/Darwin_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Structured_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Script.NET>	dbp:paradigm	dbr:Metaprogramming ,
+		dbr:Imperative_programming ,
+		dbr:Scripting_language .
+dbr:Objective-J	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Programming_paradigm ,
+		dbr:Reflective_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:PLEXIL	dbp:paradigm	dbr:Programming_paradigm .
+dbr:North_Star_BASIC	dbp:paradigm	dbr:Imperative_programming .
+dbr:Praspel	dbp:paradigm	dbr:Design_by_contract .
+dbr:Visual_Logic	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Frink_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming .
+dbr:BASIC-PLUS	dbp:paradigm	dbr:Imperative_programming .
+dbr:CHILL	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/Cecil_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:DIGITAL_Command_Language	dbp:paradigm	dbr:Imperative_programming .
+dbr:IBM_RPG	dbp:paradigm	dbr:Programming_paradigm .
+<http://dbpedia.org/resource/M4_(computer_language)>	dbp:paradigm	<http://dbpedia.org/resource/Macro_(computer_science)> .
+<http://dbpedia.org/resource/Processing_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:StarLogo	dbp:paradigm	dbr:Agent-based_model ,
+		dbr:Programming_paradigm ,
+		dbr:Simulation_language ,
+		dbr:Procedural_programming ,
+		dbr:List_of_educational_programming_languages .
+dbr:XOTcl	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Event-driven_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+dbr:ALGO	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:AMPL	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Declarative_programming .
+<http://dbpedia.org/resource/Boo_(programming_language)>	dbp:paradigm	dbr:Object-oriented_analysis_and_design .
+<http://dbpedia.org/resource/C*>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Parallel_computing .
+<http://dbpedia.org/resource/FOCAL_(programming_language)>	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/F_(programming_language)>	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Modular_programming .
+dbr:MBASIC	dbp:paradigm	dbr:Imperative_programming .
+dbr:MLton	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+dbr:Object_REXX	dbp:paradigm	"Object-oriented"@en .
+<http://dbpedia.org/resource/Raku_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm .
+dbr:Unified_Parallel_C	dbp:paradigm	"parallel, message passing, imperative , structured"@en .
+dbr:Vilnius_BASIC	dbp:paradigm	dbr:Imperative_programming .
+@prefix ns3:	<http://dbpedia.org/resource/C++/> .
+ns3:CLI	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Object-oriented_programming .
+dbr:Concurrent_ML	dbp:paradigm	dbr:Concurrent_computing .
+<http://dbpedia.org/resource/Epigram_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:HP_Time-Shared_BASIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Harbour_(programming_language)>	dbp:paradigm	dbr:Reflective_programming ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+dbr:NewLISP	dbp:paradigm	"Multi-paradigm"@en .
+dbr:Standard_ML_of_New_Jersey	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/X10_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:G-code	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/Cuneiform_(programming_language)>	dbp:paradigm	dbr:Scientific_workflow_system ,
+		dbr:Functional_programming .
+dbr:PQL	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Declarative_programming .
+dbr:Snek	dbp:paradigm	dbr:Imperative_programming .
+dbr:A_Manufacturing_Language	dbp:paradigm	"Imperative"@en .
+<http://dbpedia.org/resource/Bosque_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Type_system .
+<http://dbpedia.org/resource/PWCT_(software)>	dbp:paradigm	dbr:Visual_programming_language ,
+		dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+dbr:Semantic_Web_Services_Language	dbp:paradigm	"Multi-paradigm: generic, object-oriented , imperative, reflective"@en .
+dbr:Vvvv	dbp:paradigm	dbr:Visual_programming_language .
+dbr:ALGOL	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/AMOS_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/APL_(programming_language)>	dbp:paradigm	dbr:Modular_programming ,
+		dbr:Functional_programming ,
+		dbr:Array_programming ,
+		dbr:Structured_programming .
+dbr:AWK	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Procedural_programming ,
+		dbr:Data-driven_programming .
+<http://dbpedia.org/resource/Ada_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming .
+dbr:Assembly_language	dbp:paradigm	dbr:Non-structured_programming ,
+		dbr:Imperative_programming .
+dbr:BASIC	dbp:paradigm	"Non-structured, later procedural, later object-oriented"@en .
+dbr:BCPL	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:Blitz_BASIC	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Reflective_programming ,
+		dbr:Modular_programming ,
+		dbr:Imperative_programming .
+dbr:Brainfuck	dbp:paradigm	dbr:Esoteric_programming_language ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/CLU_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Procedural_programming .
+dbr:COBOL	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/C_(programming_language)>	dbp:paradigm	"Multi-paradigm: imperative , structured"@en .
+dbr:Common_Lisp	dbp:paradigm	dbr:Metaprogramming ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Reflective_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Generic_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/Dylan_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Eiffel_(programming_language)>	dbp:paradigm	dbr:Concurrent_object-oriented_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Class-based_programming ,
+		dbr:Generic_programming .
+dbr:Emacs_Lisp	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Reflective_programming ,
+		dbr:Metaprogramming .
+<http://dbpedia.org/resource/Euphoria_(programming_language)>	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Forth_(programming_language)>	dbp:paradigm	dbr:Reflective_programming ,
+		dbr:Stack-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Concatenative_programming_language .
+dbr:Fortran	dbp:paradigm	"Multi-paradigm: structured, imperative , generic, array"@en .
+<http://dbpedia.org/resource/Icon_(programming_language)>	dbp:paradigm	"multi-paradigm: structured, text-oriented"@en .
+dbr:JavaScript	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Java_(programming_language)>	dbp:paradigm	"Multi-paradigm: generic, object-oriented , functional, imperative, reflective, concurrent"@en .
+<http://dbpedia.org/resource/KRL_(programming_language)>	dbp:paradigm	dbr:Knowledge_representation_and_reasoning .
+dbr:Kent_Recursive_Calculator	dbp:paradigm	dbr:Functional_programming .
+<http://dbpedia.org/resource/Lisp_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Metaprogramming ,
+		dbr:Functional_programming ,
+		dbr:Procedural_programming ,
+		dbr:Reflective_programming .
+dbr:LiveScript	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+dbr:MUMPS	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Mercury_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Logic_programming .
+dbr:QuakeC	dbp:paradigm	"imperative , structured"@en .
+<http://dbpedia.org/resource/Turing_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+dbr:Haxe	dbp:paradigm	dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Little_b_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:PeopleCode	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming .
+dbr:XSB	dbp:paradigm	dbr:Logic_programming .
+dbr:CAL_Actor_Language	dbp:paradigm	dbr:Dataflow_programming .
+<http://dbpedia.org/resource/Genie_(programming_language)>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Go!_(programming_language)>	dbp:paradigm	"Multi-paradigm: concurrent, logic, functional, imperative"@en .
+<http://dbpedia.org/resource/Go_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+dbr:Rexx	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Procedural_programming .
+dbr:SuperPascal	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Imperative_programming .
+dbr:MLAB	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Array_programming .
+dbr:WebAssembly	dbp:paradigm	"structured stack machine"@en .
+dbr:AppleScript	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Natural-language_programming .
+dbr:FLOW-MATIC	dbp:paradigm	dbr:Imperative_programming .
+dbr:HyperTalk	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/Miranda_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Lazy_evaluation ,
+		dbr:Declarative_programming .
+dbr:Standard_ML	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Modular_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Web_(programming_system)>	dbp:paradigm	"Literate, imperative , structured"@en .
+<http://dbpedia.org/resource/Curl_(programming_language)>	dbp:paradigm	dbr:Markup_language ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+dbr:Liberty_BASIC	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Event-driven_programming .
+<http://dbpedia.org/resource/Lua_(programming_language)>	dbp:paradigm	"Multi-paradigm: scripting, imperative , functional"@en .
+dbr:MATLAB	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Array_programming .
+<http://dbpedia.org/resource/ML_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Mary_(programming_language)>	dbp:paradigm	dbr:Imperative_programming .
+dbr:NewtonScript	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Prototype-based_programming .
+dbr:Nial	dbp:paradigm	dbr:Array_programming .
+dbr:OCaml	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Modular_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Occam_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Concurrent_computing .
+dbr:PHP	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Reflective_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm .
+ns2:I	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Pascal_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		""@en .
+dbr:Perl	dbp:paradigm	"Multi-paradigm: functional, imperative, object-oriented , reflective"@en .
+<http://dbpedia.org/resource/Plankalk\u00FCl>	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/Planner_(programming_language)>	dbp:paradigm	dbr:Logic_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Procedural_programming .
+dbr:PostScript	dbp:paradigm	dbr:Stack-oriented_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Procedural_programming .
+dbr:Prolog	dbp:paradigm	dbr:Logic_programming .
+dbr:PureBasic	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming ,
+		dbr:Procedural_programming .
+<http://dbpedia.org/resource/Python_(programming_language)>	dbp:paradigm	"Multi-paradigm: object-oriented, procedural , functional, structured, reflective"@en .
+dbr:Rebol	dbp:paradigm	dbr:Data_exchange ,
+		dbr:Language-oriented_programming ,
+		dbr:Prototype-based_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Ruby_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Reflective_programming .
+dbr:SISAL	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Dataflow .
+dbr:SNOBOL	dbp:paradigm	dbr:Non-structured_programming ,
+		dbr:Imperative_programming .
+dbr:SQL	dbp:paradigm	dbr:Declarative_programming .
+dbr:Sather	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+dbr:Sed	dbp:paradigm	dbr:Scripting_language .
+<http://dbpedia.org/resource/Self_(programming_language)>	dbp:paradigm	"object-oriented"@en .
+dbr:Smalltalk	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Squeak	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:VHDL	dbp:paradigm	dbr:Dataflow_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Reactive_programming .
+dbr:Verilog	dbp:paradigm	dbr:Structured_programming .
+dbr:Visual_Basic_for_Applications	dbp:paradigm	dbr:Programming_paradigm .
+dbr:XSLT	dbp:paradigm	dbr:Declarative_programming .
+dbr:Document_Style_Semantics_and_Specification_Language	dbp:paradigm	dbr:Style_sheet_language ,
+		""@en ,
+		dbr:Transformation_language .
+<http://dbpedia.org/resource/MAD_(programming_language)>	dbp:paradigm	dbr:Imperative_programming .
+dbr:XUL	dbp:paradigm	"Declarative"@en .
+dbr:BeanShell	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Object-oriented_programming .
+dbr:FreeBASIC	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Procedural_programming .
+dbr:Strongtalk	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:VSI_BASIC_for_OpenVMS	dbp:paradigm	dbr:Imperative_programming .
+dbr:Visual_Prolog	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Logic_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:Information_Processing_Language	dbp:paradigm	dbr:Assembly_language .
+dbr:Programming_Language_for_Business	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/TRAC_(programming_language)>	dbp:paradigm	dbr:General-purpose_macro_processor .
+dbr:DIBOL	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Charm++>	dbp:paradigm	"Message-driven parallel programming, migratable objects, Object-oriented, asynchronous many-tasking"@en .
+<http://dbpedia.org/resource/Visual_Basic_(classic)>	dbp:paradigm	"Object-based and event-driven"@en .
+dbr:AIMACO	dbp:paradigm	dbr:Imperative_programming .
+dbr:AgentSheets	dbp:paradigm	"object-oriented, educational, Conversational Programming"@en .
+<http://dbpedia.org/resource/Chapel_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		"Parallel programming"@en ,
+		"Partitioned global address space"@en .
+dbr:Extensible_Embeddable_Language	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Scripting_language ,
+		dbr:Functional_programming .
+dbr:Speedcoding	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Generic_programming .
+<http://dbpedia.org/resource/LOOM_(ontology)>	dbp:paradigm	dbr:Knowledge_representation_and_reasoning .
+<http://dbpedia.org/resource/Fantom_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm .
+dbr:GrGen	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Declarative_programming .
+dbr:Python_for_S60	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Q_(programming_language_from_Kx_Systems)>	dbp:paradigm	dbr:Array_programming ,
+		dbr:Functional_programming .
+dbr:XBLite	dbp:paradigm	dbr:Procedural_programming .
+dbr:XPath	dbp:paradigm	dbr:Query_language .
+@prefix ns4:	<http://dbpedia.org/resource/ANSI/> .
+ns4:ISO_C_Specification_Language	dbp:paradigm	"declarative with few imperative features."@en .
+dbr:AgentSpeak	dbp:paradigm	dbr:Agent-oriented_programming .
+<http://dbpedia.org/resource/Babbage_(programming_language)>	dbp:paradigm	dbr:High-level_assembler ,
+		dbr:Procedural_programming ,
+		dbr:Structured_programming .
+dbr:Basic4ppc	dbp:paradigm	"Procedural programming and Event-driven"@en .
+dbr:Pharo	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/ALFA_(XACML)>	dbp:paradigm	dbr:Declarative_programming .
+<http://dbpedia.org/resource/Extempore_(software)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/P4_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Domain-specific_language ,
+		dbr:Compiled_language .
+dbr:Hot_Soup_Processor	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Cool_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/TTM_(programming_language)>	dbp:paradigm	dbr:General-purpose_macro_processor .
+<http://dbpedia.org/resource/F*_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/Qalb_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:COMAL	dbp:paradigm	dbr:Structured_programming .
+dbr:Mizar_system	dbp:paradigm	dbr:Declarative_programming .
+dbr:AutoIt	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Functional_programming ,
+		dbr:Reflective_programming .
+<http://dbpedia.org/resource/C_Sharp_(programming_language)>	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Reflective_programming ,
+		dbr:Functional_programming ,
+		dbr:Generic_programming ,
+		dbr:Asynchronous_method_invocation ,
+		dbr:Structured_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Concurrent_computing .
+dbr:Caml	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+dbr:Join_Java	dbp:paradigm	dbr:Reflective_programming ,
+		dbr:Procedural_programming .
+dbr:SAC_programming_language	dbp:paradigm	dbr:Array_programming ,
+		dbr:Functional_programming .
+dbr:SPARQL	dbp:paradigm	dbr:Query_language .
+dbr:StepTalk	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:SystemVerilog	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Structured_programming .
+dbr:XACML	dbp:paradigm	dbr:Declarative_programming .
+dbr:Yoix	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Procedural_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Euclid_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Structured_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+@prefix ns5:	<http://dbpedia.org/resource/SP/> .
+ns5:k	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/SASL_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:Turtlestitch	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:List_of_educational_programming_languages ,
+		dbr:Event-driven_programming .
+dbr:BASIC-8	dbp:paradigm	dbr:Imperative_programming .
+dbr:WebMethods_Flow	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Structured_programming ,
+		dbr:Visual_programming_language .
+dbr:DRAKON	dbp:paradigm	dbr:Visual_programming_language .
+dbr:Microsoft_Visual_Programming_Language	dbp:paradigm	dbr:Visual_programming_language ,
+		dbr:Dataflow_programming .
+dbr:LOLCODE	dbp:paradigm	dbr:Esoteric_programming_language .
+<http://dbpedia.org/resource/Plus_(programming_language)>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/A+_(programming_language)>	dbp:paradigm	dbr:Array_programming .
+dbr:ALGOL_58	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming .
+dbr:Aldor	dbp:paradigm	"Multi-paradigm: object-oriented, functional, imperative, dependent typed, logic"@en .
+dbr:Alma-0	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Logic_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Constraint_programming .
+<http://dbpedia.org/resource/CPL_(programming_language)>	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming .
+dbr:Cilk	dbp:paradigm	"imperative , structured, parallel"@en .
+<http://dbpedia.org/resource/Claire_(programming_language)>	dbp:paradigm	"multi-paradigm: functional, object-oriented , rule processing, reflective"@en .
+dbr:Coarray_Fortran	dbp:paradigm	"multi-paradigm: parallel, message passing,  imperative , structured"@en .
+dbr:ColdFusion_Markup_Language	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/C\u03C9>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Event-driven_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:Datalog	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Logic_programming .
+<http://dbpedia.org/resource/F-Script_(programming_language)>	dbp:paradigm	dbr:Array_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Factor_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Concatenative_programming_language ,
+		dbr:Stack-oriented_programming .
+<http://dbpedia.org/resource/G\u00F6del_(programming_language)>	dbp:paradigm	dbr:Logic_programming ,
+		dbr:Declarative_programming .
+<http://dbpedia.org/resource/JScript_.NET>	dbp:paradigm	dbr:Programming_paradigm .
+<http://dbpedia.org/resource/K_(programming_language)>	dbp:paradigm	dbr:Array_programming ,
+		dbr:Functional_programming .
+dbr:MIVA_Script	dbp:paradigm	dbr:Imperative_programming .
+dbr:NELIAC	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+dbr:Open_Programming_Language	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Embedded_system .
+dbr:Perl_Data_Language	dbp:paradigm	dbr:Array_programming .
+dbr:SETL	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Structured_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/T_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Metaprogramming .
+<http://dbpedia.org/resource/ZPL_(programming_language)>	dbp:paradigm	dbr:Array_programming .
+<http://dbpedia.org/resource/Agda_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:EuLisp	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Metaprogramming ,
+		dbr:Procedural_programming ,
+		dbr:Object-oriented_programming .
+dbr:Intel_Parallel_Building_Blocks	dbp:paradigm	"imperative , structured, parallel"@en .
+dbr:OptimJ	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/TLA+>	dbp:paradigm	dbr:Action_language .
+<http://dbpedia.org/resource/FL_(programming_language)>	dbp:paradigm	dbr:Function-level_programming ,
+		dbr:Functional_programming .
+dbr:Design_By_Numbers	dbp:paradigm	dbr:Procedural_programming .
+dbr:CLACL	dbp:paradigm	dbr:Logic_programming .
+<http://dbpedia.org/resource/A\u266F_(Axiom)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:Fril	dbp:paradigm	dbr:Logic_programming .
+<http://dbpedia.org/resource/Squirrel_(programming_language)>	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/XL_(programming_language)>	dbp:paradigm	"Multi-paradigm: concept-oriented, imperative, functional"@en .
+<http://dbpedia.org/resource/Asymptote_(vector_graphics_language)>	dbp:paradigm	dbr:Typesetting ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Racket_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Logic_programming ,
+		dbr:Modular_programming ,
+		dbr:Metaprogramming ,
+		dbr:Functional_programming ,
+		dbr:Reflective_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Scala_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:TUTOR	dbp:paradigm	"imperative"@en .
+<http://dbpedia.org/resource/Tea_(programming_language)>	dbp:paradigm	"Multi-paradigm: Functional, Object-oriented"@en .
+dbr:VisSim	dbp:paradigm	dbr:Simulation_language ,
+		dbr:Modularity ,
+		dbr:Visual_programming_language .
+<http://dbpedia.org/resource/Draco_(programming_language)>	dbp:paradigm	"imperative , structured"@en .
+<http://dbpedia.org/resource/IDL_(programming_language)>	dbp:paradigm	dbr:Array_programming .
+<http://dbpedia.org/resource/Joule_(programming_language)>	dbp:paradigm	dbr:Distributed_computing ,
+		dbr:Dataflow ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+dbr:Prograph	dbp:paradigm	dbr:Dataflow_programming ,
+		dbr:Visual_programming_language ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/RPL_(programming_language)>	dbp:paradigm	"Stack, structured, Concatenative"@en .
+dbr:Polyphonic_C_Sharp	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Structured_programming ,
+		dbr:Event-driven_programming ,
+		dbr:Imperative_programming ,
+		dbr:Concurrent_computing ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Lucid_(programming_language)>	dbp:paradigm	dbr:Dataflow_programming .
+dbr:Modelica	dbp:paradigm	dbr:Declarative_programming .
+<http://dbpedia.org/resource/Fj\u00F6lnir_(programming_language)>	dbp:paradigm	"procedural, object-oriented"@en .
+dbr:Join-pattern	dbp:paradigm	dbr:Distributed_computing ,
+		dbr:Concurrent_computing .
+<http://dbpedia.org/resource/ParaSail_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Compiled_language ,
+		dbr:Object-oriented_programming .
+dbr:Handel-C	dbp:paradigm	"Imperative , concurrent"@en .
+<http://dbpedia.org/resource/Crystal_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/EC_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Generic_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Procedural_programming .
+dbr:Open_Roberta	dbp:paradigm	dbr:Event-driven_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Whiley_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/\u039BProlog>	dbp:paradigm	dbr:Logic_programming .
+<http://dbpedia.org/resource/Citrine_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Prototype-based_programming .
+<http://dbpedia.org/resource/STELLA_(programming_language)>	dbp:paradigm	dbr:Simulation_language ,
+		dbr:Visual_programming_language .
+<http://dbpedia.org/resource/PascalABC.NET>	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Generic_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+dbr:Split-C	dbp:paradigm	"imperative , structured, parallel"@en .
+dbr:ShEx	dbp:paradigm	dbr:Data_validation .
+dbr:VIPLE	dbp:paradigm	dbr:Visual_programming_language ,
+		dbr:Workflow_application ,
+		dbr:Service-oriented_architecture .
+dbr:Dafny	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming .
+dbr:Jsish	dbp:paradigm	"Multi-paradigm: JavaScript, scripting , imperative , functional"@en .
+dbr:AgentCubes	dbp:paradigm	"object-oriented, educational, Conversational Programming"@en .
+<http://dbpedia.org/resource/\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A>	dbp:paradigm	"A distinctive feature of the language are abstract data types, calculations in arbitrary algebras, and analytic transformations."@en .
+<http://dbpedia.org/resource/\u042D\u043B\u044C-76>	dbp:paradigm	"applied programming, structured programming, task management, system programming."@en .
+dbr:Cadence_SKILL	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/JS++>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Generic_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Pict_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing .
+dbr:PureScript	dbp:paradigm	dbr:Functional_programming .
+dbr:ZPE_Programming_Environment	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/Eff_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/FLOW_(programming_language)>	dbp:paradigm	dbr:Non-structured_programming ,
+		dbr:Imperative_programming .
+dbr:RETRIEVE	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/SNAP_(programming_language)>	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Source_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Scripting_language ,
+		dbr:Functional_programming ,
+		dbr:Procedural_programming .
+dbr:Concurrent_Euclid	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/S3_(programming_language)>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:Scientific_Vector_Language	dbp:paradigm	dbr:Programming_paradigm .
+dbr:M_Sharp	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Metaprogramming ,
+		dbr:Object-oriented_programming ,
+		dbr:Event-driven_programming .
+dbr:JSONiq	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Declarative_programming ,
+		dbr:Modular_programming .
+<http://dbpedia.org/resource/Dolittle_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Halide_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Parallel_programming_model .
+<http://dbpedia.org/resource/Alef_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Structured_programming ,
+		dbr:Compiled_language .
+<http://dbpedia.org/resource/SK8_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:CGOL	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming ,
+		dbr:Structured_programming .
+dbr:MexScript	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Functional_programming ,
+		dbr:End-user_development ,
+		dbr:Domain-specific_language .
+dbr:Language_H	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/FP_(programming_language)>	dbp:paradigm	dbr:Function-level_programming .
+dbr:NESL	dbp:paradigm	"parallel, functional, array"@en .
+<http://dbpedia.org/resource/Unicon_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Procedural_programming .
+dbr:Oaklisp	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+dbr:PROMAL	dbp:paradigm	"Imperative , structured"@en .
+dbr:Clojure	dbp:paradigm	"functional"@en ,
+		"pipeline"@en ,
+		""@en ,
+		"logic"@en ,
+		"agent-oriented"@en ,
+		dbr:Programming_paradigm ,
+		"concurrent"@en ,
+		"macro"@en .
+<http://dbpedia.org/resource/Nu_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Structured_programming ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+dbr:Pnuts	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/ATS_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/FACT_(computer_language)>	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+dbr:Microsoft_Small_Basic	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Structured_programming .
+<http://dbpedia.org/resource/Pure_(programming_language)>	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Rewriting ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/Occam-\u03C0>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Procedural_programming ,
+		dbr:Imperative_programming .
+dbr:ActiveVFP	dbp:paradigm	dbr:Fourth-generation_programming_language ,
+		dbr:Procedural_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Elixir_(programming_language)>	dbp:paradigm	dbr:Process-oriented_programming ,
+		dbr:Distributed_computing ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Concurrent_computing .
+<http://dbpedia.org/resource/Elm_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+<http://dbpedia.org/resource/Julia_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Multiple_dispatch ,
+		dbr:Programming_paradigm ,
+		dbr:Metaprogramming ,
+		dbr:Multi-stage_programming ,
+		dbr:Procedural_programming .
+dbr:AngelScript	dbp:paradigm	"Multi-paradigm: scripting, imperative"@en .
+dbr:Flow_chart_language	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Idris_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:Programming_with_Big_Data_in_R	dbp:paradigm	"SPMD and MPMD"@en .
+dbr:SAMPL	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm .
+dbr:AltaRica	dbp:paradigm	"Object-oriented, Prototype-oriented"@en .
+dbr:AssemblyScript	dbp:paradigm	dbr:Generic_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming .
+dbr:Microsoft_Power_Fx	dbp:paradigm	dbr:Strong_and_weak_typing ,
+		dbr:Declarative_programming ,
+		dbr:Functional_programming ,
+		dbr:Low-code_development_platform ,
+		dbr:Imperative_programming ,
+		dbr:General-purpose_programming_language .
+dbr:Basic4GL	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/E_(verification_language)>	dbp:paradigm	dbr:Aspect-oriented_programming .
+<http://dbpedia.org/resource/Scratch_(programming_language)>	dbp:paradigm	"Event-driven, block-based programming language"@en .
+dbr:SenseTalk	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming .
+dbr:TypeScript	dbp:paradigm	dbr:Generic_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm .
+dbr:FutureBASIC	dbp:paradigm	dbr:Procedural_programming .
+dbr:Global_Arrays	dbp:paradigm	"parallel, one-sided message passing, imperative , structured"@en .
+dbr:OpenCL	dbp:paradigm	"Imperative , structured,  object-oriented, generic programming"@en .
+dbr:PCASTL	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Reflective_programming .
+<http://dbpedia.org/resource/Impromptu_(programming_environment)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm .
+dbr:QBasic	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/Speakeasy_(computational_environment)>	dbp:paradigm	dbr:Imperative_programming .
+dbr:XQuery	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Declarative_programming ,
+		dbr:Modular_programming .
+dbr:Haml	dbp:paradigm	dbr:Web_template_system .
+dbr:NetRexx	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Cobra_(programming_language)>	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Hop_(software)>	dbp:paradigm	dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Parser_(programming_language)>	dbp:paradigm	"multiparadigm - macro, object-oriented"@en .
+dbr:STOIC	dbp:paradigm	dbr:Stack-oriented_programming .
+<http://dbpedia.org/resource/Red_(programming_language)>	dbp:paradigm	dbr:Symbolic_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming .
+dbr:RiscLua	dbp:paradigm	dbr:Scripting_language .
+dbr:Seed7	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Reflective_programming ,
+		dbr:Generic_programming ,
+		dbr:Extensible_programming ,
+		dbr:Structured_programming .
+dbr:Xtend	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Escher_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Logic_programming ,
+		dbr:Declarative_programming .
+<http://dbpedia.org/resource/Orwell_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Lazy_evaluation .
+dbr:Flowgorithm	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:DUP_programming_language	dbp:paradigm	<http://dbpedia.org/resource/Interpreter_(computing)> ,
+		dbr:Functional_programming .
+dbr:CMS-2	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/ELAN_(programming_language)>	dbp:paradigm	"?"@en .
+dbr:NekoVM	dbp:paradigm	dbr:Scripting_language ,
+		dbr:Object-oriented_programming ,
+		dbr:Prototype-based_programming ,
+		dbr:Structured_programming .
+dbr:PowerShell	dbp:paradigm	"Imperative, pipeline, object-oriented, functional and reflective"@en .
+dbr:Refal	dbp:paradigm	"Pattern-matching and term-rewriting"@en .
+dbr:C--	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/E_(programming_language)>	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Message_passing .
+<http://dbpedia.org/resource/Karel_(programming_language)>	dbp:paradigm	dbr:Procedural_programming .
+dbr:Rocky_Mountain_BASIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Dexterity_(programming_language)>	dbp:paradigm	dbr:Procedural_programming .
+dbr:DADiSP	dbp:paradigm	dbr:Array_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Object-oriented_programming ,
+		dbr:Imperative_programming ,
+		dbr:Procedural_programming .
+dbr:Easy_Programming_Language	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Functional_programming ,
+		dbr:Procedural_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Compiled_language ,
+		dbr:Imperative_programming .
+<http://dbpedia.org/resource/Godot_(game_engine)>	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Jaql	dbp:paradigm	dbr:Functional_programming .
+<http://dbpedia.org/resource/Swift_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		<http://dbpedia.org/resource/Block_(programming)> ,
+		dbr:Object-oriented_programming ,
+		<http://dbpedia.org/resource/Protocol_(object-oriented_programming)> ,
+		dbr:Declarative_programming ,
+		dbr:Imperative_programming .
+dbr:Hy	dbp:paradigm	dbr:Procedural_programming ,
+		dbr:Reflective_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Metaprogramming ,
+		dbr:Generic_programming .
+<http://dbpedia.org/resource/Raptor_(programming_language)>	dbp:paradigm	dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:Project_Verona	dbp:paradigm	"Safe infrastructure programming"@en .
+dbr:Structured_Audio_Orchestra_Language	dbp:paradigm	dbr:Imperative_programming .
+@prefix ns6:	<http://dbpedia.org/resource/C/> .
+ns6:AL	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Orc_(programming_language)>	dbp:paradigm	dbr:Nondeterministic_programming ,
+		dbr:Concurrent_computing .
+dbr:Judoscript	dbp:paradigm	dbr:Object-oriented_programming ,
+		dbr:Procedural_programming ,
+		dbr:Scripting_language .
+<http://dbpedia.org/resource/PLEX_(programming_language)>	dbp:paradigm	"procedural, imperative, concurrent"@en .
+<http://dbpedia.org/resource/Newspeak_(programming_language)>	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+dbr:Ateji_PX	dbp:paradigm	<http://dbpedia.org/resource/\u03A0-calculus> ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Frenetic_(programming_language)>	dbp:paradigm	"Domain-specific , reactive, modular"@en .
+<http://dbpedia.org/resource/ECL_(data-centric_programming_language)>	dbp:paradigm	dbr:Declarative_programming ,
+		dbr:Data-centric_programming_language ,
+		dbr:Structuring .
+dbr:Linotte	dbp:paradigm	"object-oriented , structured, and imperative"@en .
+dbr:SDS_BASIC	dbp:paradigm	dbr:Imperative_programming .
+<http://dbpedia.org/resource/Flix_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Logic_programming ,
+		dbr:Functional_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Ezhil_(programming_language)>	dbp:paradigm	<http://dbpedia.org/resource/Interpreter_(computing)> ,
+		dbr:Structured_programming ,
+		dbr:Imperative_programming .
+dbr:Tcl	dbp:paradigm	dbr:Programming_paradigm ,
+		dbr:Event-driven_programming ,
+		dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Object-oriented_programming .
+dbr:Umple	dbp:paradigm	dbr:Object-oriented_programming .
+dbr:Wolfram_Language	dbp:paradigm	dbr:Rewriting ,
+		dbr:Procedural_programming ,
+		dbr:Functional_programming ,
+		dbr:Array_programming ,
+		dbr:Programming_paradigm .
+<http://dbpedia.org/resource/Beatnik_(programming_language)>	dbp:paradigm	dbr:Stack-oriented_programming .
+<http://dbpedia.org/resource/ELI_(programming_language)>	dbp:paradigm	dbr:Array_programming .
+<http://dbpedia.org/resource/Kotlin_(programming_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Functional_programming ,
+		dbr:Generic_programming ,
+		dbr:Declarative_programming ,
+		<http://dbpedia.org/resource/Block_(programming)> ,
+		dbr:Concurrent_computing ,
+		dbr:Programming_paradigm ,
+		dbr:Reflective_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/LFE_(programming_language)>	dbp:paradigm	dbr:Concurrent_computing ,
+		dbr:Programming_paradigm ,
+		dbr:Functional_programming .
+dbr:Abstract_State_Machine_Language	dbp:paradigm	dbr:Functional_programming .
+dbr:GOLOG	dbp:paradigm	dbr:Logic_programming .
+dbr:Algebraic_Logic_Functional_programming_language	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Logic_programming .
+dbr:Itk	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Event-driven_programming ,
+		dbr:Functional_programming ,
+		dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Oriel_(scripting_language)>	dbp:paradigm	dbr:Imperative_programming ,
+		dbr:Procedural_programming .
+dbr:TI-BASIC_83	dbp:paradigm	dbr:Procedural_programming .
+<http://dbpedia.org/resource/Futhark_(programming_language)>	dbp:paradigm	dbr:Array_programming ,
+		dbr:Functional_programming .
+<http://dbpedia.org/resource/.QL>	dbp:paradigm	dbr:Logic_programming ,
+		dbr:Object-oriented_programming ,
+		dbr:Programming_paradigm .
+@prefix ns7:	<http://dbpedia.org/resource/SQL/> .
+ns7:PSM	dbp:paradigm	dbr:Programming_paradigm .
+dbr:Joe-E	dbp:paradigm	dbr:Object-capability_model .
+dbr:Newsqueak	dbp:paradigm	dbr:Concurrent_computing .
+dbr:GNU_E	dbp:paradigm	dbr:Object-oriented_programming .
+<http://dbpedia.org/resource/Cameleon_(programming_language)>	dbp:paradigm	dbr:Functional_programming .
+dbr:Q_Sharp	dbp:paradigm	dbr:Functional_programming ,
+		dbr:Imperative_programming ,
+		dbr:Programming_paradigm ,
+		dbr:Quantum_programming .

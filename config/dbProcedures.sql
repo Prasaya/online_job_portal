@@ -311,12 +311,26 @@ END |
 DELIMITER ;
 
 DELIMITER |
-DROP PROCEDURE IF EXISTS deleteApplicantJob |
-CREATE PROCEDURE deleteApplicantJob(
-	userId char(36),
-    delJobId char(36)
-)
+DROP PROCEDURE IF EXISTS deleteExpiredJobs |
+CREATE PROCEDURE deleteExpiredJobs()
 BEGIN
-	DELETE FROM applicant_jobs WHERE applicantID = userId and jobID = delJobId;
+	SET SQL_SAFE_UPDATES = 0;
+	DELETE FROM jobs WHERE jobs.deadline < current_date();
+	SET SQL_SAFE_UPDATES = 1;
 END |
 DELIMITER ;
+
+
+DELIMITER |
+DROP PROCEDURE IF EXISTS applicantsForJob |
+CREATE PROCEDURE applicantsForJob(
+	IN jId CHAR(36)
+)
+BEGIN
+	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName
+    FROM applicant_jobs as aj
+    INNER JOIN applicant_data as ad on ad.id = aj.applicantId;
+END |
+DELIMITER ;
+
+

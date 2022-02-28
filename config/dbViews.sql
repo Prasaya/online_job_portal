@@ -1,5 +1,6 @@
 CREATE OR REPLACE VIEW allJobsFromDatabase AS
 SELECT j.jobId, j.companyId, o.name as companyName, j.title, j.description, j.deadline, j.vacancies, j.experience, j.address,
+	j.district,
 	(SELECT
 		JSON_ARRAYAGG(
 			JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)

@@ -148,3 +148,13 @@ export const deleteJobPost = async (jobId: string) => {
     logger.error('Error deleting jobs', error);
   }
 };
+
+export const getApplicantsForJob = async (jobId: string) => {
+  try {
+    const [result]: [RowDataPacket[], FieldPacket[]] =
+      await connection.execute('CALL applicantsForJob(?)', [jobId]);
+    return result[0];
+  } catch (error) {
+    logger.error('Error deleting jobs', error);
+  }
+};
