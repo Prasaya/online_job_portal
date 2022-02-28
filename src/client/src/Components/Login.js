@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import UserContext from '../Context/UserContext';
-import loginWallpaer from '../Assets/Img/loginWallpaper.png';
+import loginWallpaer from '../Assets/Img/loginWallpaper.jpg';
 
 function Login() {
   const {
@@ -90,10 +90,10 @@ function Login() {
           <hr />
           <div className="d-grid gap-2">
             <Link to="/register-jobseeker" className="btn btn-success btn-lg">
-              Create new job seeker account
+              Create a Job Seeker Account
             </Link>
             <Link to="/register-company" className="btn btn-success btn-lg">
-              Create new employer account
+              Create a Company Account
             </Link>
           </div>
         </div>
