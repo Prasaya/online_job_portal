@@ -38,6 +38,13 @@ router.post(
       ]);
       return res.json({ jobId: req.body.jobId, success: true });
     } catch (error) {
+      if (error.errno === 1452) {
+        res.status(400).json({
+          message: 'Job doesnt exist',
+          success: false,
+        });
+        return;
+      }
       if (error.errno === 1062) {
         res.status(400).json({
           message: 'You have already applied for this job',
