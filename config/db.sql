@@ -1,3 +1,4 @@
+drop table if exists applicant_verification;
 drop table if exists applicant_jobs;
 drop table if exists job_qualifications;
 drop table if exists skills;
@@ -149,4 +150,13 @@ CREATE TABLE applicant_jobs (
     foreign key (applicantId) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
     foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE applicant_verification (
+    applicantId varchar(36) not null,
+    token char(100),
+    verified BOOLEAN DEFAULT false,
+    primary key (applicantId),
+    foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
+);
+
 
