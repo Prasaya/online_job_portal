@@ -55,7 +55,7 @@ def getChildren(parent):
     SELECT distinct ?child
     WHERE
     {{
-      parent: skos:narrower ?child .
+      parent: skos:narrower* ?child .
     }}
   """
     sparql.setQuery(query)
@@ -76,7 +76,11 @@ def dfs(root, level):
     for child in childrens:
         data[child] = max(data.get(child, 0), level) + 1
         if child in visited:
+            #data [child] = current
+            # data [child] = possible value
+            # possible value = max(current, possible value) 
             print("Duplicate node")
+            print(child)
             continue
         visited.add(child)
         dfs(child, level + 1)
@@ -84,6 +88,7 @@ def dfs(root, level):
 
 def main():
     root = 'http://data.europa.eu/esco/skill/S8.8'
+    data = (getChildren(root))
     dfs(root, 0)
     with open('skills.json', 'w') as f:
         json.dump(data, f, indent=4)

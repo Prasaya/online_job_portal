@@ -1,13 +1,14 @@
-{
-    "http://data.europa.eu/esco/skill/S8.9.0": 1,
-    "http://data.europa.eu/esco/skill/797b7c30-6b29-4002-86f9-5825f0511d71": 2,
-    "http://data.europa.eu/esco/skill/6a50499d-70cc-4fa7-9895-682302d08f16": 2,
-    "http://data.europa.eu/esco/skill/91300a14-24c6-4b1f-b827-909d992f8d1d": 2,
-    "http://data.europa.eu/esco/skill/71135818-ecb6-4c21-bb8e-ce502162e33a": 2,
-    "http://data.europa.eu/esco/skill/102bab2f-6d11-43e0-afa8-d50c6b94e4b4": 2,
-    "http://data.europa.eu/esco/skill/c1b516f4-e39f-4371-a041-34ca00bb542d": 2,
-    "http://data.europa.eu/esco/skill/58e3d762-4222-4b9d-824f-deba76beafc1": 2,
-    "http://data.europa.eu/esco/skill/0a244ad8-4aa0-4ae5-9f7d-f11931028687": 2,
-    "http://data.europa.eu/esco/skill/254d5358-8e20-450c-9fed-28ceff0479ef": 2,
-    "http://data.europa.eu/esco/skill/6a018f47-e8eb-484c-9750-9ee304329876": 2
-}
+[
+    "http://data.europa.eu/esco/skill/S8.9",
+    "http://data.europa.eu/esco/skill/S8.9.0",
+    "http://data.europa.eu/esco/skill/797b7c30-6b29-4002-86f9-5825f0511d71",
+    "http://data.europa.eu/esco/skill/6a50499d-70cc-4fa7-9895-682302d08f16",
+    "http://data.europa.eu/esco/skill/91300a14-24c6-4b1f-b827-909d992f8d1d",
+    "http://data.europa.eu/esco/skill/71135818-ecb6-4c21-bb8e-ce502162e33a",
+    "http://data.europa.eu/esco/skill/102bab2f-6d11-43e0-afa8-d50c6b94e4b4",
+    "http://data.europa.eu/esco/skill/c1b516f4-e39f-4371-a041-34ca00bb542d",
+    "http://data.europa.eu/esco/skill/58e3d762-4222-4b9d-824f-deba76beafc1",
+    "http://data.europa.eu/esco/skill/0a244ad8-4aa0-4ae5-9f7d-f11931028687",
+    "http://data.europa.eu/esco/skill/254d5358-8e20-450c-9fed-28ceff0479ef",
+    "http://data.europa.eu/esco/skill/6a018f47-e8eb-484c-9750-9ee304329876"
+]
