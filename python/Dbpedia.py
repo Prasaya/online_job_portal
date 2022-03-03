@@ -2,8 +2,8 @@ import aiohttp;
 import asyncio;
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-async def fetchResourceLinkFromQuery(query):
-  url = f'https://lookup.dbpedia.org/api/search/' 
+async def getResource(query):
+  url = f'https://lookup.dbpedia.org/api/search/'
   params = {'format': 'json', 'maxResults': '3', 'query': query}
   async with aiohttp.ClientSession() as session:
     async with session.get(url, params=params) as response:
@@ -40,27 +40,13 @@ def getParadigm(resourceLink):
   return paradigms
 
 async def createDbpediaArray(query):
-  resourceLink, resourceType = await fetchResourceLinkFromQuery(query)
+  resourceLink, resourceType = await getResource(query)
   if (resourceLink == ''):
     query = query + ' programming'
-    resourceLink, resourceType = await fetchResourceLinkFromQuery(query)
+    resourceLink, resourceType = await getResource(query)
     if (resourceLink == ''):
       raise 'Not Software or programming Language'
   return getParadigm(resourceLink)
-  # sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-  # sparql.setQuery(f"""
-  #   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  #   SELECT ?result
-  #   WHERE {{
-  #     <{resourceLink}> <http://dbpedia.org/property/paradigm> ?paradigm.
-  #     OPTIONAL {{?paradigm rdfs:label ?label}}.
-  #     bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
-  #     filter langMatches(lang(?result), 'EN')
-  #   }}
-  # """)
-  # sparql.setReturnFormat(JSON)
-  # results = sparql.query().convert()
-  # return [result['result']['value'] for result in results['results']['bindings']]
 
 async def main():
   print(await createDbpediaArray('c++'))
@@ -78,28 +64,28 @@ loop = asyncio.get_event_loop()
 
 def constructParadigm(resourceLink):
   sparql = SPARQLWrapper("http://dbpedia.org/sparql")
-  query = """
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    CONSTRUCT {
-      <{resourceLink}> <http://dbpedia.org/property/paradigm> ?result
-    }
+  query = f"""
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?result
     WHERE {{
-      <{resourceLink}> {predicate} ?paradigm.
-      OPTIONAL {{?paradigm rdfs:label ?label}}.
-      bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
-      filter langMatches(lang(?result), 'EN')
-    }} 
+    {{
+        {resourceLink} <http://dbpedia.org/property/paradigm> ?paradigm.
+        OPTIONAL {{?paradigm rdfs:label ?label}}.
+        bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
+        filter langMatches(lang(?result), 'EN')
+    }} UNION {{
+        {resourceLink} <http://dbpedia.org/property/paradigms>  ?paradigm.
+        OPTIONAL {{?paradigm rdfs:label ?label}}.
+        bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
+        filter langMatches(lang(?result), 'EN')
+    }}
+    }}
   """
-  sparql.setQuery(query.format(resourceLink=resourceLink, predicate='<http://dbpedia.org/property/paradigm>'))
+
+  sparql.setQuery(query)
   sparql.setReturnFormat(JSON)
   convertedResults = sparql.query().convert()
   # paradigms = [result['result']['value'] for result in convertedResults['results']['bindings']]
-  if len(paradigms) == 0:
-    # There is no paradigm for C++ but there is paradigms
-    sparql.setQuery(query.format(resourceLink=resourceLink, predicate='<http://dbpedia.org/property/paradigms>'))
-    sparql.setReturnFormat(JSON)
-    convertedResults = sparql.query().convert()
-    # paradigms = [result['result']['value'] for result in convertedResults['results']['bindings']]
   print(convertedResults)
 
 print(constructParadigm('http://dbpedia.org/resource/C++'))
