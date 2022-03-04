@@ -1,7 +1,13 @@
+from audioop import mul
 from aiosparql.client import SPARQLClient
 import aiohttp
 import asyncio
+from flask import Flask
 import json
+from .sql import db
+
+
+app = Flask(__name__)
 
 
 class Esco:
@@ -63,26 +69,77 @@ class Esco:
         ]
         return max(await asyncio.gather(*[self.getLength(base, end) for base in bases]))
 
-    def getChildren(self, parent):
+    async def getScores(self, start):
         query = f"""
         {self.prefixes}
-        prefix parent: <{parent}>
-        SELECT distinct ?child
-        WHERE
-        {{
-            parent: skos:narrower* ?child .
+        prefix start: <{start}>
+        SELECT distinct ?mid ?broad
+        WHERE {{
+            start: skos:broader* ?mid .
+            ?mid skos:broader ?broad
         }}
         """
-        results = self.client.query()
-        return results['results']
+        response = await self.client.query(query)
+        graph = {}
+        for result in response['results']['bindings']:
+            node = result['mid']['value']
+            parent = result['broad']['value']
+            if node not in graph:
+                graph[node] = []
+            graph[node].append(parent)
+        results = {}
+        self.dfs(graph, start, None, results)
+        return results
+
+    def dfs(self, graph, root, parent, results, multiplier=0.5):
+        """
+        Create a dict of skill to scores for each node
+        """
+        if root in results:
+            oldScore = results[root]
+            newScore = results[parent] * multiplier
+            if oldScore >= newScore:
+                return
+        if parent is None:
+            results[root] = 1
+        else:
+            results[root] = results[parent] * multiplier
+        for child in graph.get(root, []):
+            self.dfs(graph, child, root, results)
+
+    def merge_dicts(self, dictionaries):
+        output = {}
+        for dictionary in dictionaries:
+            for key, value in dictionary.items():
+                if key in output:
+                    output[key] = max(output[key], value)
+                else:
+                    output[key] = value
+        return output
+
+    async def createSkillsRow(self, skillsURI):
+        scores = [(await self.getScores(uri)) for uri in skillsURI]
+        return self.merge_dicts(scores)
+
+
+@app.route('/jobRecommendation/<string:user>')
+async def userRecommendation(user):
+    cursor = db.cursor()
+    cursor.execute("""
+        SELECT * from skills WHERE user = %s
+    """, (user,))
+    skills = cursor.fetchall()
+    print(skills)
 
 
 async def main():
     esco = Esco()
-    data = await esco.getEndpoint("identify market niches")
-    start = 'http://data.europa.eu/esco/skill/S'
-    root = 'http://data.europa.eu/esco/skill/S1.1.1.1'
-    print(await esco.getLength(start, root))
+    uri = (await esco.getEndpoint("Keep written records of leasing agreements."))[0]
+    uri2 = 'http://data.europa.eu/esco/skill/S2.2.1'
+    data = await esco.createSkillsRow([uri, uri2])
+    with open('skills.json', 'w') as f:
+        json.dump(data, f, indent=2)
+    await esco.close()
 
 if __name__ == '__main__':
     # main()
