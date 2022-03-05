@@ -1,9 +1,11 @@
 import asyncio
+
+from numpy import sometrue
 from db import db
 from scipy.spatial import distance
 
 cached = None
-isUpdating = False
+lock = asyncio.Lock()
 
 
 async def academicData():
@@ -14,56 +16,55 @@ async def academicData():
     list of all qids associated with Masters
     The result is cached in global variable cached
     """
-    global isUpdating
+    global lock
     global cached
     # if something is updating do nothing; don't know if it is thread safe
-    while isUpdating:
-        asyncio.sleep(1)
-    isUpdating = True
-    if cached is not None:
-        return cached
-    # Store final result
-    # {qid: [qids]}
-    temp = {}
-    # Store list of qid whose discipline is ALL_DISCIPLINES ordered by level
-    # {level: qid}
-    allDisciplineQid = {}
-    # Store list of qid whose degree is ALL_DEGREES ordered by discipline, level
-    # {discipline: {level: qid}}
-    allDegreeQid = {}
-    # {level: {discipline: [qid, qid, ...]}}
-    qidByLevelDiscipline = {}
-    cursor = db.cursor()
-    cursor.execute("""
+    async with lock:
+        if cached is not None:
+            return cached
+        # Store final result
+        # {qid: [qids]}
+        temp = {}
+        # Store list of qid whose discipline is ALL_DISCIPLINES ordered by level
+        # {level: qid}
+        allDisciplineQid = {}
+        # Store list of qid whose degree is ALL_DEGREES ordered by discipline, level
+        # {discipline: {level: qid}}
+        allDegreeQid = {}
+        # {level: {discipline: [qid, qid, ...]}}
+        qidByLevelDiscipline = {}
+        cursor = db.cursor()
+        cursor.execute("""
       SELECT qid, level, discipline, degree from academic_qualifications
     """)
-    for qid, level, discipline, degree in cursor:
-
-        temp[qid] = set()
-        temp[qid].add(qid)
-        if discipline == 'ALL_DISCIPLINES':
-            allDisciplineQid[level] = qid
-        elif degree == 'ALL_DEGREES':
-            if discipline not in allDegreeQid:
-                allDegreeQid[discipline] = {}
-            allDegreeQid[discipline][level] = qid
-        if level not in qidByLevelDiscipline:
-            qidByLevelDiscipline[level] = {}
-        if discipline not in qidByLevelDiscipline[level]:
-            qidByLevelDiscipline[level][discipline] = set()
-        qidByLevelDiscipline[level][discipline].add(qid)
-    # For each qid with discipline ALL_DISCIPLINES add all qids with same level
-    for level, qid in allDisciplineQid.items():
-        temp[qid] = temp[qid].union(
-            set([j for i in qidByLevelDiscipline[level].values() for j in i])
-        )
-    # For each qid with degree ALL_DEGREES add all qids with same discipline and level
-    for discipline, levelQid in allDegreeQid.items():
-        for level, qid in levelQid.items():
+        for qid, level, discipline, degree in cursor:
+            temp[qid] = set()
+            temp[qid].add(qid)
+            if discipline == 'ALL_DISCIPLINES':
+                allDisciplineQid[level] = qid
+            elif degree == 'ALL_DEGREES':
+                if discipline not in allDegreeQid:
+                    allDegreeQid[discipline] = {}
+                allDegreeQid[discipline][level] = qid
+            if level not in qidByLevelDiscipline:
+                qidByLevelDiscipline[level] = {}
+            if discipline not in qidByLevelDiscipline[level]:
+                qidByLevelDiscipline[level][discipline] = set()
+            qidByLevelDiscipline[level][discipline].add(qid)
+        # For each qid with discipline ALL_DISCIPLINES add all qids with same level
+        for level, qid in allDisciplineQid.items():
             temp[qid] = temp[qid].union(
-                qidByLevelDiscipline[level][discipline])
-    cached = temp
-    return cached
+                set([j for i in qidByLevelDiscipline[level].values()
+                    for j in i])
+            )
+        # For each qid with degree ALL_DEGREES add all qids with same discipline and level
+        for discipline, levelQid in allDegreeQid.items():
+            for level, qid in levelQid.items():
+                temp[qid] = temp[qid].union(
+                    qidByLevelDiscipline[level][discipline]
+                )
+        cached = temp
+        return cached
 
 
 async def getUserAcademics(uid):
