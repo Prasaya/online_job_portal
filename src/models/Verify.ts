@@ -42,4 +42,4 @@ export const insertTokenInApplicantVerification = async (token: string, userId: 
     } catch (error) {
         logger.error('Error deleting jobs', error);
     }
-
+}
