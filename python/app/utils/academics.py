@@ -68,32 +68,28 @@ async def academicData():
 
 
 async def getUserAcademics(uid):
-    rowData = await academicData()
-    finalData = [0 for i in range(len(rowData) + 1)]
     cursor = db.cursor()
     cursor.execute("""
       SELECT qid FROM applicant_academics WHERE id = %s
     """, (uid,))
-    for (qid,) in cursor:
-        for toUpdate in rowData[qid]:
-            finalData[toUpdate] = 1
-    return finalData
+    return [i[0] for i in cursor.fetchall()]
 
 
 async def getJobAcademics(jid):
-    rowData = await academicData()
-    finalData = [0 for i in range(len(rowData) + 1)]
     cursor = db.cursor()
     cursor.execute("""
       SELECT qid FROM job_qualifications WHERE jobId = %s
     """, (jid,))
-    for (qid,) in cursor:
-        for toUpdate in rowData[qid]:
-            finalData[toUpdate] = 1
-    return finalData
+    return [i[0] for i in cursor.fetchall()]
 
 
 async def determineAcademicCompatibility(user, job):
+    rowData = await academicData()
     userAcademics = await getUserAcademics(user)
     jobAcademics = await getJobAcademics(job)
-    return distance.cosine(userAcademics, jobAcademics)
+    valid = []
+    for jobAcademic in jobAcademics:
+        accepted = rowData[jobAcademic]
+        if sometrue([i in userAcademics for i in accepted]):
+            valid.append(jobAcademic)
+    return len(valid)/len(jobAcademics)
