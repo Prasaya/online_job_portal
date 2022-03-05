@@ -20,7 +20,7 @@ function MyStatus() {
 
   return (
     <div className="mystatus card my-2">
-      <h1 className='card-header'>Applied Jobs</h1>
+      <h1 className="card-header">Applied Jobs</h1>
       <div className="jobs container">
         <ul className=" list-group">
           {jobs.map((job) => {
@@ -33,6 +33,12 @@ function MyStatus() {
                     <h6>Deadline: {job.deadline}</h6>
                   </div>
                   <div>
+                    <Link
+                      to={`/jobs/${job.jobId}`}
+                      className="btn btn-primary btn-lg mx-2"
+                    >
+                      View Ranking
+                    </Link>
                     <Link
                       to={`/jobs/${job.jobId}`}
                       className="btn btn-secondary btn-lg mx-2"
