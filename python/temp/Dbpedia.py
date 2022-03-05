@@ -71,10 +71,9 @@ def formatMultiParadigm(results):
 
     for i, paradigm in enumerate(results):
       paradigm = paradigm.strip()
-      paradigm = paradigm.capitalize()
       paradigm += ' programming'
       results[i] = paradigm
-      
+
   return results
 
 def constructParadigm(resourceLink):
@@ -101,11 +100,17 @@ def constructParadigm(resourceLink):
     data = result['result']['value']
     results.append(data)
   if( len(results) == 1 ):
+    print(results)
     results = formatMultiParadigm(results)
+  
+  results = [result.lower() for result in results]
+
   print(results)
 
 
 print(constructParadigm('http://dbpedia.org/resource/C++'))
+
+
 
 
 
