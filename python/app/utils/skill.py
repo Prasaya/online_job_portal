@@ -36,7 +36,7 @@ async def computeScore(userSkills, jobSkills):
             index += 1
             userRow.append(0)
             jobRow.append(value)
-    return distance.cosine(userRow, jobRow)
+    return 1 - distance.cosine(userRow, jobRow)
 
 
 async def getRecommendations(user):
