@@ -62,6 +62,21 @@ loop = asyncio.get_event_loop()
 # /|\ format - <{variableLink} dbo:programmingLanguage ?language.
 # }
 
+def formatMultiParadigm(results):
+  prefix = "Multi-paradigm: "
+  if( results[0].startswith(prefix) ) :
+    results[0] = results[0].removeprefix(prefix)
+    temp = results[0].split(", ")
+    results = temp
+
+    for i, paradigm in enumerate(results):
+      paradigm = paradigm.strip()
+      paradigm = paradigm.capitalize()
+      paradigm += ' programming'
+      results[i] = paradigm
+      
+  return results
+
 def constructParadigm(resourceLink):
   sparql = SPARQLWrapper("http://dbpedia.org/sparql")
   query = f"""
@@ -69,24 +84,26 @@ def constructParadigm(resourceLink):
     SELECT ?result
     WHERE {{
     {{
-        {resourceLink} <http://dbpedia.org/property/paradigm> ?paradigm.
+        <{resourceLink}> <http://dbpedia.org/property/paradigm>|<http://dbpedia.org/property/paradigms> ?paradigm.
         OPTIONAL {{?paradigm rdfs:label ?label}}.
         bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
         filter langMatches(lang(?result), 'EN')
-    }} UNION {{
-        {resourceLink} <http://dbpedia.org/property/paradigms>  ?paradigm.
-        OPTIONAL {{?paradigm rdfs:label ?label}}.
-        bind ( IF( isLiteral(?paradigm), ?paradigm, ?label ) as ?result ).
-        filter langMatches(lang(?result), 'EN')
-    }}
+    }}     
     }}
   """
-
+  
   sparql.setQuery(query)
   sparql.setReturnFormat(JSON)
-  convertedResults = sparql.query().convert()
-  # paradigms = [result['result']['value'] for result in convertedResults['results']['bindings']]
-  print(convertedResults)
+  response = sparql.query().convert()
+  
+  results = []
+  for result in response['results']['bindings']:
+    data = result['result']['value']
+    results.append(data)
+  if( len(results) == 1 ):
+    results = formatMultiParadigm(results)
+  print(results)
+
 
 print(constructParadigm('http://dbpedia.org/resource/C++'))
 
