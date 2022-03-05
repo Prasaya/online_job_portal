@@ -25,12 +25,12 @@ async def computeScore(userSkills, jobSkills):
     index = 0
     userRow = []
     jobRow = []
-    for key, value in userSkills:
+    for key, value in userSkills.items():
         keys[key] = index
         index += 1
         userRow.append(value)
         jobRow.append(jobSkills.get(key, 0))
-    for key, value in jobSkills:
+    for key, value in jobSkills.items():
         if key not in keys:
             keys[key] = index
             index += 1
