@@ -6,7 +6,7 @@ import asyncio
 
 class Esco:
     def __init__(self):
-        asyncio.set_event_loop(asyncio.new_event_loop())
+        asyncio.set_event_loop(asyncio.SelectorEventLoop())
         self.prefixes = """
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -16,6 +16,10 @@ class Esco:
             PREFIX esco: <http://data.europa.eu/esco/model#>
             PREFIX text: <http://jena.apache.org/text#>
         """
+        self.client = SPARQLClient("http://localhost:3030/esco/query")
+        self.session = aiohttp.ClientSession()
+
+    async def init(self):
         self.client = SPARQLClient("http://localhost:3030/esco/query")
         self.session = aiohttp.ClientSession()
 
@@ -37,9 +41,9 @@ class Esco:
             'language': 'en',
             # 'viewObsolete': False,
         }
-        response = await self.session.get(url, params=params)
-        results = (await response.json())['_embedded']['results']
-        return [i['uri']for i in results]
+        async with self.session.get(url, params=params) as response:
+            results = (await response.json())['_embedded']['results']
+            return [i['uri']for i in results]
 
     async def getLength(self, start, end):
         query = f"""
