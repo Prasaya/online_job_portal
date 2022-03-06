@@ -1,6 +1,8 @@
 import aiohttp;
 import asyncio;
 from SPARQLWrapper import SPARQLWrapper, JSON
+from skill import computeScore
+
 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 
 async def getResource(query):
@@ -189,12 +191,14 @@ async def getSkills(skills):
   return merge_dictionaries(skillObjects)
 
 
-def getSkillCompareObject (skills1, skills2):
-  
-  return skills1, skills2
+async def getSkillsComparedScore (jobSkillsArray, userSkillsArray):
+  userSkills = await getSkills(userSkillsArray)
+  jobSkills = await getSkills(jobSkillsArray)
+  score = computeScore(userSkills, jobSkills)
+  return score
 
 async def main():
-  print(await getSkills(['c++', 'java', 'python']))
+  print(await getSkillsComparedScore(['c++', 'java'], ['Javacript', 'Python']))
 
 if __name__ == '__main__':
   asyncio.run(main())
