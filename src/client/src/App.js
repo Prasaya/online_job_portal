@@ -19,6 +19,7 @@ import JobseekerEditProfile from './Components/Jobseeker/EditProfile';
 import JobseekerAvatar from './Components/Jobseeker/EditProfile/Avatar';
 import JobseekerBasics from './Components/Jobseeker/EditProfile/Basics';
 import JobseekerEducation from './Components/Jobseeker/EditProfile/Education';
+import JobseekerExperience from './Components/Jobseeker/EditProfile/Experience';
 import JobseekerSkills from './Components/Jobseeker/EditProfile/Skills';
 
 //Company
@@ -53,6 +54,7 @@ function App() {
               <Route path="avatar" element={<JobseekerAvatar />} />
               <Route path="basics" element={<JobseekerBasics />} />
               <Route path="education" element={<JobseekerEducation />} />
+              <Route path="experience" element={<JobseekerExperience />} />
               <Route path="skills" element={<JobseekerSkills />} />
             </Route>
             <Route path="settings" element={<JobseekerSettings />}>

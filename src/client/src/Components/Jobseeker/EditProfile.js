@@ -21,6 +21,11 @@ function EditProfile() {
             status: ""
         },
         {
+            name: "Experience",
+            to:"experience",
+            status: ""
+        },
+        {
             name: "Skills",
             to: "skills",
             status: ""
