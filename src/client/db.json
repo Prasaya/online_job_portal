@@ -64,6 +64,18 @@
         "degree": "bachelor of computer application"
       }
     ],
+    "experience": [
+      {
+        "years": 5,
+        "jobTitle": "React Developer",
+        "company": "Lol Company"
+      },
+      {
+        "years": 2,
+        "jobTitle": "Java Developer",
+        "company": "LMAO Company"
+      }
+    ],
     "picture": "https://www.proheadshots.ca/wp-content/uploads/2016/02/studio-background-dark-1.jpg",
     "settings": {
       "basics": {
