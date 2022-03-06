@@ -30,7 +30,7 @@ class Esco:
         await self.client.close()
 
     async def getURI(self, query, limit=1):
-        url = "https://ec.europa.eu/esco/api/search/"
+        url = "http://ec.europa.eu/esco/api/search/"
         params = {
             'text': query,
             'limit': limit,
@@ -80,9 +80,10 @@ class Esco:
             self.dfs(graph, child, root, results)
 
     async def _parseSkill(self, skillsURI):
-        scores = [(await self.getScores(uri)) for uri in skillsURI]
+        scores = await asyncio.gather(*[self.getScores(uri) for uri in skillsURI])
         return mergeDictionaries(scores)
 
     async def parse(self, skills):
-        uris = [await self.getURI(skill) for skill in skills]
-        return mergeDictionaries([await self._parseSkill(uri) for uri in uris])
+        uris = await asyncio.gather(*[self.getURI(skill) for skill in skills])
+        skillsDicts = await asyncio.gather(*[self._parseSkill(uri) for uri in uris])
+        return mergeDictionaries(skillsDicts)

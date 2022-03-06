@@ -1,3 +1,4 @@
+import asyncio
 import aiohttp
 from aiosparql.client import SPARQLClient
 from .utils import mergeDictionaries
@@ -103,7 +104,7 @@ class DBPedia:
         Return skills object for the given array of skills
         if C++ java python is given, it returns combined skill object for all
         '''
-        skillObjects = [await self._parseLanguage(resource) for resource in resourcesURI]
+        skillObjects = await asyncio.gather(*[self._parseLanguage(resource) for resource in resourcesURI])
         return mergeDictionaries(skillObjects)
 
     async def parseSoftwares(self, resourcesURI):

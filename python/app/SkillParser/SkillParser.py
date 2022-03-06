@@ -58,5 +58,5 @@ class SkillParser:
                 softwares.append(resourceLink)
         languageSkills = await self.dbpedia.parseLanguages(programmingLanguages)
         softwareSkills = await self.dbpedia.parseSoftwares(softwares)
-        escoSkills = await self.esco.parse(softwares)
+        escoSkills = await self.esco.parse(nonProgrammings)
         return mergeDictionaries([languageSkills, escoSkills, softwareSkills])
