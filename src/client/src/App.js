@@ -5,6 +5,7 @@ import RegisterJobSeeker from './Components/RegisterJobSeeker';
 import RegisterCompany from './Components/RegisterCompany';
 import PageNotFound from './Components/PageNotFound';
 import Job from './Components/Jobs/Job';
+import Search from './Components/Jobs/Search';
 
 //Jobseeker
 import JobseekerHome from './Components/Jobseeker/Home';
@@ -46,6 +47,7 @@ function App() {
           <Route path="/register-jobseeker" element={<RegisterJobSeeker />} />
           <Route path="/register-company" element={<RegisterCompany />} />
           <Route path="/jobs/:id" element={<Job />} />
+          <Route path="/jobs/search" element={<Search />} />
           <Route path="/jobseeker" element={<JobseekerHome />}>
             <Route path="overview" element={<JobseekerOverview />} />
             <Route path="mystatus" element={<JobseekerMyStatus />} />
