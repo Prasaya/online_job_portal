@@ -32,7 +32,7 @@ class DBPedia:
         Gets the resource link and typeName for the given query from dbpedia lookup
         '''
         url = f'https://lookup.dbpedia.org/api/search/'
-        params = {'format': 'json', 'maxResults': 1, 'query': query}
+        params = {'format': 'json', 'maxResults': 3, 'query': query}
         async with self.session.get(url, params=params) as response:
             results = (await response.json())['docs']
             for result in results:
@@ -147,13 +147,12 @@ class DBPedia:
         skillObject[resourceLink] = 1
         return skillObject
 
-    async def getSkills(self, skills):
+    async def getSkills(self, resourcesURI):
         '''
         Return skills object for the given array of skills
         if C++ java python is given, it returns combined skill object for all
         '''
-        resourceArray = [(await self.getResource(skill))[0] for skill in skills]
-        skillObjects = [await self.getSkillObject(resource) for resource in resourceArray]
+        skillObjects = [await self.getSkillObject(resource) for resource in resourcesURI]
         return self.mergeDictionaries(skillObjects)
 
     async def getSkillsComparedScore(self, jobSkillsArray, userSkillsArray):
@@ -161,3 +160,23 @@ class DBPedia:
         jobSkills = await self.getSkills(jobSkillsArray)
         score = await computeScore(userSkills, jobSkills)
         return score
+
+    async def getSoftwareSkills(self, resourcesURI):
+        output = {}
+        for resourceLink in resourcesURI:
+            output[resourceLink] = 1
+            query = f"""
+            PREFIX dbo: <http://dbpedia.org/ontology/>
+                SELECT ?language
+                Where
+                {{          
+                <{resourceLink}> dbo:programmingLanguage ?language
+                }}
+            """
+            response = await self.client.query(query)
+            results = [row['language']['value']
+                    for row in response['results']['bindings']]
+            for result in results:
+                output[result] = 1
+        return output
+
