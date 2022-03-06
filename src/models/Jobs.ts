@@ -151,9 +151,30 @@ export const deleteJobPost = async (jobId: string) => {
 
 export const getApplicantsForJob = async (jobId: string) => {
   try {
-    const [result]: [RowDataPacket[], FieldPacket[]] =
-      await connection.execute('CALL applicantsForJob(?)', [jobId]);
+    const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+      'CALL applicantsForJob(?)',
+      [jobId],
+    );
     return result[0];
+  } catch (error) {
+    logger.error('Error deleting jobs', error);
+  }
+};
+
+export const searchJobs = async (query: string) => {
+  try {
+    const [result]: [RowDataPacket[][], FieldPacket[]] =
+      await connection.execute('CALL searchJobs(?)', [query]);
+    if (
+      !Array.isArray(result) ||
+      !result.length ||
+      !Array.isArray(result[0]) ||
+      !result[0].length ||
+      !result[0][0].jobs
+    ) {
+      return [];
+    }
+    return result[0][0].jobs;
   } catch (error) {
     logger.error('Error deleting jobs', error);
   }
