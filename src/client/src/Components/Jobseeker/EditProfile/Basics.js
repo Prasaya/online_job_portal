@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { intervalToDuration, parse } from 'date-fns';
 
-// TODO: Add constraints for birthday
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
@@ -126,6 +126,22 @@ function Basics() {
             <input
               {...register('birthday', {
                 required: 'Please fill out this field',
+                validate: (value) => {
+                  const birthday = parse(value, 'yyyy-MM-dd', new Date());
+                  const today = new Date();
+                  const duration = intervalToDuration({
+                    start: birthday,
+                    end: today,
+                  });
+                  if (
+                    duration.years < 16 ||
+                    birthday.getFullYear() > today.getFullYear()
+                  ) {
+                    return 'Should be older than 16.';
+                  } else if (duration.years > 100) {
+                    return 'Should be younger than 100.';
+                  }
+                }
               })}
               type="date"
               className={`form-control form-control-lg ${
