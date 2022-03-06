@@ -13,7 +13,7 @@ import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import logger from '@utils/logger';
 
-export const userRegisterSchema: Schema = {
+export const applicantRegisterSchema: Schema = {
   email: {
     in: ['body'],
     isEmail: true,
@@ -75,10 +75,10 @@ export const userRegisterSchema: Schema = {
     isLength: { options: [{ max: 10 }] },
   },
 };
-const updateUserSchema: Schema = { ...userRegisterSchema };
-delete updateUserSchema.password;
-delete updateUserSchema.email;
-export { updateUserSchema };
+const updateApplicantSchema: Schema = { ...applicantRegisterSchema };
+delete updateApplicantSchema.password;
+delete updateApplicantSchema.email;
+export { updateApplicantSchema as updateUserSchema };
 
 export const userSkillsSchema: Schema = {
   skills: {

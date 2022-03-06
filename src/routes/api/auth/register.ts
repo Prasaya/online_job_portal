@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createNewUser, userRegisterSchema } from '@models/User';
+import { createNewUser, applicantRegisterSchema } from '@models/User';
 import {
   organizationRegisterSchema,
   createNewOrganization,
@@ -57,7 +57,7 @@ router.post(
 
 router.post(
   '/',
-  checkSchema(userRegisterSchema),
+  checkSchema(applicantRegisterSchema),
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
