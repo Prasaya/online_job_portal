@@ -18,6 +18,10 @@ class DBPedia:
         """
         self.client = SPARQLClient("https://dbpedia.org/sparql")
         self.session = aiohttp.ClientSession()
+        self.config = {
+            'familyWeight': 0.25,
+            'paradigmWeight': 0.1,
+        }
 
     async def close(self):
         await self.client.close()
@@ -137,9 +141,9 @@ class DBPedia:
         paradigms = await self.constructParadigm(resourceLink)
         skillObject = {}
         for family in families:
-            skillObject[family] = 0.75
+            skillObject[family] = self.config['familyWeight']
         for paradigm in paradigms:
-            skillObject[paradigm] = 0.25
+            skillObject[paradigm] = self.config['paradigmWeight']
         return skillObject
 
     async def getResourceLinks(self, skills):
