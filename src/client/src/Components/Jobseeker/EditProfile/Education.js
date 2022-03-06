@@ -132,8 +132,9 @@ function Education() {
                     id={index}
                     onChange={levelChangeHandler}
                     required
+                    defaultValue=""
                   >
-                    <option selected disabled value="">
+                    <option disabled value="">
                       Education Level...
                     </option>
                     <option value="Bachelors">Bachelors</option>
@@ -161,6 +162,7 @@ function Education() {
                     id={index}
                     required
                     onChange={disciplineChangeHandler}
+                    defaultValue=""
                   >
                     <option disabled value="">
                       Discipline...
@@ -183,8 +185,9 @@ function Education() {
                     className="form-select"
                     id={index}
                     required
+                    defaultValue=""
                   >
-                    <option selected disabled value="">
+                    <option disabled value="">
                       Degree...
                     </option>
                     {degreeOptions[index].map((options) => {
