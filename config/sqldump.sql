@@ -49,8 +49,8 @@ CREATE TABLE `applicant_academics` (
   `qid` int NOT NULL,
   PRIMARY KEY (`id`,`qid`),
   KEY `qid` (`qid`),
-  CONSTRAINT `applicant_academics_ibfk_1` FOREIGN KEY (`id`) REFERENCES `applicant_data` (`id`),
-  CONSTRAINT `applicant_academics_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `academic_qualifications` (`qid`)
+  CONSTRAINT `applicant_academics_ibfk_1` FOREIGN KEY (`id`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `applicant_academics_ibfk_2` FOREIGN KEY (`qid`) REFERENCES `academic_qualifications` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -72,7 +72,7 @@ CREATE TABLE `applicant_data` (
   `gender` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  CONSTRAINT `applicant_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`)
+  CONSTRAINT `applicant_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,8 +88,8 @@ CREATE TABLE `applicant_jobs` (
   `jobId` char(36) NOT NULL,
   PRIMARY KEY (`applicantId`,`jobId`),
   KEY `jobId` (`jobId`),
-  CONSTRAINT `applicant_jobs_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`),
-  CONSTRAINT `applicant_jobs_ibfk_2` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`)
+  CONSTRAINT `applicant_jobs_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `applicant_jobs_ibfk_2` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -106,7 +106,23 @@ CREATE TABLE `applicant_skills` (
   `proficiency` enum('Beginner','Intermediate','Advanced','Expert') NOT NULL,
   `experience` int NOT NULL,
   PRIMARY KEY (`id`,`name`),
-  CONSTRAINT `applicant_skills_ibfk_1` FOREIGN KEY (`id`) REFERENCES `applicant_data` (`id`)
+  CONSTRAINT `applicant_skills_ibfk_1` FOREIGN KEY (`id`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `applicant_verification`
+--
+
+DROP TABLE IF EXISTS `applicant_verification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `applicant_verification` (
+  `applicantId` varchar(36) NOT NULL,
+  `token` char(100) DEFAULT NULL,
+  `verified` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`applicantId`),
+  CONSTRAINT `applicant_verification_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -141,8 +157,8 @@ CREATE TABLE `federated_credentials` (
   `identifier` varchar(2048) NOT NULL,
   PRIMARY KEY (`id`,`providerId`),
   KEY `providerId` (`providerId`),
-  CONSTRAINT `federated_credentials_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`),
-  CONSTRAINT `federated_credentials_ibfk_2` FOREIGN KEY (`providerId`) REFERENCES `federated_credentials_provider` (`providerId`)
+  CONSTRAINT `federated_credentials_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `federated_credentials_ibfk_2` FOREIGN KEY (`providerId`) REFERENCES `federated_credentials_provider` (`providerId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -173,8 +189,8 @@ CREATE TABLE `job_qualifications` (
   `qId` int NOT NULL,
   PRIMARY KEY (`jobId`,`qId`),
   KEY `qId` (`qId`),
-  CONSTRAINT `job_qualifications_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`),
-  CONSTRAINT `job_qualifications_ibfk_2` FOREIGN KEY (`qId`) REFERENCES `academic_qualifications` (`qid`)
+  CONSTRAINT `job_qualifications_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `job_qualifications_ibfk_2` FOREIGN KEY (`qId`) REFERENCES `academic_qualifications` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -197,7 +213,8 @@ CREATE TABLE `jobs` (
   `deadline` date DEFAULT NULL,
   PRIMARY KEY (`jobId`),
   KEY `companyId` (`companyId`),
-  CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`companyId`) REFERENCES `organization_data` (`id`)
+  FULLTEXT KEY `title` (`title`,`description`),
+  CONSTRAINT `jobs_ibfk_1` FOREIGN KEY (`companyId`) REFERENCES `organization_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -219,7 +236,7 @@ CREATE TABLE `organization_data` (
   `logo` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  CONSTRAINT `organization_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`)
+  CONSTRAINT `organization_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -268,7 +285,7 @@ CREATE TABLE `skills` (
   `proficiency` enum('Beginner','Intermediate','Advanced') NOT NULL,
   PRIMARY KEY (`skillName`,`jobId`),
   KEY `jobId` (`jobId`),
-  CONSTRAINT `skills_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`)
+  CONSTRAINT `skills_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -284,8 +301,8 @@ CREATE TABLE `user_roles` (
   `roleId` int NOT NULL,
   PRIMARY KEY (`id`,`roleId`),
   KEY `roleId` (`roleId`),
-  CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`),
-  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`)
+  CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -894,4 +911,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-06  0:13:28
+-- Dump completed on 2022-03-06  7:04:51
