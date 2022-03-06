@@ -28,7 +28,7 @@ class DBPedia:
         Gets the resource link and typeName for the given query from dbpedia lookup
         '''
         url = f'https://lookup.dbpedia.org/api/search/'
-        params = {'format': 'json', 'maxResults': '3', 'query': query}
+        params = {'format': 'json', 'maxResults': 1, 'query': query}
         async with self.session.get(url, params=params) as response:
             results = (await response.json())['docs']
             for result in results:
