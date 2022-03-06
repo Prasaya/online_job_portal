@@ -1,9 +1,12 @@
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Education() {
   const [allInfo, setAllInfo] = useState({}); //for use with json-server
   const [education, setEducation] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [academics, setAcademics] = useState({ success: false });
+
   const { register, getValues, setValue, watch, reset, control, handleSubmit } =
     useForm({ mode: 'onBlur' });
   const { fields, append, remove } = useFieldArray({
@@ -20,7 +23,7 @@ function Education() {
   });
 
   const fetchInfo = async () => {
-    const res = await fetch('http://localhost:4000/profile');
+    const res = await fetch('/api/applicant');
     const data = await res.json();
     return data;
   };
@@ -35,44 +38,107 @@ function Education() {
     //                 body: JSON.stringify(info)
     //             })
   };
-  // useEffect(() => {
-  //     const getInfo = async () => {
-  //         const info = await fetchInfo()
-  //         setAllInfo(info)
-  //         setEducation(info["education"])
-  //     }
-  //     getInfo()
-  // },[])
 
-  // useEffect(() => {
-  //     setValue("education", education)
-  // }, [setValue, education])
+  const [disciplineOptions, setDisciplineOptions] = useState([{}]);
+  const [degreeOptions, setDegreeOptions] = useState([[{}]]);
+
+  const fetchAllAcademics = async () => {
+    const res = await fetch('/api/academics');
+    return res.json();
+  };
+
+  function changeDisciplineOptions(level, id) {
+    setDisciplineOptions((prevOptions) => {
+      return prevOptions.map((item, index) => {
+        return index === id ? academics.query[level] : item;
+      });
+    });
+  }
+
+  const levelChangeHandler = (e) => {
+    const level = e.target.value;
+    const id = parseInt(e.target.id);
+    changeDisciplineOptions(level, id);
+  };
+
+  function changeDegreeOptions(discipline, id) {
+    setDegreeOptions((prevOptions) => {
+      return prevOptions.map((item, index) => {
+        return index === id ? disciplineOptions[id][discipline] : item;
+      });
+    });
+  }
+
+  const disciplineChangeHandler = (e) => {
+    const discipline = e.target.value;
+    const id = parseInt(e.target.id);
+    changeDegreeOptions(discipline, id);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const info = await fetchAllAcademics();
+      setAcademics(info);
+    })();
+    const getInfo = async () => {
+      const info = await fetchInfo();
+      if (info.success) {
+      }
+      setAllInfo(info);
+      setEducation(info.user.academics);
+      setLoading(false);
+    };
+    getInfo();
+  }, []);
+
+  useEffect(() => {
+    if (academics.success) {
+      education.map((options, index) => {
+        if (disciplineOptions.length - 1 < index) {
+          setDisciplineOptions((prevOptions) => {
+            return [...prevOptions, academics.query[options.level]];
+          });
+        } else {
+          changeDisciplineOptions(options.level, index);
+        }
+      });
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    education.map((options, index) => {
+      if (degreeOptions.length - 1 < index) {
+        setDegreeOptions((prevOptions) => {
+          return [...prevOptions, disciplineOptions[index][options.discipline]];
+        });
+      } else {
+        changeDegreeOptions(options.discipline, index);
+      }
+    });
+  }, [disciplineOptions]);
+
+  useEffect(() => {
+    setValue('education', education);
+  }, [degreeOptions]);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
-    <>
+    <div className="p-2">
       <h3>Education</h3>
-      <div className="m-auto mb-2">
+      <div className="p-1 my-2">
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <div className="education">
-            {controlledFields.map((item, index) => (
+            {fields.map((item, index) => (
               <div className="row mb-1" key={item.id}>
                 <div className="col-3 mr-1">
                   <select
                     {...register(`education.${index}.level`)}
                     className="form-select"
-                    id={`education.${index}.level`}
-                    onChange={(e) => {
-                      const discipline = document.getElementById(
-                        `education.${index}.discipline`,
-                      );
-                      const degree = document.getElementById(
-                        `education.${index}.degree`,
-                      );
-                      degree.disabled = true;
-                      degree.value = '';
-                      discipline.value = '';
-                      discipline.disabled = false;
-                    }}
+                    id={index}
+                    onChange={levelChangeHandler}
                     required
                   >
                     <option selected disabled value="">
@@ -94,74 +160,51 @@ function Education() {
                       Post Graduate Diploma
                     </option>
                     <option value="Pre-Diploma">Pre-Diploma</option>
-                    <option value="Primary/Secondary">Primary/Secondary</option>
                   </select>
                 </div>
                 <div className="col-3 mr-1">
                   <select
                     {...register(`education.${index}.discipline`)}
                     className="form-select"
-                    id={`education.${index}.discipline`}
-                    disabled={true}
+                    id={index}
                     required
-                    onChange={(e) => {
-                      const degree = document.getElementById(
-                        `education.${index}.degree`,
-                      );
-                      degree.value = '';
-                      degree.disabled = false;
-                    }}
+                    onChange={disciplineChangeHandler}
                   >
-                    <option selected disabled value="">
+                    <option disabled value="">
                       Discipline...
                     </option>
-                    <option value="Bachelors">Bachelors</option>
-                    <option value="Certificate/Diploma">
-                      Certificate/Diploma
-                    </option>
-                    <option value="Chartered Acoountant (CA)">
-                      Chartered Acoountant (CA)
-                    </option>
-                    <option value="Doctorate">Doctorate</option>
-                    <option value="Master of Philosophy">
-                      Master of Philosophy
-                    </option>
-                    <option value="Masters">Masters</option>
-                    <option value="Post Graduate Diploma">
-                      Post Graduate Diploma
-                    </option>
-                    <option value="Pre-Diploma">Pre-Diploma</option>
-                    <option value="Primary/Secondary">Primary/Secondary</option>
+                    {Object.keys(disciplineOptions[index]).map((item) => {
+                      if (item === 'ALL_DISCIPLINES') {
+                        return <></>;
+                      }
+                      return (
+                        <option value={item} key={item.id}>
+                          {item}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className="col-4 mr-1">
                   <select
                     {...register(`education.${index}.degree`)}
                     className="form-select"
-                    id={`education.${index}.degree`}
-                    disabled={true}
+                    id={index}
                     required
                   >
                     <option selected disabled value="">
                       Degree...
                     </option>
-                    <option value="Bachelors">Bachelors</option>
-                    <option value="Certificate/Diploma">
-                      Certificate/Diploma
-                    </option>
-                    <option value="Chartered Acoountant (CA)">
-                      Chartered Acoountant (CA)
-                    </option>
-                    <option value="Doctorate">Doctorate</option>
-                    <option value="Master of Philosophy">
-                      Master of Philosophy
-                    </option>
-                    <option value="Masters">Masters</option>
-                    <option value="Post Graduate Diploma">
-                      Post Graduate Diploma
-                    </option>
-                    <option value="Pre-Diploma">Pre-Diploma</option>
-                    <option value="Primary/Secondary">Primary/Secondary</option>
+                    {degreeOptions[index].map((options) => {
+                      if (options.name === 'ALL_DEGREES') {
+                        return <></>;
+                      }
+                      return (
+                        <option value={options.name} key={options.id}>
+                          {options.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -179,7 +222,11 @@ function Education() {
             <button
               className="btn btn-secondary btn-md"
               type="button"
-              onClick={() => append({ degree: '', discipline: '', level: '' })}
+              onClick={() => {
+                append({ degree: '', discipline: '', level: '' });
+                setDisciplineOptions([...disciplineOptions, {}]);
+                setDegreeOptions([...degreeOptions, [{}]]);
+              }}
             >
               Add
             </button>
@@ -189,7 +236,7 @@ function Education() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
