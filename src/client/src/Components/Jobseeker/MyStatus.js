@@ -19,7 +19,7 @@ function MyStatus() {
   }, []);
 
   return (
-    <div className="mystatus card my-2">
+    <div className="mystatus card my-5">
       <h1 className="card-header">Applied Jobs</h1>
       <div className="jobs container">
         <ul className=" list-group">
@@ -33,18 +33,20 @@ function MyStatus() {
                     <h6>Deadline: {job.deadline}</h6>
                   </div>
                   <div>
-                    <Link
-                      to={`/jobs/${job.jobId}`}
-                      className="btn btn-primary btn-lg mx-2"
-                    >
-                      View Ranking
-                    </Link>
-                    <Link
-                      to={`/jobs/${job.jobId}`}
-                      className="btn btn-secondary btn-lg mx-2"
-                    >
-                      View Job
-                    </Link>
+                    <div className="buttons">
+                      <Link
+                        to={`/jobs/${job.jobId}`}
+                        className="btn btn-primary btn-lg m-2"
+                      >
+                        View Ranking
+                      </Link>
+                      <Link
+                        to={`/jobs/${job.jobId}`}
+                        className="btn btn-secondary btn-lg m-2"
+                      >
+                        View Job
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </li>

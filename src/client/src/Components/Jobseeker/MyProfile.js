@@ -21,7 +21,7 @@ function MyProfile() {
     const res = await fetch('http://localhost:4000/profile');
     const data = await res.json();
     return data.experience;
-  }
+  };
 
   useEffect(() => {
     const getInfo = async () => {
@@ -37,8 +37,8 @@ function MyProfile() {
   }, []);
   basicEntries = Object.entries(basicInfo);
   return (
-    <div className="myprofile card my-2">
-      <h1 className='card-header'>
+    <div className="myprofile card my-5">
+      <h1 className="card-header">
         My Profile{' '}
         <span>
           <Link
@@ -70,7 +70,7 @@ function MyProfile() {
                           {!!(entry[1] && entry[1].length) &&
                             !notDisplay.includes(entry[0].toLowerCase()) && (
                               <tr>
-                                <td className='text-capitalize'>{entry[0]}</td>
+                                <td className="text-capitalize">{entry[0]}</td>
                                 <td>:</td>
                                 <td>{entry[1]}</td>
                               </tr>
@@ -104,7 +104,7 @@ function MyProfile() {
               </div>
             </div>
             <div className="row">
-              <div className="skills col-6">
+              <div className="skills col-lg-6">
                 <h3>Skills</h3>
                 <table className="table">
                   <tbody>
@@ -125,9 +125,9 @@ function MyProfile() {
                   </tbody>
                 </table>
               </div>
-              <div className="skills col-6">
+              <div className="skills col-lg-6">
                 <h3>Experience</h3>
-                <table className='table'>
+                <table className="table">
                   <tbody>
                     <tr>
                       <th>Job Title</th>

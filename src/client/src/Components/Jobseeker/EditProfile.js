@@ -59,7 +59,7 @@ function EditProfile() {
   }, []);
 
   return (
-    <div className="editprofile card my-2">
+    <div className="editprofile card my-5">
       <h1 className="card-header">Edit Profile</h1>
       <div className="container">
         <div className="row">

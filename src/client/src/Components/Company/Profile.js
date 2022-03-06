@@ -25,8 +25,8 @@ function Profile() {
   }, []);
   basicEntries = Object.entries(basicInfo);
   return (
-    <div className="myprofile card my-2">
-      <h1 className='card-header'>
+    <div className="myprofile card my-5">
+      <h1 className="card-header">
         My Profile{' '}
         <span>
           <Link className="btn btn-secondary" to="/company/editprofile/avatar">
@@ -55,7 +55,7 @@ function Profile() {
                           {entry[1] &&
                             !notDisplay.includes(entry[0].toLowerCase()) && (
                               <tr>
-                                <td className='text-capitalize'>{entry[0]}</td>
+                                <td className="text-capitalize">{entry[0]}</td>
                                 <td>:</td>
                                 <td>{entry[1]}</td>
                               </tr>

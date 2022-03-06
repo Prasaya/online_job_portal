@@ -23,7 +23,7 @@ function Overview() {
   }, [curPage]);
 
   return (
-    <div className="overview card my-2">
+    <div className="overview card my-5">
       <h1 className="card-header">Overview</h1>
       <div className="jobs container">
         <ul className=" list-group">
