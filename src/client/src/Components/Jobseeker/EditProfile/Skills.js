@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 
 function Skills() {
   const [skills, setSkills] = useState([]);
-  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
-  const [isUpdateFail, setIsUpdateFail] = useState(false)
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
+  const [isUpdateFail, setIsUpdateFail] = useState(false);
 
   const { register, setValue, control, handleSubmit } = useForm({
     mode: 'onBlur',
@@ -20,21 +20,26 @@ function Skills() {
     return data.user;
   };
   const onSubmitForm = async (data) => {
-    const uniqueData = data.skills.reduce((items, item) => items.find(x => x.name.toLowerCase() === item.name.toLowerCase()) ? [...items] : [...items, item], []) 
-    data.skills = uniqueData
-    setSkills(uniqueData)
+    const uniqueData = data.skills.reduce(
+      (items, item) =>
+        items.find((x) => x.name.toLowerCase() === item.name.toLowerCase())
+          ? [...items]
+          : [...items, item],
+      [],
+    );
+    data.skills = uniqueData;
+    setSkills(uniqueData);
     const res = await fetch(`/api/applicant/skills`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
-      // TODO: Wut dis?
       body: JSON.stringify(data),
     });
-    if(res.status === 200){
-      setIsUpdateSuccess(true)
-    }else{
-      setIsUpdateFail(true)
+    if (res.status === 200) {
+      setIsUpdateSuccess(true);
+    } else {
+      setIsUpdateFail(true);
     }
   };
   useEffect(() => {
@@ -99,9 +104,9 @@ function Skills() {
                   type="button"
                   className="btn btn-sm btn-danger col-2"
                   onClick={() => {
-                    remove(index)
-                    setIsUpdateFail(false)
-                    setIsUpdateSuccess(false)
+                    remove(index);
+                    setIsUpdateFail(false);
+                    setIsUpdateSuccess(false);
                   }}
                 >
                   Delete
@@ -109,16 +114,18 @@ function Skills() {
               </div>
             ))}
           </div>
-          {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
-          {isUpdateFail && <p className='text-danger'>Update Failed</p>}
+          {isUpdateSuccess && (
+            <p className="text-success">Updated Successfully</p>
+          )}
+          {isUpdateFail && <p className="text-danger">Update Failed</p>}
           <div className="d-grid gap-2 m-auto mt-4">
             <button
               className="btn btn-secondary btn-md"
               type="button"
-              onClick={() =>{
-                append({ skill: '', proficiency: '', experience: '' })
-                setIsUpdateFail(false)
-                setIsUpdateSuccess(false)
+              onClick={() => {
+                append({ skill: '', proficiency: '', experience: '' });
+                setIsUpdateFail(false);
+                setIsUpdateSuccess(false);
               }}
             >
               Add
