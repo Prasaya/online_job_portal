@@ -47,21 +47,21 @@ class DBPedia:
                 raise 'Not Software or programming Language'
         return await self.constructParadigm(resourceLink)
 
-    def formatMultiParadigm(self, results: str):
+    def formatMultiParadigm(self, result: str):
         '''
         If paradigm of a language has single string multi-paradigm
         Returns an array of paradigms
         '''
         prefix = "Multi-paradigm: "
-        if(results[0].startswith(prefix)):
-            results[0] = results[0].removeprefix(prefix)
-            temp = results[0].split(", ")
-            results = temp
-            for i, paradigm in enumerate(results):
+        if(result[0].startswith(prefix)):
+            result[0] = result[0].removeprefix(prefix)
+            temp = result[0].split(", ")
+            result = temp
+            for i, paradigm in enumerate(result):
                 paradigm = paradigm.strip()
                 paradigm += ' programming'
-                results[i] = paradigm
-        return results
+                result[i] = paradigm
+        return result
 
     async def constructParadigm(self, resourceLink):
         '''
