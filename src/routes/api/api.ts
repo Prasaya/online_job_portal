@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('*', (req, res) => {
-  res.status(404).json({ message: 'Could not find page!', success: false });
+  res.redirect('/404');
 });
 
 export default router;
