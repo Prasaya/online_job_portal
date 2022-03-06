@@ -2,24 +2,18 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 
 function Education() {
-  const [allInfo, setAllInfo] = useState({}); //for use with json-server
   const [education, setEducation] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [academics, setAcademics] = useState({ success: false });
+  const [disciplineOptions, setDisciplineOptions] = useState([{}]);
+  const [degreeOptions, setDegreeOptions] = useState([[{}]]);
 
-  const { register, getValues, setValue, watch, reset, control, handleSubmit } =
-    useForm({ mode: 'onBlur' });
+  const { register, setValue, control, handleSubmit } = useForm({
+    mode: 'onBlur',
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'education',
-  });
-
-  const watchFieldArray = watch('education');
-  const controlledFields = fields.map((field, index) => {
-    return {
-      ...field,
-      ...watchFieldArray[index],
-    };
   });
 
   const fetchInfo = async () => {
@@ -38,9 +32,6 @@ function Education() {
     //                 body: JSON.stringify(info)
     //             })
   };
-
-  const [disciplineOptions, setDisciplineOptions] = useState([{}]);
-  const [degreeOptions, setDegreeOptions] = useState([[{}]]);
 
   const fetchAllAcademics = async () => {
     const res = await fetch('/api/academics');
@@ -84,7 +75,6 @@ function Education() {
       const info = await fetchInfo();
       if (info.success) {
       }
-      setAllInfo(info);
       setEducation(info.user.academics);
       setLoading(false);
     };
@@ -118,7 +108,9 @@ function Education() {
   }, [disciplineOptions]);
 
   useEffect(() => {
-    setValue('education', education);
+    if (fields.length <= education.length) {
+      setValue('education', education);
+    }
   }, [degreeOptions]);
 
   if (isLoading) {
