@@ -152,10 +152,9 @@ export async function searchUser(
 
 export async function modifyUser(id: string, email: string, password: string) {
   const hashed = (await hashPassword(password)) || null;
-  console.log(password, hashed);
-  await connection.query('CALL modifyUser(?, ?, ?)', [
+  await connection.query('CALL updateAuthData(?, ?, ?)', [
     id,
     email || null,
-    hashPassword(password) || null,
+    hashed,
   ]);
 }
