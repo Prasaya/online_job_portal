@@ -55,14 +55,14 @@ function Skills() {
   }, [setValue, skills]);
 
   return (
-    <div>
+    <div className="my-3">
       <h3>Skills</h3>
       <div className="m-auto mb-2">
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <div className="skills">
             {fields.map((item, index) => (
               <div className="row mb-1" key={item.id}>
-                <div className="col-4 mr-1">
+                <div className="col-lg-4 mb-1">
                   <input
                     {...register(`skills.${index}.name`)}
                     className="form-control"
@@ -72,7 +72,7 @@ function Skills() {
                     required
                   />
                 </div>
-                <div className="col-4 mr-1">
+                <div className="col-lg-4 mb-1">
                   <select
                     {...register(`skills.${index}.proficiency`)}
                     className="form-select"
@@ -88,7 +88,7 @@ function Skills() {
                     <option value="Expert">Expert</option>
                   </select>
                 </div>
-                <div className="col-2 mr-1">
+                <div className="col-lg-2 mb-1">
                   <input
                     {...register(`skills.${index}.experience`)}
                     className="form-control"
@@ -99,25 +99,28 @@ function Skills() {
                     required
                   />
                 </div>
-
-                <button
-                  type="button"
-                  className="btn btn-sm btn-danger col-2"
-                  onClick={() => {
-                    remove(index);
-                    setIsUpdateFail(false);
-                    setIsUpdateSuccess(false);
-                  }}
-                >
-                  Delete
-                </button>
+                <div className="col-lg-2 mb-1">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => {
+                      remove(index);
+                      setIsUpdateFail(false);
+                      setIsUpdateSuccess(false);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-          {isUpdateSuccess && (
-            <p className="text-success">Updated Successfully</p>
-          )}
-          {isUpdateFail && <p className="text-danger">Update Failed</p>}
+          <div className="my-2 message text-center">
+            {isUpdateSuccess && (
+              <p className="text-success">Updated Successfully</p>
+            )}
+            {isUpdateFail && <p className="text-danger">Update Failed</p>}
+          </div>
           <div className="d-grid gap-2 m-auto mt-4">
             <button
               className="btn btn-secondary btn-md"
