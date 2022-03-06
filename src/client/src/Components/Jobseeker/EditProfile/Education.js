@@ -8,6 +8,8 @@ function Education() {
   const [disciplineOptions, setDisciplineOptions] = useState([{}]);
   const [degreeOptions, setDegreeOptions] = useState([[{}]]);
   const [qId, setqId] = useState([]);
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
+  const [isUpdateFail, setIsUpdateFail] = useState(false);
 
   const { register, setValue, control, handleSubmit } = useForm({
     mode: 'onBlur',
@@ -41,6 +43,11 @@ function Education() {
       },
       body: JSON.stringify(data),
     });
+    if (res.status === 200) {
+      setIsUpdateSuccess(true);
+    } else {
+      setIsUpdateFail(true);
+    }
     const info = await res.json();
     console.log(info);
   };
@@ -136,8 +143,8 @@ function Education() {
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <div className="education">
             {fields.map((item, index) => (
-              <div className="row mb-1" key={item.id}>
-                <div className="col-3 mr-1">
+              <div className="row my-2" key={item.id}>
+                <div className="col-lg-3 mb-1">
                   <select
                     {...register(`academics.${index}.level`)}
                     className="form-select"
@@ -167,7 +174,7 @@ function Education() {
                     <option value="Pre-Diploma">Pre-Diploma</option>
                   </select>
                 </div>
-                <div className="col-3 mr-1">
+                <div className="col-lg-3 mb-1">
                   <select
                     {...register(`academics.${index}.discipline`)}
                     className="form-select"
@@ -191,7 +198,7 @@ function Education() {
                     })}
                   </select>
                 </div>
-                <div className="col-4 mr-1">
+                <div className="col-lg-4 mb-1">
                   <select
                     {...register(`academics.${index}.degree`)}
                     className="form-select"
@@ -214,18 +221,29 @@ function Education() {
                     })}
                   </select>
                 </div>
-
-                <button
-                  type="button"
-                  className="btn btn-sm btn-danger col-2"
-                  onClick={() => remove(index)}
-                >
-                  Delete
-                </button>
+                <div className="col-lg-2 mb-1">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => {
+                      remove(index);
+                      setIsUpdateFail(false);
+                      setIsUpdateSuccess(false);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-          <div className="d-grid gap-2 m-auto mt-4">
+          <div className="message text-center mt-2">
+            {isUpdateSuccess && (
+              <p className="text-success">Updated Successfully</p>
+            )}
+            {isUpdateFail && <p className="text-danger">Update Failed</p>}
+          </div>
+          <div className="d-grid gap-2 m-auto mt-2">
             <button
               className="btn btn-secondary btn-md"
               type="button"
@@ -233,6 +251,8 @@ function Education() {
                 append({ degree: '', discipline: '', level: '' });
                 setDisciplineOptions([...disciplineOptions, {}]);
                 setDegreeOptions([...degreeOptions, [{}]]);
+                setIsUpdateFail(false);
+                setIsUpdateSuccess(false);
               }}
             >
               Add
