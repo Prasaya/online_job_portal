@@ -5,6 +5,7 @@ function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
   const [jobs, setJobs] = useState([]);
+  const [message, setMessage] = useState('');
   async function fetchJobs() {
     const res = await fetch(`/api/jobs/search?query=${query}`);
     const data = await res.json();
@@ -14,6 +15,11 @@ function Search() {
   useEffect(() => {
     async function getJobs() {
       const overviewJobs = await fetchJobs();
+      if (overviewJobs.jobs.length === 0) {
+        setMessage('No Results Found.');
+      } else {
+        setMessage('');
+      }
       setJobs(overviewJobs.jobs);
     }
     getJobs();
@@ -23,6 +29,7 @@ function Search() {
     <div className="container">
       <div className="overview card my-2">
         <h3 className="card-header">Search Results</h3>
+        <p className="my-3 text-center">{message}</p>
         <div className="jobs container">
           <ul className=" list-group">
             {jobs.map((job) => {
