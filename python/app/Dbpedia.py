@@ -144,6 +144,7 @@ class DBPedia:
             skillObject[family] = self.config['familyWeight']
         for paradigm in paradigms:
             skillObject[paradigm] = self.config['paradigmWeight']
+        skillObject[resourceLink] = 1
         return skillObject
 
     async def getResourceLinks(self, skills):
