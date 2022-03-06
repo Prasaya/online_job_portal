@@ -36,7 +36,7 @@ async def main():
     #     json.dump(data, f, indent=2)
     # # await esco.close()
     # await dbpedia.close()
-    
+
 
 if __name__ == '__main__':
     asyncio.run(main())

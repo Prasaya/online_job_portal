@@ -7,6 +7,7 @@ from utils.skill import computeScore
 from Esco import Esco
 from Dbpedia import DBPedia
 
+
 class Skills:
     def __init__(self):
         self.prefixes = """
@@ -61,7 +62,6 @@ class Skills:
                     return result["resource"][0], 'ProgrammingLanguage'
         return '', None
 
-
     async def getSkillType(self, query):
         resourceLink, resourceType = await self.getResource(query)
         if (resourceLink == ''):
@@ -71,8 +71,7 @@ class Skills:
                 return resourceLink, None
         return resourceLink, resourceType
 
-
-    async def parseSkills (self, skills):
+    async def parseSkills(self, skills):
         programmingLanguages = []
         softwares = []
         nonProgrammings = []
@@ -84,19 +83,17 @@ class Skills:
                 programmingLanguages.append(resourceLink)
             elif(resourceType == 'Software'):
                 softwares.append(resourceLink)
-        
+
         programmingSkills = await self.dbpedia.getSkills(programmingLanguages)
         endPoints = [(await self.esco.getEndpoint(skill))[0] for skill in nonProgrammings]
         escoSkills = await self.esco.createSkillsRow(endPoints)
         softwareSkills = await self.dbpedia.getSoftwareSkills(softwares)
-        
+
         # print(programmingSkills, '\n\n', escoSkills, '\n\n', softwareSkills)
         return self.mergeDictionaries([programmingSkills, escoSkills, softwareSkills])
 
-
-
     async def getSkillsComparedScore(self, jobSkillsArray, userSkillsArray):
-        
+
         userSkills = await self.getSkills(userSkillsArray)
         jobSkills = await self.getSkills(jobSkillsArray)
         score = await computeScore(userSkills, jobSkills)

@@ -169,14 +169,13 @@ class DBPedia:
             PREFIX dbo: <http://dbpedia.org/ontology/>
                 SELECT ?language
                 Where
-                {{          
+                {{
                 <{resourceLink}> dbo:programmingLanguage ?language
                 }}
             """
             response = await self.client.query(query)
             results = [row['language']['value']
-                    for row in response['results']['bindings']]
+                       for row in response['results']['bindings']]
             for result in results:
                 output[result] = 1
         return output
-
