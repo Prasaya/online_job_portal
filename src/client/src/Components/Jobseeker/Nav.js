@@ -14,7 +14,9 @@ function Nav() {
     mode: 'onBlur',
   });
 
-  const onSubmitForm = (data) => console.log(data);
+  const onSubmitForm = (data) => {
+    navigate(`/jobs/search?query=${data.search}`);
+  };
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
