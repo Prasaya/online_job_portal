@@ -3,6 +3,7 @@
 import asyncio
 from Esco import Esco
 from flask import Flask
+from Dbpedia import DBPedia
 from utils.skill import getRecommendations, getUserSkills
 from quart import Quart
 import json
@@ -20,17 +21,20 @@ async def userRecommendation(user):
 
 
 async def main():
-    esco = Esco()
-    uri = (await esco.getEndpoint("Keep written records of leasing agreements."))[0]
-    uri2 = 'http://data.europa.eu/esco/skill/S2.2.1'
-    data = await esco.createSkillsRow([uri, uri2])
-    with open('skills.json', 'w') as f:
+    dbpedia = DBPedia()
+    data = await dbpedia.getSkillsComparedScore(['c++', 'java'], ['Javacript', 'Python'])
+    print(data)
+    # esco = Esco()
+    # uri = (await esco.getEndpoint("Keep written records of leasing agreements."))[0]
+    # uri2 = 'http://data.europa.eu/esco/skill/S2.2.1'
+    # data = await esco.createSkillsRow([uri, uri2])
+    with open('skills2.json', 'w') as f:
         json.dump(data, f, indent=2)
-    await esco.close()
-
-# if __name__ == '__main__':
-#     print("ran")
-#     asyncio.run(main())
+    # await esco.close()
+    await dbpedia.close()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    asyncio.run(main())
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
