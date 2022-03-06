@@ -7,13 +7,14 @@ function Education() {
   const [academics, setAcademics] = useState({ success: false });
   const [disciplineOptions, setDisciplineOptions] = useState([{}]);
   const [degreeOptions, setDegreeOptions] = useState([[{}]]);
+  const [qId, setqId] = useState([]);
 
   const { register, setValue, control, handleSubmit } = useForm({
     mode: 'onBlur',
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'education',
+    name: 'academics',
   });
 
   const fetchInfo = async () => {
@@ -21,16 +22,27 @@ function Education() {
     const data = await res.json();
     return data;
   };
-  const onSubmitForm = (data) => {
-    // let info = allInfo
-    // info.education = data
-    // fetch(`http://localhost:4000/profile`,{
-    //                 method: "PUT",
-    //                 headers: {
-    //                     'Content-type': 'application/json'
-    //                 },
-    //                 body: JSON.stringify(info)
-    //             })
+  const onSubmitForm = async (data) => {
+    data.academics.map((item) => {
+      setqId((prev) => {
+        return [...prev, item.qid];
+      });
+    });
+    const uniqueQid = qId.filter((i, index) => {
+      return qId.indexOf(i) === index;
+    });
+    setqId(uniqueQid);
+    data.academics = qId;
+
+    const res = await fetch(`/api/applicant/academics`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const info = await res.json();
+    console.log(info);
   };
 
   const fetchAllAcademics = async () => {
@@ -109,7 +121,7 @@ function Education() {
 
   useEffect(() => {
     if (fields.length <= education.length) {
-      setValue('education', education);
+      setValue('academics', education);
     }
   }, [degreeOptions]);
 
@@ -127,7 +139,7 @@ function Education() {
               <div className="row mb-1" key={item.id}>
                 <div className="col-3 mr-1">
                   <select
-                    {...register(`education.${index}.level`)}
+                    {...register(`academics.${index}.level`)}
                     className="form-select"
                     id={index}
                     onChange={levelChangeHandler}
@@ -157,7 +169,7 @@ function Education() {
                 </div>
                 <div className="col-3 mr-1">
                   <select
-                    {...register(`education.${index}.discipline`)}
+                    {...register(`academics.${index}.discipline`)}
                     className="form-select"
                     id={index}
                     required
@@ -181,7 +193,7 @@ function Education() {
                 </div>
                 <div className="col-4 mr-1">
                   <select
-                    {...register(`education.${index}.degree`)}
+                    {...register(`academics.${index}.degree`)}
                     className="form-select"
                     id={index}
                     required
