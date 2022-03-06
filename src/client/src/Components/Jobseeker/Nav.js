@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../../Context/UserContext';
+import SearchBar from '../SearchBar';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 import logo from '../../Assets/Img/logo.png';
 import './nav.css';
@@ -10,13 +10,6 @@ import './nav.css';
 function Nav() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
-    mode: 'onBlur',
-  });
-
-  const onSubmitForm = (data) => {
-    navigate(`/jobs/search?query=${data.search}`);
-  };
 
   const logOut = async () => {
     const res = await fetch('/api/auth/logout', {
@@ -119,20 +112,7 @@ function Nav() {
               <img className="img img-fluid" src={logo} alt="logo" width="80" />
             </Link>
           </div>
-          <div className="search-bar mt-1">
-            <form className="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
-              <input
-                {...register('search', { required: true })}
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-primary" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
+          <SearchBar />
         </div>
         <button
           className="navbar-toggler"
