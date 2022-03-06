@@ -1,13 +1,14 @@
+drop table if exists applicant_verification;
 drop table if exists applicant_jobs;
 drop table if exists job_qualifications;
 drop table if exists skills;
 drop table if exists jobs;
 drop table if exists federated_credentials;
 drop table if exists federated_credentials_provider;
+drop table if exists applicant_skills;
+drop table if exists applicant_academics;
 drop table if exists applicant_data;
 drop table if exists organization_data;
-drop table if exists user_academics;
-drop table if exists user_skills;
 drop table if exists user_roles;
 drop table if exists auth;
 drop table if exists roles;
@@ -123,7 +124,8 @@ CREATE TABLE jobs (
     district varchar(1000),
     deadline date,
     primary key (jobId),
-    foreign key (companyId) references organization_data(id) ON UPDATE CASCADE ON DELETE CASCADE
+    foreign key (companyId) references organization_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FULLTEXT(title, description)
 );
 
 CREATE TABLE skills (
@@ -149,4 +151,13 @@ CREATE TABLE applicant_jobs (
     foreign key (applicantId) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
     foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE applicant_verification (
+    applicantId varchar(36) not null,
+    token char(100),
+    verified BOOLEAN DEFAULT false,
+    primary key (applicantId),
+    foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
+);
+
 

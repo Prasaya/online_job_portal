@@ -335,4 +335,22 @@ BEGIN
 END |
 DELIMITER ;
 
+DELIMITER |
+DROP PROCEDURE IF EXISTS searchJobs |
+CREATE PROCEDURE searchJobs(
+	IN query VARCHAR(5000)
+)
+BEGIN
+   SELECT JSON_ARRAYAGG(
+	 	JSON_OBJECT('jobId', j.jobId,
+			'title', j.title,
+			'companyName', od.name,
+			'deadline', j.deadline
+		)
+	 ) as jobs
+	FROM jobs as j
+	INNER JOIN organization_data as od ON od.id = j.companyId
+	WHERE MATCH(j.title, j.description) AGAINST(query IN NATURAL LANGUAGE MODE);
+END |
+
 

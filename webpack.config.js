@@ -19,7 +19,11 @@ const config = {
       {
         test: /\.tsx?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: [
+          path.resolve('./src/client/'),
+          path.resolve('./python/'),
+          /node_modules/,
+        ],
       },
     ],
   },
