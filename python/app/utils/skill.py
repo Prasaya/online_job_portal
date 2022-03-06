@@ -21,21 +21,14 @@ async def getUserSkills(user, esco: Esco):
 
 
 async def computeScore(userSkills, jobSkills):
-    keys = {}
-    index = 0
     userRow = []
     jobRow = []
-    for key, value in userSkills.items():
-        keys[key] = index
-        index += 1
-        userRow.append(value)
-        jobRow.append(jobSkills.get(key, 0))
     for key, value in jobSkills.items():
-        if key not in keys:
-            keys[key] = index
-            index += 1
+        jobRow.append(value)
+        if(key in userSkills):
+            userRow.append(userSkills[key])
+        else:
             userRow.append(0)
-            jobRow.append(value)
     return 1 - distance.cosine(userRow, jobRow)
 
 

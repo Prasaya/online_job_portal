@@ -106,7 +106,7 @@ class Esco:
         for child in graph.get(root, []):
             self.dfs(graph, child, root, results)
 
-    def merge_dicts(self, dictionaries):
+    def mergeDicts(self, dictionaries):
         output = {}
         for dictionary in dictionaries:
             for key, value in dictionary.items():
@@ -118,4 +118,4 @@ class Esco:
 
     async def createSkillsRow(self, skillsURI):
         scores = [(await self.getScores(uri)) for uri in skillsURI]
-        return self.merge_dicts(scores)
+        return self.mergeDicts(scores)
