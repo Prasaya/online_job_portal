@@ -147,23 +147,12 @@ class DBPedia:
         skillObject[resourceLink] = 1
         return skillObject
 
-    async def getResourceLinks(self, skills):
-        '''
-        Function returns an array of resource links for the given array of skills
-        '''
-        resourceArray = []
-        for skill in skills:
-            resourceLink = await self.getResource(skill)
-            resourceLink = resourceLink[0]
-            resourceArray.append(resourceLink)
-        return resourceArray
-
     async def getSkills(self, skills):
         '''
         Return skills object for the given array of skills
         if C++ java python is given, it returns combined skill object for all
         '''
-        resourceArray = await self.getResourceLinks(skills)
+        resourceArray = [(await self.getResource(skill))[0] for skill in skills]
         skillObjects = [await self.getSkillObject(resource) for resource in resourceArray]
         return self.mergeDictionaries(skillObjects)
 
