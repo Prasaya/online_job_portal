@@ -36,6 +36,11 @@ import CompanyEditProfile from './Components/Company/EditProfile';
 import CompanyAvatar from './Components/Company/EditProfile/Avatar';
 import CompanyBasics from './Components/Company/EditProfile/Basics';
 
+//Public
+import PublicJobseekerProfile from './Components/Public/PublicJobseekerProfile';
+import PublicCompanyProfile from './Components/Public/PublicCompanyProfile';
+//todo: add routes for public profiles
+
 function App() {
   return (
     <BrowserRouter>
