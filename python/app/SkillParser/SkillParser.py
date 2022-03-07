@@ -60,3 +60,29 @@ class SkillParser:
         softwareSkills = await self.dbpedia.parseSoftwares(softwares)
         escoSkills = await self.esco.parse(nonProgrammings)
         return mergeDictionaries([languageSkills, escoSkills, softwareSkills])
+
+    async def getEndpoints(self, skills):
+        result = []
+        for skill in skills:
+            resourceLink, resourceType = await self.getURIandType(skill)
+            if(resourceType is None):
+                result.append((await self.esco.getURI(skill), resourceType))
+            else:
+                result.append((resourceLink, resourceType))
+        return result
+
+    async def _parseFromURI(self, skills):
+        programmingLanguages = []
+        softwares = []
+        nonProgrammings = []
+        for data in skills:
+            if(data[1] is None):
+                nonProgrammings.append(data[0])
+            elif(data[1] == 'ProgrammingLanguage'):
+                programmingLanguages.append(data[0])
+            elif(data[1] == 'Software'):
+                softwares.append(data[0])
+        languageSkills = await self.dbpedia.parseLanguages(programmingLanguages)
+        softwareSkills = await self.dbpedia.parseSoftwares(softwares)
+        escoSkills = await self.esco.parseFromURI(nonProgrammings)
+        return mergeDictionaries([languageSkills, escoSkills, softwareSkills])
