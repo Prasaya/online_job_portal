@@ -141,11 +141,11 @@ DROP TABLE IF EXISTS `applicant_verification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `applicant_verification` (
-  `applicantId` varchar(36) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `token` char(100) DEFAULT NULL,
   `verified` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`applicantId`),
-  CONSTRAINT `applicant_verification_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`id`),
+  CONSTRAINT `applicant_verification_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1047,4 +1047,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-07 22:31:25
+-- Dump completed on 2022-03-07 23:11:54
