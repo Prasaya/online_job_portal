@@ -29,6 +29,17 @@ class Esco:
         await self.session.close()
         await self.client.close()
 
+    async def getURI_sparql(self, query):
+        query = f"""
+            {self.prefixes}
+            SELECT ?uri
+            WHERE {{
+                ?uri text:query "{query}" .
+            }}
+        """
+        response = await self.client.query(query)
+        return [response['results']['bindings'][0]['uri']['value']]
+
     async def getURI(self, query, limit=1):
         url = "http://ec.europa.eu/esco/api/search/"
         params = {
