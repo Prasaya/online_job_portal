@@ -1,33 +1,31 @@
 import express from 'express';
 import { param, validationResult, checkSchema } from 'express-validator';
-import connection from '@utils/dbSetup';
-import { RowDataPacket, FieldPacket } from 'mysql2';
 import { isApplicant } from '@middleware/authorization';
-import { randomUUID } from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
 import sendVerificationEmail from '@utils/verifyEmail';
-import { isApplicantVerified, insertTokenInApplicantVerification, verifyApplicantEmail } from '@models/Verify';
+import { isUserVerified, insertTokenInVerification, verifyEmail } from '@models/Verify';
 import logger from '@utils/logger';
+import { isLoggedIn } from '@middleware/authentication';
 
 const router = express.Router();
 
 router.post('/send-verify-email',
-    isApplicant,
+    isLoggedIn,
     async (req, res) => {
         try {
             const token = uuidv4();
             const userId = req.user!.user.basics.id;
             // TODO: finalize what to send in success if already verified
-            console.log(await isApplicantVerified(userId));
-            if ((await isApplicantVerified(userId)).message !== 0) {
-                res.json({ message: "Applicant already verified", success: true });
+            console.log(await isUserVerified(userId));
+            if ((await isUserVerified(userId)).message !== 0) {
+                res.json({ message: "User already verified", success: true });
                 return;
             }
 
             const user = req.user?.user;
             await sendVerificationEmail(user, token);
 
-            const { status, message, success } = await insertTokenInApplicantVerification(token, userId);
+            const { status, message, success } = await insertTokenInVerification(token, userId);
             res
                 .status(status)
                 .json({ message: message, success: success });
@@ -43,7 +41,6 @@ router.post('/send-verify-email',
 
 router.get(
     '/verify-email/:token',
-    isApplicant,
     param('token').isString().isLength({ min: 36, max: 36 }),
     async (req, res) => {
         try {
@@ -56,7 +53,7 @@ router.get(
             const token = req.params.token;
             const userId = req.user!.user.basics.id;
 
-            const { status, message, success } = await verifyApplicantEmail(token);
+            const { status, message, success } = await verifyEmail(token);
 
             res
                 .status(status)
@@ -78,14 +75,15 @@ router.get(
     },
 );
 
+// TODO: check to use isLoggedIn or isApplicant
 router.get(
     '/status',
-    isApplicant,
+    isLoggedIn,
     async (req, res) => {
         try {
             const userId = req.user!.user.basics.id;
 
-            const { status, message, success } = await isApplicantVerified(userId);
+            const { status, message, success } = await isUserVerified(userId);
             res
                 .status(status)
                 .json({ message: message, success: success });
