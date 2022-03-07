@@ -5,10 +5,10 @@ drop table if exists skills;
 drop table if exists jobs;
 drop table if exists federated_credentials;
 drop table if exists federated_credentials_provider;
+drop table if exists applicant_skills;
+drop table if exists applicant_academics;
 drop table if exists applicant_data;
 drop table if exists organization_data;
-drop table if exists user_academics;
-drop table if exists user_skills;
 drop table if exists user_roles;
 drop table if exists auth;
 drop table if exists roles;
@@ -124,7 +124,8 @@ CREATE TABLE jobs (
     district varchar(1000),
     deadline date,
     primary key (jobId),
-    foreign key (companyId) references organization_data(id) ON UPDATE CASCADE ON DELETE CASCADE
+    foreign key (companyId) references organization_data(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FULLTEXT(title, description)
 );
 
 CREATE TABLE skills (

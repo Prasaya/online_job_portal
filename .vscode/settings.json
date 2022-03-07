@@ -7,7 +7,9 @@
     "**/node_modules/*/**": true,
     "**dist/**": true,
     "**/public/**": true,
-    "**/build/**": true
+    "**/build/**": true,
+    "**/env/**": true,
+    "**/__pycache__": true
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

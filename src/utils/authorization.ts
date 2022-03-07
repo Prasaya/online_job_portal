@@ -10,9 +10,9 @@ async function getRoles() {
   const [result] = await connection.query('SELECT * FROM roles');
   return result as Role[];
 }
-(async () => {
-  cachedRoles = await getRoles();
-})();
+// (async () => {
+//   cachedRoles = await getRoles();
+// })();
 
 export function getRoleById(id: number): Promise<Role | null> {
   return getRoles().then(

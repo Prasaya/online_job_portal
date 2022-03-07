@@ -41,7 +41,7 @@ function backendBuild() {
       if (err) {
         reject(err);
       }
-      if (stats.hasErrors()) {
+      if (stats && stats.hasErrors()) {
         reject(new Error(stats.compilation.errors.join('\n')));
       }
       resolve();

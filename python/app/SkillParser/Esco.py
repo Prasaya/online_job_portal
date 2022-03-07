@@ -1,7 +1,7 @@
-from audioop import mul
 from aiosparql.client import SPARQLClient
 import aiohttp
 import asyncio
+from .utils import mergeDictionaries
 
 
 class Esco:
@@ -19,10 +19,6 @@ class Esco:
         self.client = SPARQLClient("http://localhost:3030/esco/query")
         self.session = aiohttp.ClientSession()
 
-    async def init(self):
-        self.client = SPARQLClient("http://localhost:3030/esco/query")
-        self.session = aiohttp.ClientSession()
-
     async def __aenter__(self):
         return self
 
@@ -33,8 +29,8 @@ class Esco:
         await self.session.close()
         await self.client.close()
 
-    async def getEndpoint(self, query, limit=1):
-        url = "https://ec.europa.eu/esco/api/search/"
+    async def getURI(self, query, limit=1):
+        url = "http://ec.europa.eu/esco/api/search/"
         params = {
             'text': query,
             'limit': limit,
@@ -45,33 +41,10 @@ class Esco:
             results = (await response.json())['_embedded']['results']
             return [i['uri']for i in results]
 
-    async def getLength(self, start, end):
+    async def getScores(self, startURI):
         query = f"""
         {self.prefixes}
-        prefix start: <{start}>
-        prefix end: <{end}>
-        SELECT  (count(?mid) as ?length)
-        WHERE
-        {{
-            start: skos:narrower* ?mid .
-            ?mid   skos:narrower+ end: .
-        }}
-        """
-        results = await self.client.query(query)
-        return results['results']['bindings'][0]['length']['value']
-
-    async def getLevel(self, end):
-        bases = [
-            'http://data.europa.eu/esco/skill/K',
-            'http://data.europa.eu/esco/skill/S',
-            'http://data.europa.eu/esco/skill/T',
-        ]
-        return max(await asyncio.gather(*[self.getLength(base, end) for base in bases]))
-
-    async def getScores(self, start):
-        query = f"""
-        {self.prefixes}
-        prefix start: <{start}>
+        prefix start: <{startURI}>
         SELECT distinct ?mid ?broad
         WHERE {{
             start: skos:broader* ?mid .
@@ -87,7 +60,7 @@ class Esco:
                 graph[node] = []
             graph[node].append(parent)
         results = {}
-        self.dfs(graph, start, None, results)
+        self.dfs(graph, startURI, None, results)
         return results
 
     def dfs(self, graph, root, parent, results, multiplier=0.5):
@@ -106,16 +79,11 @@ class Esco:
         for child in graph.get(root, []):
             self.dfs(graph, child, root, results)
 
-    def merge_dicts(self, dictionaries):
-        output = {}
-        for dictionary in dictionaries:
-            for key, value in dictionary.items():
-                if key in output:
-                    output[key] = max(output[key], value)
-                else:
-                    output[key] = value
-        return output
+    async def _parseSkill(self, skillsURI):
+        scores = await asyncio.gather(*[self.getScores(uri) for uri in skillsURI])
+        return mergeDictionaries(scores)
 
-    async def createSkillsRow(self, skillsURI):
-        scores = [(await self.getScores(uri)) for uri in skillsURI]
-        return self.merge_dicts(scores)
+    async def parse(self, skills):
+        uris = await asyncio.gather(*[self.getURI(skill) for skill in skills])
+        skillsDicts = await asyncio.gather(*[self._parseSkill(uri) for uri in uris])
+        return mergeDictionaries(skillsDicts)
