@@ -87,3 +87,7 @@ class Esco:
         uris = await asyncio.gather(*[self.getURI(skill) for skill in skills])
         skillsDicts = await asyncio.gather(*[self._parseSkill(uri) for uri in uris])
         return mergeDictionaries(skillsDicts)
+
+    async def parseFromURI(self, uris):
+        skillsDicts = await asyncio.gather(*[self._parseSkill(uri) for uri in uris])
+        return mergeDictionaries(skillsDicts)
