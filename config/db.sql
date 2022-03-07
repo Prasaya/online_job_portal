@@ -160,4 +160,13 @@ CREATE TABLE applicant_verification (
     foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
 );
 
+CREATE TABLE applicant_experience (
+    experienceId char(36) not null,
+    applicantId varchar(36) not null,
+    title varchar(100) not null,
+    experience int not null,
+    primary key (experienceId),
+    foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
+);
+
 
