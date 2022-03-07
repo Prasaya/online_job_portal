@@ -59,9 +59,9 @@ function Nav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
-      } else if (path.includes('login')) {
-        if (element.to.includes('overview')) {
-          element.status = 'active';
+      } else if (path.includes('login') || path==="/") {
+          if (element.to.includes('overview')) {
+            element.status = 'active';
         }
       }
       return element;
