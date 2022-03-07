@@ -3,7 +3,7 @@ import connection from '@utils/dbSetup';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 import logger from '@utils/logger';
 
-export const getApplicantVerificationDetailByToken = async (token: string) => {
+export const getVerificationDetailByToken = async (token: string) => {
   try {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
       'SELECT * FROM applicant_verification ' + 'WHERE token = ?',
@@ -16,14 +16,14 @@ export const getApplicantVerificationDetailByToken = async (token: string) => {
     return result[0];
 
   } catch (error) {
-    logger.error('Error getting applicant verification details by token : ', error);
+    logger.error('Error getting verification details by token : ', error);
   };
 }
 
-export const getApplicantVerificationDetailById = async (applicantId: string) => {
+export const getVerificationDetailById = async (applicantId: string) => {
   try {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
-      'SELECT * FROM applicant_verification ' + 'WHERE applicantId = ?',
+      'SELECT * FROM applicant_verification ' + 'WHERE id = ?',
       [applicantId],
     );
 
@@ -33,11 +33,11 @@ export const getApplicantVerificationDetailById = async (applicantId: string) =>
     return result[0];
 
   } catch (error) {
-    logger.error('Error getting applicant verification details by Id : ', error);
+    logger.error('Error getting verification details by Id : ', error);
   };
 }
 
-export const insertTokenInApplicantVerification = async (
+export const insertTokenInVerification = async (
   token: string,
   userId: string,
 ) => {
@@ -45,29 +45,29 @@ export const insertTokenInApplicantVerification = async (
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
       'UPDATE applicant_verification ' +
       'SET token= ? ' +
-      'WHERE applicantId = ?',
+      'WHERE id = ?',
       [token, userId],
     );
 
-    return { status: 200, message: "Token inserted in Applicant table", success: true };
+    return { status: 200, message: "Token inserted in Verification table", success: true };
 
   } catch (error) {
-    logger.error('Error inserting token in Applicant Verification', error);
+    logger.error('Error inserting token in Verification table', error);
     return { status: 400, message: error, success: false };
 
   }
 };
 
-export const verifyApplicantEmail = async (token: string) => {
+export const verifyEmail = async (token: string) => {
   try {
-    let verificationDetails = await getApplicantVerificationDetailByToken(token);
+    let verificationDetails = await getVerificationDetailByToken(token);
 
     if (!verificationDetails)
       return { status: 400, message: "Invalid token", success: false };
 
     // TODO: change status code
     if (verificationDetails.verified)
-      return { status: 400, message: "Applicant with token already verified", success: false };
+      return { status: 400, message: "User with token already verified", success: false };
 
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
       'UPDATE applicant_verification SET verified = 1 ' + 'WHERE token = ?',
@@ -77,21 +77,21 @@ export const verifyApplicantEmail = async (token: string) => {
     return { status: 200, message: "Successfully verified email", success: true };
 
   } catch (error) {
-    logger.error('Error verifying Applicant email function : ', error);
+    logger.error('Error verifying email : ', error);
     return { status: 400, message: error, success: false };
   }
 };
 
 
-export const isApplicantVerified = async (applicantId: string) => {
+export const isUserVerified = async (id: string) => {
   try {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
-      'SELECT * FROM applicant_verification ' + 'WHERE applicantId = ?',
-      [applicantId],
+      'SELECT * FROM applicant_verification ' + 'WHERE id = ?',
+      [id],
     );
 
     if (result.length == 0) {
-      return { status: 400, message: "Applicant not in verification table", success: false };
+      return { status: 400, message: "User not in verification table", success: false };
     }
     console.log(result);
 
@@ -107,7 +107,7 @@ export const isApplicantVerified = async (applicantId: string) => {
 export const insertVerificationRegister = async (userId: string) => {
   try {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
-      'INSERT INTO applicant_verification(applicantId, verified) ' +
+      'INSERT INTO applicant_verification(id, verified) ' +
       'VALUES(?, 0)',
       [userId],
     );
