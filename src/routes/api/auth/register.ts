@@ -46,6 +46,9 @@ router.post(
       const organization: Organization = await createNewOrganization(
         organizationData,
       );
+
+      await insertVerificationRegister(organization.id);
+
       return res.json({ organization, success: true });
     } catch (err) {
       logger.error(err);
