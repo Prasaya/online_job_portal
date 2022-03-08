@@ -152,12 +152,13 @@ CREATE TABLE applicant_jobs (
     foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+drop table if exists applicant_verification;
 CREATE TABLE applicant_verification (
     id varchar(36) not null,
     token char(100),
     verified BOOLEAN DEFAULT false,
-    primary key (applicantId),
-    foreign key (applicantId) references auth(id) ON DELETE CASCADE
+    primary key (id),
+    foreign key (id) references auth(id) ON DELETE CASCADE
 );
 
 CREATE TABLE applicant_experience (

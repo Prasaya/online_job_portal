@@ -222,6 +222,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `jobMatchScore`
+--
+
+DROP TABLE IF EXISTS `jobMatchScore`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobMatchScore` (
+  `applicantId` varchar(36) NOT NULL,
+  `jobId` varchar(36) NOT NULL,
+  `score` int DEFAULT NULL,
+  PRIMARY KEY (`applicantId`,`jobId`),
+  KEY `jobId` (`jobId`),
+  CONSTRAINT `jobMatchScore_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `jobMatchScore_ibfk_2` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `job_qualifications`
 --
 
@@ -1047,4 +1065,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-07 23:14:05
+-- Dump completed on 2022-03-08 22:08:07
