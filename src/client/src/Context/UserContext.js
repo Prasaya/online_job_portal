@@ -2,6 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 
 const UserContext = createContext({
   authStatus: false,
+  verifyStatus: false,
   id: '',
   type: '',
   updateUserStatus: ({
@@ -13,6 +14,7 @@ const UserContext = createContext({
 
 export function UserContextProvider(props) {
   const [userAuthStatus, setUserAuthStatus] = useState(false);
+  const [userVerifyStatus, setUserVerifyStatus] = useState(false);
   const [uid, setUid] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [userType, setUserType] = useState('');
@@ -20,10 +22,13 @@ export function UserContextProvider(props) {
   useEffect(() => {
     (async () => {
       const res = await fetch('/api/user');
-      const data = await res.json();
-      setUserAuthStatus(data.success);
-      setUid(data.success ? data.user.basics.id : '');
-      setUserType(data.success ? data.user.basics.type : '');
+      const userData = await res.json();
+      setUserAuthStatus(userData.success);
+      setUid(userData.success ? userData.user.basics.id : '');
+      setUserType(userData.success ? userData.user.basics.type : '');
+      const verifyRes = await fetch('/api/verify/status');
+      const verifyData = await verifyRes.json();
+      setUserVerifyStatus(verifyData.success ? verifyData.message : false);
       setLoading(false);
     })();
   }, []);
@@ -40,13 +45,14 @@ export function UserContextProvider(props) {
 
   const context = {
     authStatus: userAuthStatus,
+    verifyStatus: userVerifyStatus,
     id: uid,
     type: userType,
     updateUserStatus: updateUserStatusHandler,
   };
 
-  if(isLoading) {
-    return <div className='text-center'>Loading...</div>
+  if (isLoading) {
+    return <div className="text-center">Loading...</div>;
   }
 
   return (
