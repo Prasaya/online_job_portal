@@ -98,7 +98,10 @@ function Job() {
             <ul className="list-group-flush">
               {job.qualifications.map((education) => {
                 return (
-                  <li className="list-group-item bg-light">
+                  <li
+                    className="list-group-item bg-light"
+                    key={education.degree}
+                  >
                     {education.degree}
                   </li>
                 );
@@ -118,7 +121,7 @@ function Job() {
               <tbody>
                 {job.skills.map((skill, index) => {
                   return (
-                    <tr key={skill.id}>
+                    <tr key={skill.name}>
                       <td>{index + 1}</td>
                       <td>{skill.name}</td>
                       <td>{skill.proficiency}</td>
