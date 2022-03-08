@@ -67,7 +67,11 @@ function Job() {
         <div className="job-details mb-4">
           <div className="basic-details mt-3">
             <h6>Posted By:</h6>
-            <p>{job.companyName}</p>
+            <p>
+              <Link to={`/company-profile/${job.companyId}`}>
+                {job.companyName}
+              </Link>
+            </p>
             <h6>Address:</h6>
             <p>
               {job.address}, {job.district}
