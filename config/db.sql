@@ -1,3 +1,4 @@
+drop table if exists jobMatchScore;
 drop table if exists applicant_verification;
 drop table if exists applicant_jobs;
 drop table if exists job_qualifications;
@@ -168,5 +169,15 @@ CREATE TABLE applicant_experience (
     primary key (experienceId),
     foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
 );
+
+CREATE TABLE jobMatchScore (
+	applicantId	VARCHAR(36), 
+	jobId VARCHAR(36), 
+	score INT, 
+    primary key (applicantId, jobId),
+    foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE,
+	foreign key (jobId) references jobs(jobId) ON DELETE CASCADE
+);
+
 
 
