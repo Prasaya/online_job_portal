@@ -69,7 +69,7 @@ function Overview() {
           previousClassName="page-item"
           previousLinkClassName="page-link"
           pageRangeDisplayed={5}
-          pageCount={numPages}
+          pageCount={Math.ceil(numPages)}
           renderOnZeroPageCount={null}
         />
       </div>
