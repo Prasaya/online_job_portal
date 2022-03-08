@@ -130,7 +130,11 @@ function Nav() {
                   <Link
                     onClick={OnClick}
                     className={`nav-link ${element.status}`}
-                    to={element.to}
+                    to={
+                      element.name === 'Settings'
+                        ? element.to + '/basics'
+                        : element.to
+                    }
                     id={`${element.to}`}
                   >
                     {element.name}
