@@ -22,7 +22,7 @@ function CompanyNav() {
         id: '',
         type: '',
       });
-      navigate('/login', { replace: true });
+      navigate('/login');
     }
   };
 
@@ -53,9 +53,9 @@ function CompanyNav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
-      } else if (path.includes('login') || path==="/") {
-          if (element.to.includes('overview')) {
-            element.status = 'active';
+      } else if (path.includes('login') || path === '/') {
+        if (element.to.includes('overview')) {
+          element.status = 'active';
         }
       }
       return element;
