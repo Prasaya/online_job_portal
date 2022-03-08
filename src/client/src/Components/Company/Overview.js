@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import UserContext from '../../Context/UserContext';
 
 function Overview() {
   const [jobs, setJobs] = useState([]);
+  const userCtx = useContext(UserContext);
 
   async function fetchJobs() {
     const res = await fetch('/api/organization/jobs');
@@ -19,9 +21,21 @@ function Overview() {
   }, []);
   return (
     <div>
-      <Link to="/company/jobpost" className="btn btn-primary btn-lg my-5">
-        Add Job
-      </Link>
+      <div className="post-job my-5">
+        {userCtx.verifyStatus ? (
+          <></>
+        ) : (
+          <p className="text-danger">User must be verified to post new job.</p>
+        )}
+        <Link
+          to="/company/jobpost"
+          className={`btn btn-primary btn-lg ${
+            userCtx.verifyStatus ? '' : 'disabled'
+          }`}
+        >
+          Post New Job
+        </Link>
+      </div>
       <div className="overview card my-2">
         <h1 className="card-header">Posted Jobs</h1>
         <div className="jobs container">
