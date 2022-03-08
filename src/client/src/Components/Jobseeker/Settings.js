@@ -58,7 +58,7 @@ function Settings() {
               <tbody>
                 {navElements.map((element) => {
                   return (
-                    <tr className="">
+                    <tr className="" key={element.name}>
                       <td className={`${element.status}`}>
                         <Link
                           onClick={OnClick}
