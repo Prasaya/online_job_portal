@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+//Public
 import Header from './Components/Header';
 import Login from './Components/Login';
 import RegisterJobSeeker from './Components/RegisterJobSeeker';
@@ -6,6 +8,7 @@ import RegisterCompany from './Components/RegisterCompany';
 import PageNotFound from './Components/PageNotFound';
 import Job from './Components/Jobs/Job';
 import Search from './Components/Jobs/Search';
+import PublicCompanyProfile from './Components/Public/PublicCompanyProfile';
 
 //Jobseeker
 import JobseekerHome from './Components/Jobseeker/Home';
@@ -35,11 +38,7 @@ import ApplicantList from './Components/Company/ApplicantList';
 import CompanyEditProfile from './Components/Company/EditProfile';
 import CompanyAvatar from './Components/Company/EditProfile/Avatar';
 import CompanyBasics from './Components/Company/EditProfile/Basics';
-
-//Public
 import PublicJobseekerProfile from './Components/Public/PublicJobseekerProfile';
-import PublicCompanyProfile from './Components/Public/PublicCompanyProfile';
-//todo: add routes for public profiles
 
 function App() {
   return (
@@ -53,6 +52,10 @@ function App() {
           <Route path="/register-company" element={<RegisterCompany />} />
           <Route path="/jobs/:id" element={<Job />} />
           <Route path="/jobs/search" element={<Search />} />
+          <Route
+            path="/company-profile/:id"
+            element={<PublicCompanyProfile />}
+          />
           <Route path="/jobseeker" element={<JobseekerHome />}>
             <Route path="overview" element={<JobseekerOverview />} />
             <Route path="mystatus" element={<JobseekerMyStatus />} />
@@ -83,6 +86,10 @@ function App() {
             </Route>
             <Route path="jobpost" element={<JobPost />} />
             <Route path="applicants/:id" element={<ApplicantList />} />
+            <Route
+              path="applicants/profile/:id"
+              element={<PublicJobseekerProfile />}
+            />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
