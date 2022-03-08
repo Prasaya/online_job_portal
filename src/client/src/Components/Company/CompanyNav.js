@@ -123,7 +123,11 @@ function CompanyNav() {
                   <Link
                     onClick={OnClick}
                     className={`nav-link ${element.status}`}
-                    to={element.to}
+                    to={
+                      element.name === 'Settings'
+                        ? element.to + '/email'
+                        : element.to
+                    }
                     id={`${element.to}`}
                   >
                     {element.name}
