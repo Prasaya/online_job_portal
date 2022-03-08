@@ -9,6 +9,7 @@ import { NewUserInput, User } from '@typings/User';
 import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
 import { getAuthUser } from '@models/Auth';
+import { insertVerificationRegister } from '@models/Verify';
 
 const router = express.Router();
 
@@ -45,6 +46,9 @@ router.post(
       const organization: Organization = await createNewOrganization(
         organizationData,
       );
+
+      await insertVerificationRegister(organization.id);
+
       return res.json({ organization, success: true });
     } catch (err) {
       logger.error(err);
@@ -86,6 +90,9 @@ router.post(
         gender: req.body.gender || null,
       };
       const user: User = await createNewUser(userData);
+
+      await insertVerificationRegister(user.id);
+
       return res.json({ user, success: true });
     } catch (err) {
       logger.error(`Error in registration: ${err}`);
