@@ -55,7 +55,7 @@ function Job() {
       </Link>
     );
   } else if (userCtx.type === 'Users') {
-    buttons = <JobSeekerOptions id={job} />;
+    buttons = <JobSeekerOptions id={job} userCtx={userCtx} />;
   } else if (userCtx.type === 'Organizations') {
     buttons = <CompanyOptions job={job} />;
   }
