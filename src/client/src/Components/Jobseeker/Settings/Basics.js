@@ -54,7 +54,7 @@ function Basics() {
       <div className="container ">
         <div className="row d-flex justify-content-center">
           <form action="#" onSubmit={handleSubmit(onSubmitForm)}>
-            <div class="form-check form-switch mb-3">
+            <div className="form-check form-switch mb-3">
               <input
                 {...register('emailNotification')}
                 className="form-check-input"
@@ -63,11 +63,11 @@ function Basics() {
                 onChange={() => setEmailNotification(!emailNotification)}
                 id="emailNotification"
               />
-              <label className="form-check-label" for="emailNotification">
+              <label className="form-check-label" htmlFor="emailNotification">
                 Receive Email Notification
               </label>
             </div>
-            <div class="form-check form-switch mb-3">
+            <div className="form-check form-switch mb-3">
               <input
                 {...register('smsNotification')}
                 className="form-check-input"
@@ -76,7 +76,7 @@ function Basics() {
                 onChange={() => setSmsNotification(!smsNotification)}
                 id="smsNotification"
               />
-              <label className="form-check-label" for="smsNotification">
+              <label className="form-check-label" htmlFor="smsNotification">
                 Receive SMS Notification
               </label>
             </div>
