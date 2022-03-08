@@ -152,7 +152,6 @@ CREATE TABLE applicant_jobs (
     foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-drop table if exists applicant_verification;
 CREATE TABLE applicant_verification (
     id varchar(36) not null,
     token char(100),
