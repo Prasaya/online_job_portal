@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Schema } from 'express-validator';
-import DBJob, { JobInput } from '@typings/Jobs';
+import DBJob, { Job, JobInput } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 import logger from '@utils/logger';
+import { formatDate } from '@utils/date';
 
 export const JobCreationSchema: Schema = {
   companyId: {
@@ -80,8 +81,8 @@ export const createNewJobPost = async (
   const { qualifications, skills } = jobPostData;
   await connection.execute(
     'INSERT INTO jobs ' +
-      '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
-      'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
+    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [...Object.values(jobData)],
   );
 
@@ -120,7 +121,7 @@ export const createNewJobPost = async (
     // This is to avoid the max bytes limitation of mysql
     if (
       Math.floor(index / 20) ===
-        PromiseArray.length - initialPromiseArrayLength &&
+      PromiseArray.length - initialPromiseArrayLength &&
       index !== skills.length - 1
     ) {
       query += '(?, ?, ?), ';
@@ -179,3 +180,17 @@ export const searchJobs = async (query: string) => {
     logger.error('Error deleting jobs', error);
   }
 };
+
+
+export const getJobById = async (jobId: string) => {
+  try {
+    const [result]: [RowDataPacket[], FieldPacket[]] =
+      await connection.execute('CALL getJobFromId(?)', [jobId]);
+    (result as RowDataPacket)[0].forEach((entry) => {
+      entry.deadline = formatDate(entry.deadline);
+    });
+    return result[0][0];
+  } catch (error) {
+    logger.error('Error getting jobs by ID', error);
+  }
+}
