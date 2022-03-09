@@ -4,7 +4,6 @@ export const logOut = async (userCtx, navigate) => {
   });
   const jsonVal = await res.json();
   if (jsonVal.success) {
-    console.log(jsonVal);
     userCtx.updateUserStatus({
       authStatus: false,
       verifyStatus: false,
