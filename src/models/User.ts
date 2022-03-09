@@ -5,6 +5,7 @@ import {
   UpdateUser,
   Skill,
   User,
+  PublicUser,
 } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
@@ -12,6 +13,7 @@ import hashPassword from '../utils/password';
 import { UploadedFile } from 'express-fileupload';
 import path from 'path';
 import logger from '@utils/logger';
+import { FieldPacket, RowDataPacket } from 'mysql2';
 
 export const applicantRegisterSchema: Schema = {
   email: {
@@ -219,4 +221,61 @@ export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
     ...Object.values(user),
   ]);
   return { ...user };
+};
+
+
+
+export const replaceApplicantAcademics = async (
+  userId: string,
+  skills: Skill | Skill[],
+) => {
+  await connection.execute('DELETE from applicant_skills where id = ?', [
+    userId,
+  ]);
+  return addApplicantSkills(userId, skills, false);
+};
+
+
+export const getUserById = async (userId: string) => {
+  try {
+    const [basic_result]: [RowDataPacket[][], FieldPacket[]] =
+      await connection.execute(
+        'SELECT * FROM applicant_data ' +
+        'WHERE id = ?',
+        [userId]
+      );
+
+    const [email_result]: [RowDataPacket[][], FieldPacket[]] =
+      await connection.execute(
+        'SELECT email FROM auth ' +
+        'WHERE id = ?',
+        [userId]
+      );
+
+    const [skills_result]: [RowDataPacket[][], FieldPacket[]] =
+      await connection.execute(
+        'SELECT name, proficiency, experience FROM applicant_skills ' +
+        'WHERE id = ?',
+        [userId]
+      );
+
+    const [academics_result]: [RowDataPacket[][], FieldPacket[]] =
+      await connection.execute(
+        'SELECT qid FROM applicant_academics  ' +
+        'WHERE id = ?',
+        [userId]
+      );
+
+    let user: PublicUser = {
+      basics: { ...basic_result[0], email: email_result[0].email },
+      skills: skills_result,
+      academics: academics_result,
+    };
+
+    return user;
+
+  } catch (err) {
+    logger.error('Error when applying for job: ', err);
+    return "";
+  }
 };

@@ -20,8 +20,8 @@ export interface Organization {
 
 export interface NewOrganizationParameters
   extends Omit<
-    Organization['basics'],
-    'type' | 'roles' | 'socials' | 'password' | 'logo'
+  Organization['basics'],
+  'type' | 'roles' | 'socials' | 'password' | 'logo'
   > {
   password: string;
 }
@@ -31,3 +31,18 @@ export type UpdateOrganization = Omit<
   NewOrganizationParameters,
   'email' | 'password'
 >;
+
+export interface PublicOrganization {
+  basics: {
+    id: string;
+    email: string;
+    name: string;
+    description: string | null;
+    address: string | null;
+    city: string | null;
+    website: string | null;
+    phone: string | null;
+    logo: string | null;
+  };
+}
+

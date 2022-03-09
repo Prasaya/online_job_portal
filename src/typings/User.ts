@@ -48,3 +48,19 @@ export interface NewUserParameters
 
 export type NewUserInput = Omit<NewUserParameters, 'id'>;
 export type UpdateUser = Omit<NewUserParameters, 'password' | 'email' | 'type'>;
+
+export interface PublicUser {
+  basics: {
+    id: string;
+    email: string;
+    firstName: string;
+    middleName: string | null;
+    lastName: string | null;
+    picture: string | null;
+    birthday: string | null;
+    phone: string | null;
+    gender: string | null;
+  };
+  skills: Skill[];
+  academics: string[];
+}

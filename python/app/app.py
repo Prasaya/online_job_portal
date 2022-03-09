@@ -4,6 +4,7 @@ import asyncio
 from SkillParser import SkillParser
 from quart import Quart
 import json
+from RecommendationSystem import Recommender
 
 app = Quart(__name__)
 
@@ -62,10 +63,22 @@ async def main():
         (['http://data.europa.eu/esco/skill/8804d963-5a31-4609-b5df-f741b7199fb7'], None),
         (['http://data.europa.eu/esco/occupation/4e4a291d-1d38-4c5a-812a-5827d0691b11'], None)
     ]
-    fromParse = {}
-    fromEndpoints = {}
+    recommender = Recommender()
+
+    # trd = await recommender.processTuple('765e653c-bcd3-4231-b653-5abd59e58c79', '5e60af20-c8c7-4005-ac6e-79a309a6b0e9')
+    await recommender.computeRecommendation()
+    cursor = recommender.db.cursor()
+    cursor.execute(
+        "select applicantId, jobId, score from jobMatchScore")
+    print('s', cursor.fetchall())
+    cursor.close()
+    # print(recommender.getUserSkills('765e653c-bcd3-4231-b653-5abd59e58c79'))
+    # print(recommender.db)
+    await recommender.close()
+    # fromParse = {}
+    # fromEndpoints = {}
     # endpoints = await skill.getEndpoints(skills)
-    fromEndpoints = await skill._parseFromURI(endpoints)
+    # fromEndpoints = await skill._parseFromURI(endpoints)
     # fromParse = await skill.parse(skills)
     # for key, value in fromEndpoints.items():
     #     if key not in fromParse or fromParse[key] != value:
@@ -73,8 +86,8 @@ async def main():
     # for key, value in fromParse.items():
     #     if key not in fromEndpoints or fromEndpoints[key] != value:
     #         print('keyMissing in endpoint:', key)
-    with open('tests.json', 'w') as f:
-        json.dump({'e': fromEndpoints, 'p': fromParse}, f, indent=4)
+    # with open('tests.json', 'w') as f:
+    #     json.dump({'e': fromEndpoints, 'p': fromParse}, f, indent=4)
     await skill.close()
 
 
