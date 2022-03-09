@@ -6,6 +6,7 @@ import applicantRoute from '@routes/api/applicant/applicant';
 import { param, validationResult } from 'express-validator';
 import logger from '@utils/logger';
 import { getUserById } from '@models/User';
+import { formatDate } from '@utils/date';
 
 const router = express.Router();
 
@@ -38,6 +39,8 @@ router.get('/public/:userId',
       const userId = req.params.userId;
 
       let user = await getUserById(userId);
+
+      user.basics.birthday = formatDate(user.basics.birthday);
 
       res.json({ userData: user, success: true });
 
