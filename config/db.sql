@@ -1,3 +1,4 @@
+drop table if exists jobMatchScore;
 drop table if exists applicant_verification;
 drop table if exists applicant_jobs;
 drop table if exists job_qualifications;
@@ -156,8 +157,8 @@ CREATE TABLE applicant_verification (
     id varchar(36) not null,
     token char(100),
     verified BOOLEAN DEFAULT false,
-    primary key (applicantId),
-    foreign key (applicantId) references auth(id) ON DELETE CASCADE
+    primary key (id),
+    foreign key (id) references auth(id) ON DELETE CASCADE
 );
 
 CREATE TABLE applicant_experience (
@@ -168,5 +169,15 @@ CREATE TABLE applicant_experience (
     primary key (experienceId),
     foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE
 );
+
+CREATE TABLE jobMatchScore (
+	applicantId	VARCHAR(36), 
+	jobId VARCHAR(36), 
+	score INT, 
+    primary key (applicantId, jobId),
+    foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE,
+	foreign key (jobId) references jobs(jobId) ON DELETE CASCADE
+);
+
 
 

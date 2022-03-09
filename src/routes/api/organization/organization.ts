@@ -3,14 +3,37 @@ import { isOrganization } from '@middleware/authorization';
 import logger from '@utils/logger';
 import {
   fetchOrganizationJobs,
+  getOrganizationById,
   updateOrganization,
   updateOrganizationSchema,
 } from '@models/Organization';
 import logoRouter from './logo';
-import { checkSchema, validationResult } from 'express-validator';
+import { checkSchema, param, validationResult } from 'express-validator';
 import { UpdateOrganization } from '@typings/Organization';
 
 const router = express.Router();
+
+router.get('/public/:organizationId',
+  param('organizationId').isString().isLength({ min: 36, max: 36 }),
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array(), success: false });
+        return;
+      }
+      const organizationId = req.params.organizationId;
+
+      let organization = await getOrganizationById(organizationId);
+
+      res.json({ organizationData: organization, success: true });
+
+    } catch (err) {
+      logger.error('Error in getting organization by id', err);
+    }
+  }
+);
+
 router.use(isOrganization);
 
 router.use('/logo', logoRouter);
@@ -66,5 +89,8 @@ router.get('/jobs', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong!', success: false });
   }
 });
+
+
+
 
 export default router;

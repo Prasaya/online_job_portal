@@ -222,6 +222,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Table structure for table `jobMatchScore`
+--
+
+DROP TABLE IF EXISTS `jobMatchScore`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobMatchScore` (
+  `applicantId` varchar(36) NOT NULL,
+  `jobId` varchar(36) NOT NULL,
+  `score` float DEFAULT NULL,
+  PRIMARY KEY (`applicantId`,`jobId`),
+  KEY `jobId` (`jobId`),
+  CONSTRAINT `jobMatchScore_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `jobMatchScore_ibfk_2` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `job_qualifications`
 --
 
@@ -364,17 +382,30 @@ CREATE TABLE `user_roles` (
 DELIMITER ;;
 CREATE DEFINER=`webapp`@`localhost` PROCEDURE `addApplicantAcademics`(
 	IN uid char(36),
-	IN academics JSON
+	IN academics JSON,
+    IN useReplace BOOLEAN
 )
 BEGIN
-	INSERT INTO applicant_academics (
+	IF (useReplace = true) THEN
+		REPLACE INTO applicant_academics (
 		SELECT uid AS id, qid
-        FROM JSON_TABLE(
+		FROM JSON_TABLE(
 			academics,
-            '$[*]' COLUMNS (
+			'$[*]' COLUMNS (
 				qid int PATH "$"
 			)
 		) AS extracted);
+
+    ELSE
+		INSERT INTO applicant_academics (
+			SELECT uid AS id, qid
+			FROM JSON_TABLE(
+				academics,
+				'$[*]' COLUMNS (
+					qid int PATH "$"
+				)
+			) AS extracted);
+	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1047,4 +1078,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-07 23:14:05
+-- Dump completed on 2022-03-09 14:24:14

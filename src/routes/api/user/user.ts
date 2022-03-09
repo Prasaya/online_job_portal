@@ -3,6 +3,9 @@ import { searchUser } from '@models/Auth';
 import express from 'express';
 import connection from '@utils/dbSetup';
 import applicantRoute from '@routes/api/applicant/applicant';
+import { param, validationResult } from 'express-validator';
+import logger from '@utils/logger';
+import { getUserById } from '@models/User';
 
 const router = express.Router();
 
@@ -22,5 +25,26 @@ router.delete('/', isLoggedIn, async (req, res) => {
   ]);
   res.json({ message: 'User deleted successfully!', result, success: true });
 });
+
+router.get('/public/:userId',
+  param('userId').isString().isLength({ min: 36, max: 36 }),
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ message: errors.array(), success: false });
+        return;
+      }
+      const userId = req.params.userId;
+
+      let user = await getUserById(userId);
+
+      res.json({ userData: user, success: true });
+
+    } catch (err) {
+      logger.error('Error in getting user by id', err);
+    }
+  }
+);
 
 export default router;
