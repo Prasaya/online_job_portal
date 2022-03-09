@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { userSkillsSchema, addApplicantSkills, replaceApplicantSkills } from '@models/User';
 import { User } from '@typings/User';
 import { checkSchema, validationResult } from 'express-validator';
+import axios from 'axios';
 
 const router = express.Router();
 
@@ -23,6 +24,8 @@ router.post(
       req.body.skills,
       false,
     );
+    // let id = req.user!.user.basics.id;
+    // await axios.get(`http://localhost:5000/newUser/${id}`);
     res.json(message);
   },
 );
@@ -39,6 +42,8 @@ router.put(
       req.user!.user.basics.id,
       req.body.skills,
     );
+    // let id = req.user!.user.basics.id;
+    // await axios.get(`http://localhost:5000/newUser/${id}`);
     res.json(message);
   },
 );
