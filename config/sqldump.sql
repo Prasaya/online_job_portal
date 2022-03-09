@@ -231,7 +231,7 @@ DROP TABLE IF EXISTS `jobMatchScore`;
 CREATE TABLE `jobMatchScore` (
   `applicantId` varchar(36) NOT NULL,
   `jobId` varchar(36) NOT NULL,
-  `score` int DEFAULT NULL,
+  `score` float DEFAULT NULL,
   PRIMARY KEY (`applicantId`,`jobId`),
   KEY `jobId` (`jobId`),
   CONSTRAINT `jobMatchScore_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE,
@@ -1078,4 +1078,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-09  0:40:46
+-- Dump completed on 2022-03-09 14:12:01
