@@ -65,7 +65,7 @@ function RegisterJobSeeker() {
         navigate('/company/overview', { replace: true });
       }
     }
-  });
+  }, [userCtx]);
 
   return (
     <div className="container register-account">
