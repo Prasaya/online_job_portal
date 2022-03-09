@@ -27,12 +27,19 @@ export function UserContextProvider(props) {
       setUserAuthStatus(userData.success);
       setUid(userData.success ? userData.user.basics.id : '');
       setUserType(userData.success ? userData.user.basics.type : '');
-      const verifyRes = await fetch('/api/verify/status');
-      const verifyData = await verifyRes.json();
-      setUserVerifyStatus(verifyData.success ? verifyData.message : false);
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const verifyRes = await fetch('/api/verify/status');
+      const verifyData = await verifyRes.json();
+      if (verifyData.success) {
+        setUserVerifyStatus(verifyData.message ? true : false);
+      }
+    })();
+  }, [isLoading]);
 
   function updateUserStatusHandler({
     authStatus: newAuthStatus,
