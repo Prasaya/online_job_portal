@@ -257,6 +257,75 @@ CREATE TABLE `job_qualifications` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `job_statistics`
+--
+
+DROP TABLE IF EXISTS `job_statistics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_statistics` (
+  `jobId` char(36) NOT NULL,
+  `linkOpen` int DEFAULT '0',
+  `notificationSent` int DEFAULT '0',
+  PRIMARY KEY (`jobId`),
+  CONSTRAINT `job_statistics_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `job_visited_by`
+--
+
+DROP TABLE IF EXISTS `job_visited_by`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_visited_by` (
+  `jobId` char(36) NOT NULL,
+  `applicantId` char(36) NOT NULL,
+  `fromEmail` tinyint(1) DEFAULT '0',
+  `fromSms` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`jobId`,`applicantId`),
+  KEY `applicantId` (`applicantId`),
+  CONSTRAINT `job_visited_by_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `job_visited_by_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `job_visited_email`
+--
+
+DROP TABLE IF EXISTS `job_visited_email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_visited_email` (
+  `jobId` char(36) NOT NULL,
+  `applicantId` char(36) NOT NULL,
+  PRIMARY KEY (`jobId`,`applicantId`),
+  KEY `applicantId` (`applicantId`),
+  CONSTRAINT `job_visited_email_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `job_visited_email_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `job_visited_sms`
+--
+
+DROP TABLE IF EXISTS `job_visited_sms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `job_visited_sms` (
+  `jobId` char(36) NOT NULL,
+  `applicantId` char(36) NOT NULL,
+  PRIMARY KEY (`jobId`,`applicantId`),
+  KEY `applicantId` (`applicantId`),
+  CONSTRAINT `job_visited_sms_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `job_visited_sms_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `jobs`
 --
 
@@ -300,6 +369,28 @@ CREATE TABLE `organization_data` (
   CONSTRAINT `organization_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Temporary view structure for view `overview`
+--
+
+DROP TABLE IF EXISTS `overview`;
+/*!50001 DROP VIEW IF EXISTS `overview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `overview` AS SELECT 
+ 1 AS `jobId`,
+ 1 AS `companyId`,
+ 1 AS `title`,
+ 1 AS `description`,
+ 1 AS `vacancies`,
+ 1 AS `experience`,
+ 1 AS `address`,
+ 1 AS `district`,
+ 1 AS `deadline`,
+ 1 AS `score`,
+ 1 AS `companyName`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `roles`
@@ -382,30 +473,17 @@ CREATE TABLE `user_roles` (
 DELIMITER ;;
 CREATE DEFINER=`webapp`@`localhost` PROCEDURE `addApplicantAcademics`(
 	IN uid char(36),
-	IN academics JSON,
-    IN useReplace BOOLEAN
+	IN academics JSON
 )
 BEGIN
-	IF (useReplace = true) THEN
-		REPLACE INTO applicant_academics (
+	INSERT INTO applicant_academics (
 		SELECT uid AS id, qid
-		FROM JSON_TABLE(
+        FROM JSON_TABLE(
 			academics,
-			'$[*]' COLUMNS (
+            '$[*]' COLUMNS (
 				qid int PATH "$"
 			)
 		) AS extracted);
-
-    ELSE
-		INSERT INTO applicant_academics (
-			SELECT uid AS id, qid
-			FROM JSON_TABLE(
-				academics,
-				'$[*]' COLUMNS (
-					qid int PATH "$"
-				)
-			) AS extracted);
-	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1014,6 +1092,37 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `userVisitedHandler` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `userVisitedHandler`(
+  IN in_jobId char(36),
+  IN in_applicantId char(36),
+  IN in_fromEmail boolean,
+  IN in_fromSms boolean
+)
+begin
+  declare email boolean;
+  declare sms boolean;
+  select IFNULL(jv.fromEmail, 0), IFNULL(jv.fromSms, 0)
+    from job_visited_by as jv
+    where jobId = in_jobId and applicantId = in_applicantId
+    into email, sms;
+  
+  select email as Email, sms as SMS;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Final view structure for view `allJobs`
@@ -1068,6 +1177,24 @@ DELIMITER ;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `overview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `overview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`webapp`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `overview` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,`j`.`district` AS `district`,`j`.`deadline` AS `deadline`,`jm`.`score` AS `score`,`od`.`name` AS `companyName` from ((`jobMatchScore` `jm` join `jobs` `j` on((`jm`.`jobId` = `j`.`jobId`))) join `organization_data` `od` on((`j`.`companyId` = `od`.`id`))) where (`jm`.`applicantId` = '78fcce0a-701b-4d59-93dd-7806c9b4b967') order by `jm`.`score` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1078,4 +1205,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-09 19:22:27
+-- Dump completed on 2022-03-10  1:20:35

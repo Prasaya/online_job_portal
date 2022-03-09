@@ -1,6 +1,9 @@
 # FLASK_APP=app FLASK_ENV=development flask run
 
+import atexit
 import asyncio
+from multiprocessing import Lock
+from multiprocessing.managers import BaseManager
 from SkillParser import SkillParser
 from quart import Quart
 import json
@@ -8,10 +11,39 @@ from RecommendationSystem import Recommender
 
 app = Quart(__name__)
 
+recommender = None
+lock = Lock()
 
-@app.route('/jobs/<string:user>')
-async def userRecommendation(user):
-    return '<p>Hello world!</p>'
+
+async def getRecommender() -> Recommender:
+    global recommender
+    if recommender is None:
+        with lock:
+            if recommender is None:
+                recommender = Recommender()
+    return recommender
+
+
+@atexit.register
+def shutdown():
+    global recommender
+    if recommender is not None:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(recommender.close())
+
+
+@app.route('/newUser/<string:user>')
+async def newUser(user):
+    recommender = await getRecommender()
+    await recommender.calculateRankingUser(user)
+    return f'<p>Hello {user}!</p>'
+
+
+@app.route('/newJob/<string:job>')
+async def newJob(job):
+    recommender = await getRecommender()
+    await recommender.calculateRankingJob(job)
+    return f'<p>Hello {job}!</p>'
 
 
 async def main():
@@ -64,14 +96,20 @@ async def main():
         (['http://data.europa.eu/esco/occupation/4e4a291d-1d38-4c5a-812a-5827d0691b11'], None)
     ]
     recommender = Recommender()
+    recommender.computeRecommendation()
+    # academics = recommender.academics
+    # await recommender.computeRecommendation()
+    user_id = "425ec1dc-3073-4b66-b570-71928c0c7b01"
+    job_id = "aa3040aa-6ed7-47f5-9140-dafc0307dbd5"
+    print(await recommender.processTuple(user_id, job_id))
 
     # trd = await recommender.processTuple('765e653c-bcd3-4231-b653-5abd59e58c79', '5e60af20-c8c7-4005-ac6e-79a309a6b0e9')
-    await recommender.computeRecommendation()
-    cursor = recommender.db.cursor()
-    cursor.execute(
-        "select applicantId, jobId, score from jobMatchScore")
-    print('s', cursor.fetchall())
-    cursor.close()
+    # await recommender.computeRecommendation()
+    # cursor = recommender.db.cursor()
+    # cursor.execute(
+    #     "select applicantId, jobId, score from jobMatchScore")
+    # print('s', cursor.fetchall())
+    # cursor.close()
     # print(recommender.getUserSkills('765e653c-bcd3-4231-b653-5abd59e58c79'))
     # print(recommender.db)
     await recommender.close()
@@ -91,8 +129,8 @@ async def main():
     await skill.close()
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
-
 # if __name__ == '__main__':
-#     app.run(debug=True)
+#     asyncio.run(main())
+
+if __name__ == '__main__':
+    app.run(debug=True)
