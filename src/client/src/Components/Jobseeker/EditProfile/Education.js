@@ -7,7 +7,6 @@ function Education() {
   const [academics, setAcademics] = useState({ success: false });
   const [disciplineOptions, setDisciplineOptions] = useState([{}]);
   const [degreeOptions, setDegreeOptions] = useState([[{}]]);
-  const [qId, setqId] = useState([]);
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
   const [isUpdateFail, setIsUpdateFail] = useState(false);
 
@@ -24,20 +23,10 @@ function Education() {
     const data = await res.json();
     return data;
   };
-  const onSubmitForm = async (data) => {
-    data.academics.map((item) => {
-      setqId((prev) => {
-        return [...prev, item.qid];
-      });
-    });
-    const uniqueQid = qId.filter((i, index) => {
-      return qId.indexOf(i) === index;
-    });
-    setqId(uniqueQid);
-    data.academics = qId;
 
+  const onSubmitForm = async (data) => {
     const res = await fetch(`/api/applicant/academics`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-type': 'application/json',
       },
@@ -48,8 +37,6 @@ function Education() {
     } else {
       setIsUpdateFail(true);
     }
-    const info = await res.json();
-    console.log(info);
   };
 
   const fetchAllAcademics = async () => {
@@ -200,7 +187,7 @@ function Education() {
                 </div>
                 <div className="col-lg-4 mb-1">
                   <select
-                    {...register(`academics.${index}.degree`)}
+                    {...register(`academics.${index}.qid`)}
                     className="form-select"
                     id={index}
                     required
@@ -214,7 +201,7 @@ function Education() {
                         return <></>;
                       }
                       return (
-                        <option value={options.name} key={options.id}>
+                        <option value={options.id} key={options.id}>
                           {options.name}
                         </option>
                       );
