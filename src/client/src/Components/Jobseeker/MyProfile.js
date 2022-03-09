@@ -42,7 +42,7 @@ function MyProfile() {
         My Profile{' '}
         <span>
           <Link
-            className="btn btn-secondary"
+            className="btn btn-outline-secondary mb-2"
             to="/jobseeker/editprofile/basics"
           >
             Edit

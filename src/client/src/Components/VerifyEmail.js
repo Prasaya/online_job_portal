@@ -5,7 +5,7 @@ import UserContext from '../Context/UserContext';
 function VerifyEmail() {
   const userCtx = useContext(UserContext);
   const [status, setStatus] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
 
   useEffect(() => {

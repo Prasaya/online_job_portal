@@ -150,17 +150,29 @@ DELIMITER |
 DROP PROCEDURE IF EXISTS addApplicantAcademics |
 CREATE PROCEDURE addApplicantAcademics(
 	IN uid char(36),
-	IN academics JSON
+	IN academics JSON,
+	IN useReplace BOOLEAN
 )
 BEGIN
-	INSERT INTO applicant_academics (
-		SELECT uid AS id, qid
-        FROM JSON_TABLE(
-			academics,
-            '$[*]' COLUMNS (
-				qid int PATH "$"
-			)
-		) AS extracted);
+	IF (useReplace = true) THEN
+		REPLACE INTO applicant_academics (
+			SELECT uid AS id, qid
+			FROM JSON_TABLE(
+				academics,
+				'$[*]' COLUMNS (
+					qid int PATH "$"
+				)
+			) AS extracted);
+	ELSE
+		INSERT INTO applicant_academics (
+			SELECT uid AS id, qid
+			FROM JSON_TABLE(
+				academics,
+				'$[*]' COLUMNS (
+					qid int PATH "$"
+				)
+			) AS extracted);
+	END IF;
 END |
 DELIMITER ;
 

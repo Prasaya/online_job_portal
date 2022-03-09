@@ -15,4 +15,5 @@ export const logIn = async (data, userCtx) => {
     id: jsonVal.user.basics.id,
     type: jsonVal.user.basics.type,
   });
+  fetch('/api/verify/send-verify-email', { method: 'POST' });
 };

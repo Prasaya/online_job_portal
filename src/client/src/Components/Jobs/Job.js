@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import JobSeekerOptions from './JobSeekerOptions';
 import CompanyOptions from './CompanyOptions';
@@ -6,10 +6,13 @@ import UserContext from '../../Context/UserContext';
 
 function Job() {
   const userCtx = useContext(UserContext);
+  const [searchParams] = useSearchParams();
   const [job, setJob] = useState();
   const { id } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [isValid, setValid] = useState(false);
+  const from = searchParams.get('from');
+  const applicantId = searchParams.get('applicantId');
 
   async function fetchJobs() {
     const res = await fetch(`/api/jobs/${id}`);
@@ -22,6 +25,22 @@ function Job() {
       const overviewJobs = await fetchJobs();
       if (overviewJobs.success && overviewJobs.jobDetails) {
         setJob(overviewJobs.jobDetails);
+        if (from) {
+          const data = {
+            type: from,
+            jobId: overviewJobs.jobDetails.jobId,
+            applicantId: applicantId,
+          };
+          (async () => {
+            fetch('/api/statistics/insert', {
+              method: 'POST',
+              headers: {
+                'Content-type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            });
+          })();
+        }
         setValid(true);
       } else {
         setValid(false);
