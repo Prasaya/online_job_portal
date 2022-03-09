@@ -20,7 +20,7 @@ function Job() {
   useEffect(() => {
     async function getJobs() {
       const overviewJobs = await fetchJobs();
-      if (overviewJobs.success) {
+      if (overviewJobs.success && overviewJobs.jobDetails) {
         setJob(overviewJobs.jobDetails);
         setValid(true);
       } else {
