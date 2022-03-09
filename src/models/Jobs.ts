@@ -153,7 +153,13 @@ export const deleteJobPost = async (jobId: string) => {
 export const getApplicantsForJob = async (jobId: string) => {
   try {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
-      'CALL applicantsForJob(?)',
+      `SELECT ad.firstName, ad.lastName, ad.middleName, a.email, jm.score, aj.applicantId, aj.jobId
+      FROM applicant_jobs as aj
+      INNER JOIN jobMatchScore as jm ON(jm.jobId = aj.jobId) AND(jm.applicantId = aj.applicantId) 
+      INNER JOIN auth as a ON a.id = aj.applicantId
+      INNER JOIN applicant_data as ad on ad.id = a.id
+      WHERE aj.jobId = ?
+      ORDER BY score DESC`,
       [jobId],
     );
     return result[0];
