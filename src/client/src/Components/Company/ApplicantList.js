@@ -99,7 +99,7 @@ function ApplicantList() {
                   </div>
                   <div>
                     <Link
-                      to={`/company/applicants/${applicant.applicantId}`}
+                      to={`/company/applicants/profile/${applicant.applicantId}`}
                       className="btn btn-primary btn-lg mx-2"
                     >
                       View Profile
