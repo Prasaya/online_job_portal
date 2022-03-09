@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
+import { logOut } from '../LoginRegister/logOut';
 import UserContext from '../../Context/UserContext';
 import SearchBar from '../SearchBar';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
@@ -10,22 +11,6 @@ import './nav.css';
 function Nav() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
-
-  const logOut = async () => {
-    const res = await fetch('/api/auth/logout', {
-      method: 'POST',
-    });
-    const jsonVal = await res.json();
-    if (jsonVal.success) {
-      console.log(jsonVal);
-      userCtx.updateUserStatus({
-        authStatus: false,
-        id: '',
-        type: '',
-      });
-      navigate('/login');
-    }
-  };
 
   const path = useLocation().pathname;
   const [navElements, setNavElements] = useState([
@@ -157,7 +142,10 @@ function Nav() {
                 <li className="dropdown-item-text">Signed in as</li>
                 <li className="dropdown-item-text">{userName}</li>
                 <li>
-                  <button className="dropdown-item" onClick={logOut}>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => logOut(userCtx, navigate)}
+                  >
                     Log Out
                   </button>
                 </li>
