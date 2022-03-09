@@ -1,4 +1,17 @@
+import { useEffect, useState } from 'react';
+
 function Statistics({ job }) {
+  const [statistics, setStatistics] = useState();
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(`/api/statistics/${job.jobId}`);
+      const data = await res.json();
+      if (data.success) {
+        setStatistics(data);
+      }
+    })();
+  }, []);
+
   return (
     <div>
       <button
@@ -33,10 +46,10 @@ function Statistics({ job }) {
             </div>
             <div className="modal-body">
               <p>Total Notifications Sent: {7}</p>
-              <p>Total Notifications Viewed: {4}</p>
-              <p>Job Post Viewed: {10}</p>
-              <p>Applicants from Notifications: {3}</p>
-              <p>Total Applicants: {5}</p>
+              <p>Total Job Post Views: {4}</p>
+              <p>Views from Email: {10}</p>
+              <p>Views from SMS: {10}</p>
+              <p>Total Applicants: {job.applicants.length}</p>
             </div>
             <div className="modal-footer">
               <button
