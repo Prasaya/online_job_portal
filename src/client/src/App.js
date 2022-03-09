@@ -9,6 +9,7 @@ import PageNotFound from './Components/PageNotFound';
 import Job from './Components/Jobs/Job';
 import Search from './Components/Jobs/Search';
 import PublicCompanyProfile from './Components/Public/PublicCompanyProfile';
+import VerifyEmail from './Components/VerifyEmail';
 
 //Jobseeker
 import JobseekerHome from './Components/Jobseeker/Home';
@@ -50,6 +51,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register-jobseeker" element={<RegisterJobSeeker />} />
           <Route path="/register-company" element={<RegisterCompany />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/jobs/:id" element={<Job />} />
           <Route path="/jobs/search" element={<Search />} />
           <Route
