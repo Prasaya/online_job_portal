@@ -9,18 +9,16 @@ function PublicCompanyProfile() {
   const notDisplay = ['id', 'roles', 'type', 'logo'];
 
   const fetchInfo = async () => {
-    const res = await fetch(`/api/user/${id}`);
+    const res = await fetch(`/api/organization/public/${id}`);
     const data = await res.json();
-    return data;
+    return data.organizationData[0];
   };
 
   useEffect(() => {
     const getInfo = async () => {
       const user = await fetchInfo();
-      user.user.basics.logo = user.user.basics.logo
-        ? '/api/organization/logo'
-        : defaultAvatar;
-      setBasicInfo(user.user.basics);
+      user.logo = user.logo ? user.logo : defaultAvatar;
+      setBasicInfo(user);
     };
     getInfo();
   }, []);
@@ -28,7 +26,7 @@ function PublicCompanyProfile() {
   return (
     <div className="container">
       <div className="myprofile card my-5">
-        <h1 className="card-header">My Profile </h1>
+        <h1 className="card-header">Company Profile </h1>
         <div className="container profile p-4 my-3">
           <div className="row">
             <div className="col-10 col-sm-2">

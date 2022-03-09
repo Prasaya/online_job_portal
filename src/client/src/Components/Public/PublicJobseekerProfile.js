@@ -13,9 +13,9 @@ function PublicJobseekerProfile() {
   const notDisplay = ['id', 'roles', 'type', 'picture'];
 
   const fetchInfo = async () => {
-    const res = await fetch(`/api/applicant/${id}`);
+    const res = await fetch(`/api/user/public/${id}`);
     const data = await res.json();
-    return data.user;
+    return data.userData;
   };
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function PublicJobseekerProfile() {
       setSkills(user.skills);
       setEducation(user.academics);
       setExperience(user.experience);
-      setPicture(user.basics.picture ? '/api/applicant/avatar' : defaultAvatar);
+      setPicture(user.basics.picture ? user.basics.picture : defaultAvatar);
     };
     getInfo();
   }, []);
@@ -33,7 +33,7 @@ function PublicJobseekerProfile() {
   return (
     <div className="container">
       <div className="myprofile card my-5">
-        <h1 className="card-header">My Profile </h1>
+        <h1 className="card-header">User Profile </h1>
         <div className="container profile p-4 my-3">
           <div className="row">
             <div className="col-10 col-sm-2">
@@ -121,7 +121,7 @@ function PublicJobseekerProfile() {
                         <th>Company</th>
                         <th>Years</th>
                       </tr>
-                      {experience.map((exp) => {
+                      {/* {experience.map((exp) => {
                         return (
                           <tr key={exp.jobTitle}>
                             <td>{exp.jobTitle}</td>
@@ -129,7 +129,7 @@ function PublicJobseekerProfile() {
                             <td>{exp.years}</td>
                           </tr>
                         );
-                      })}
+                      })} */}
                     </tbody>
                   </table>
                 </div>
