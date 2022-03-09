@@ -6,6 +6,7 @@ import {
   Skill,
   User,
   PublicUser,
+  Academics,
 } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { Schema } from 'express-validator';
@@ -110,9 +111,9 @@ export const userAcademicsSchema: Schema = {
     isArray: true,
     notEmpty: true,
   },
-  ['academics.*']: {
-    isInt: true,
-  },
+  // ['academics.*']: {
+  //   isInt: true,
+  // },
 };
 
 export const createNewUser = async (userData: NewUserInput): Promise<User> => {
@@ -193,6 +194,49 @@ export const replaceApplicantSkills = async (
   return addApplicantSkills(userId, skills, false);
 };
 
+export const addApplicantAcademics = async (
+  userId: string,
+  academics: Academics[],
+  replaceIfExists: boolean,
+) => {
+  try {
+    const qids = academics.map((academic) => academic.qid);
+    await connection.execute('CALL addApplicantAcademics(?, ?, ?)', [
+      userId,
+      JSON.stringify(qids),
+      replaceIfExists,
+    ]);
+  } catch (err) {
+    logger.error('Error when adding qualification: ', err);
+    if (err.errno === 1062) {
+      return {
+        status: 400,
+        message: "You've already added this qualification!",
+        success: false,
+      };
+    }
+    if (err.errno === 1452) {
+      return {
+        status: 400,
+        message: 'Invalid qualification!',
+        success: false,
+      };
+    }
+    return { status: 500, message: 'Something went wrong!', success: false };
+  }
+  return { status: 200, academics: academics, success: true };
+};
+
+export const replaceApplicantAcademics = async (
+  userId: string,
+  academics: number[],
+) => {
+  await connection.execute('DELETE from applicant_academics where id = ?', [
+    userId,
+  ]);
+  return addApplicantAcademics(userId, academics, false);
+};
+
 export const applyForJob = async (userId: string, jobId: string) => {
   try {
     await connection.execute('CALL applyForJob(?, ?)', [userId, jobId]);
@@ -221,16 +265,6 @@ export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
     ...Object.values(user),
   ]);
   return { ...user };
-};
-
-export const replaceApplicantAcademics = async (
-  userId: string,
-  skills: Skill | Skill[],
-) => {
-  await connection.execute('DELETE from applicant_skills where id = ?', [
-    userId,
-  ]);
-  return addApplicantSkills(userId, skills, false);
 };
 
 export const getUserById = async (userId: string) => {
