@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ReactPaginate from "react-paginate"
+import ReactPaginate from 'react-paginate';
 
 function Overview() {
   const [jobs, setJobs] = useState([]);
@@ -17,14 +17,14 @@ function Overview() {
     async function getJobs() {
       const overviewJobs = await fetchJobs(curPage);
       setJobs(overviewJobs.jobs);
-      setNumPages(overviewJobs.numPages)
+      setNumPages(overviewJobs.numPages);
     }
     getJobs();
   }, [curPage]);
 
   return (
-    <div className="overview card my-2">
-      <h1 className='card-header'>Overview</h1>
+    <div className="overview card my-5">
+      <h1 className="card-header">Overview</h1>
       <div className="jobs container">
         <ul className=" list-group">
           {jobs.map((job) => {
@@ -49,27 +49,29 @@ function Overview() {
             );
           })}
         </ul>
-        <div className='d-flex justify-content-center my-3'>
-          <ReactPaginate
-            className='pagination'
-            onPageChange={(e)=>{setCurPage(e.selected + 1)}}
-            pageClassName='page-item'
-            pageLinkClassName='page-link'
-            activeClassName='active'
-            disabledClassName='disabled'
-            breakLabel="..."
-            breakClassName='page-item'
-            nextLabel="Next >"
-            nextClassName='page-item'
-            nextLinkClassName='page-link'
-            previousLabel="Previous <"
-            previousClassName='page-item'
-            previousLinkClassName='page-link'
-            pageRangeDisplayed={5}
-            pageCount={numPages}
-            renderOnZeroPageCount={null}
-          />
-        </div>
+      </div>
+      <div className="d-flex justify-content-center my-3 page-number">
+        <ReactPaginate
+          className="pagination"
+          onPageChange={(e) => {
+            setCurPage(e.selected + 1);
+          }}
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          activeClassName="active"
+          disabledClassName="disabled"
+          breakLabel="..."
+          breakClassName="page-item"
+          nextLabel="Next >"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          previousLabel="Previous <"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          pageRangeDisplayed={5}
+          pageCount={Math.ceil(numPages)}
+          renderOnZeroPageCount={null}
+        />
       </div>
     </div>
   );

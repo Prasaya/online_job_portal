@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../Context/UserContext';
-import District from './District';
+import UserContext from '../../Context/UserContext';
+import District from '../District';
+import { logIn } from './logIn';
 
 function RegisterCompany() {
   const {
@@ -35,24 +36,8 @@ function RegisterCompany() {
     if (!jsonVal.success) {
       setError('registerError', { message: jsonVal.message });
     } else {
-      logIn({ username: data.email, password: data.password });
+      logIn({ username: data.email, password: data.password }, userCtx);
     }
-  };
-
-  const logIn = async (data) => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const jsonVal = await res.json();
-    userCtx.updateUserStatus({
-      authStatus: jsonVal.success,
-      id: jsonVal.user.basics.id,
-      type: jsonVal.user.basics.type,
-    });
   };
 
   const navigate = useNavigate();
@@ -64,7 +49,7 @@ function RegisterCompany() {
         navigate('/company/overview', { replace: true });
       }
     }
-  });
+  }, [userCtx]);
 
   return (
     <div className="container register-account">

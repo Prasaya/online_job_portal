@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import UserContext from '../Context/UserContext';
-import loginWallpaer from '../Assets/Img/loginWallpaper.jpg';
+import UserContext from '../../Context/UserContext';
+import loginWallpaper from '../../Assets/Img/loginWallpaper.jpg';
 
 function Login() {
   const {
@@ -53,7 +53,7 @@ function Login() {
     <div className="container">
       <div className="row justify-content-around my-5">
         <div className="col-lg-7 mt-5 me-5">
-          <img className="img img-fluid" src={loginWallpaer} alt="wallpaper" />
+          <img className="img img-fluid" src={loginWallpaper} alt="wallpaper" />
         </div>
         <div className="col-lg-4 shadow-lg rounded-3 border border-white px-3 py-4">
           <form className="my-4" onSubmit={handleSubmit(onSubmit)}>

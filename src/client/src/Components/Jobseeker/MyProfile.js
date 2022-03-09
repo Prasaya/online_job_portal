@@ -6,6 +6,7 @@ function MyProfile() {
   const [basicInfo, setBasicInfo] = useState({});
   const [skills, setSkills] = useState([]);
   const [education, setEducation] = useState([]);
+  const [experience, setExperience] = useState([]);
   const [picture, setPicture] = useState('');
   let basicEntries = [];
   const notDisplay = ['id', 'roles', 'type', 'picture'];
@@ -15,21 +16,29 @@ function MyProfile() {
     const data = await res.json();
     return data.user;
   };
+  //delete this
+  const fetchExperience = async () => {
+    const res = await fetch('http://localhost:4000/profile');
+    const data = await res.json();
+    return data.experience;
+  };
 
   useEffect(() => {
     const getInfo = async () => {
       const user = await fetchInfo();
+      const experienceData = await fetchExperience(); //delete this
       setBasicInfo(user.basics);
       setSkills(user.skills);
       setEducation(user.academics);
+      setExperience(experienceData); // user.experience
       setPicture(user.basics.picture ? '/api/applicant/avatar' : defaultAvatar);
     };
     getInfo();
   }, []);
   basicEntries = Object.entries(basicInfo);
   return (
-    <div className="myprofile card my-2">
-      <h1 className='card-header'>
+    <div className="myprofile card my-5">
+      <h1 className="card-header">
         My Profile{' '}
         <span>
           <Link
@@ -61,7 +70,7 @@ function MyProfile() {
                           {!!(entry[1] && entry[1].length) &&
                             !notDisplay.includes(entry[0].toLowerCase()) && (
                               <tr>
-                                <td className='text-capitalize'>{entry[0]}</td>
+                                <td className="text-capitalize">{entry[0]}</td>
                                 <td>:</td>
                                 <td>{entry[1]}</td>
                               </tr>
@@ -95,7 +104,7 @@ function MyProfile() {
               </div>
             </div>
             <div className="row">
-              <div className="skills col-6">
+              <div className="skills col-lg-6">
                 <h3>Skills</h3>
                 <table className="table">
                   <tbody>
@@ -110,6 +119,27 @@ function MyProfile() {
                           <td>{skill.name}</td>
                           <td>{skill.proficiency}</td>
                           <td>{skill.experience}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="skills col-lg-6">
+                <h3>Experience</h3>
+                <table className="table">
+                  <tbody>
+                    <tr>
+                      <th>Job Title</th>
+                      <th>Company</th>
+                      <th>Years</th>
+                    </tr>
+                    {experience.map((exp) => {
+                      return (
+                        <tr key={exp.jobTitle}>
+                          <td>{exp.jobTitle}</td>
+                          <td>{exp.company}</td>
+                          <td>{exp.years}</td>
                         </tr>
                       );
                     })}

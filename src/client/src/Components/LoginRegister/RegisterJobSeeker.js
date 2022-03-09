@@ -2,8 +2,9 @@ import { useForm } from 'react-hook-form';
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { intervalToDuration, parse } from 'date-fns';
-import UserContext from '../Context/UserContext';
-import District from './District';
+import { logIn } from './logIn';
+import UserContext from '../../Context/UserContext';
+import District from '../District';
 
 function RegisterJobSeeker() {
   const {
@@ -36,24 +37,8 @@ function RegisterJobSeeker() {
     if (!jsonVal.success) {
       setError('registerError', { message: jsonVal.message });
     } else {
-      logIn({ username: data.email, password: data.password });
+      logIn({ username: data.email, password: data.password }, userCtx);
     }
-  };
-
-  const logIn = async (data) => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const jsonVal = await res.json();
-    userCtx.updateUserStatus({
-      authStatus: jsonVal.success,
-      id: jsonVal.user.basics.id,
-      type: jsonVal.user.basics.type,
-    });
   };
 
   const navigate = useNavigate();
@@ -65,7 +50,7 @@ function RegisterJobSeeker() {
         navigate('/company/overview', { replace: true });
       }
     }
-  });
+  }, [userCtx]);
 
   return (
     <div className="container register-account">

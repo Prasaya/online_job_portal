@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { intervalToDuration, parse } from 'date-fns';
 
-// TODO: Add constraints for birthday
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
-  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
-  const [isUpdateFail, setIsUpdateFail] = useState(false)
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
+  const [isUpdateFail, setIsUpdateFail] = useState(false);
 
   const {
     register,
@@ -28,15 +28,15 @@ function Basics() {
       },
       body: JSON.stringify(data),
     });
-    if(res.status === 200){
-      setIsUpdateSuccess(true)
-    }else{
-      setIsUpdateFail(true)
+    if (res.status === 200) {
+      setIsUpdateSuccess(true);
+    } else {
+      setIsUpdateFail(true);
     }
     //stop displaying after 3 seconds
     setTimeout(() => {
-      setIsUpdateFail(false)
-      setIsUpdateSuccess(false)
+      setIsUpdateFail(false);
+      setIsUpdateSuccess(false);
     }, 3000);
   };
 
@@ -52,7 +52,7 @@ function Basics() {
   }, [basicInfo, reset]);
 
   return (
-    <div className="">
+    <div className="my-2">
       <h3>Basics</h3>
       <div className="col-lg-6 m-auto mb-2">
         <form onSubmit={handleSubmit(onSubmitForm)}>
@@ -126,6 +126,22 @@ function Basics() {
             <input
               {...register('birthday', {
                 required: 'Please fill out this field',
+                validate: (value) => {
+                  const birthday = parse(value, 'yyyy-MM-dd', new Date());
+                  const today = new Date();
+                  const duration = intervalToDuration({
+                    start: birthday,
+                    end: today,
+                  });
+                  if (
+                    duration.years < 16 ||
+                    birthday.getFullYear() > today.getFullYear()
+                  ) {
+                    return 'Should be older than 16.';
+                  } else if (duration.years > 100) {
+                    return 'Should be younger than 100.';
+                  }
+                },
               })}
               type="date"
               className={`form-control form-control-lg ${
@@ -159,8 +175,12 @@ function Basics() {
               {errors.gender && errors.gender.message}
             </div>
           </div>
-          {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
-          {isUpdateFail && <p className='text-danger'>Update Failed</p>}
+          <div className="message my-2 text-center">
+            {isUpdateSuccess && (
+              <p className="text-success">Updated Successfully</p>
+            )}
+            {isUpdateFail && <p className="text-danger">Update Failed</p>}
+          </div>
           <div className="d-grid gap-2">
             <button className="btn btn-success btn-lg" type="submit">
               Update

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function JobSeekerOptions({ id }) {
+function JobSeekerOptions({ id, userCtx }) {
   const [jobApplied, setApplied] = useState(false);
 
   async function fetchJobs() {
@@ -48,7 +48,16 @@ function JobSeekerOptions({ id }) {
 
   return (
     <div className="container">
-      <button className="btn btn-primary" onClick={jobApply}>
+      {userCtx.verifyStatus ? (
+        <></>
+      ) : (
+        <p className="text-danger">User must be verified to apply for job.</p>
+      )}
+      <button
+        className="btn btn-primary"
+        onClick={jobApply}
+        disabled={userCtx.verifyStatus ? false : true}
+      >
         {jobApplied ? 'Unapply' : 'Apply'}
       </button>
     </div>

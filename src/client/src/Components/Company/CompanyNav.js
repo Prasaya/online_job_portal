@@ -1,35 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { logOut } from '../LoginRegister/logOut';
 import UserContext from '../../Context/UserContext';
 import defaultAvatar from '../../Assets/Img/defaultAvatar.png';
 import logo from '../../Assets/Img/logo.png';
 import './nav.css';
+import SearchBar from '../SearchBar';
 
 function CompanyNav() {
   const userCtx = useContext(UserContext);
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
-    mode: 'onBlur',
-  });
-
-  const onSubmitForm = (data) => console.log(data);
-
-  const logOut = async () => {
-    const res = await fetch('/api/auth/logout', {
-      method: 'POST',
-    });
-    const jsonVal = await res.json();
-    if (jsonVal.success) {
-      console.log(jsonVal);
-      userCtx.updateUserStatus({
-        authStatus: false,
-        id: '',
-        type: '',
-      });
-      navigate('/login', { replace: true });
-    }
-  };
 
   const path = useLocation().pathname;
   const [navElements, setNavElements] = useState([
@@ -58,7 +38,7 @@ function CompanyNav() {
       }
       if (path.includes(element.to)) {
         element.status = 'active';
-      } else if (path.includes('login')) {
+      } else if (path.includes('login') || path === '/') {
         if (element.to.includes('overview')) {
           element.status = 'active';
         }
@@ -110,20 +90,7 @@ function CompanyNav() {
               <img className="img img-fluid" src={logo} alt="logo" width="80" />
             </Link>
           </div>
-          <div className="search-bar mt-1">
-            <form className="d-flex" onSubmit={handleSubmit(onSubmitForm)}>
-              <input
-                {...register('search', { required: true })}
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-primary" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
+          <SearchBar />
         </div>
         <button
           className="navbar-toggler"
@@ -141,7 +108,11 @@ function CompanyNav() {
                   <Link
                     onClick={OnClick}
                     className={`nav-link ${element.status}`}
-                    to={element.to}
+                    to={
+                      element.name === 'Settings'
+                        ? element.to + '/email'
+                        : element.to
+                    }
                     id={`${element.to}`}
                   >
                     {element.name}
@@ -164,7 +135,10 @@ function CompanyNav() {
                 <li className="dropdown-item-text">Signed in as</li>
                 <li className="dropdown-item-text">{userName}</li>
                 <li>
-                  <button className="dropdown-item" onClick={logOut}>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => logOut(userCtx, navigate)}
+                  >
                     Log Out
                   </button>
                 </li>

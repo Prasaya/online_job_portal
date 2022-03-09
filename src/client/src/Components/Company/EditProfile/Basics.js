@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 function Basics() {
   const [basicInfo, setBasicInfo] = useState({});
-  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false)
-  const [isUpdateFail, setIsUpdateFail] = useState(false)
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
+  const [isUpdateFail, setIsUpdateFail] = useState(false);
   const {
     register,
     reset,
@@ -25,16 +25,16 @@ function Basics() {
       },
       body: JSON.stringify(data),
     });
-    if(res.status === 200){
-        setIsUpdateSuccess(true)
-      }else{
-        setIsUpdateFail(true)
-      }
-      //stop displaying after 3 seconds
-      setTimeout(() => {
-        setIsUpdateFail(false)
-        setIsUpdateSuccess(false)
-      }, 3000);
+    if (res.status === 200) {
+      setIsUpdateSuccess(true);
+    } else {
+      setIsUpdateFail(true);
+    }
+    //stop displaying after 3 seconds
+    setTimeout(() => {
+      setIsUpdateFail(false);
+      setIsUpdateSuccess(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -49,10 +49,10 @@ function Basics() {
     reset(basicInfo);
   }, [basicInfo, reset]);
   return (
-    <>
+    <div className="my-2">
       <h3>Basics</h3>
       <div className="row">
-        <div className="m-auto mb-2">
+        <div className="m-auto col-lg-6 mb-2">
           <form onSubmit={handleSubmit(onSubmitForm)}>
             <div className="form-floating mb-3">
               <input
@@ -147,15 +147,17 @@ function Basics() {
                 className="form-control"
                 id="description"
                 rows="3"
-              />
+              ></textarea>
               <label className="form-label" htmlFor="description">
                 Company Description
               </label>
             </div>
-            
-            {isUpdateSuccess && <p className='text-success'>Updated Successfully</p>}
-            {isUpdateFail && <p className='text-danger'>Update Failed</p>}
-
+            <div className="message my-2 text-center">
+              {isUpdateSuccess && (
+                <p className="text-success">Updated Successfully</p>
+              )}
+              {isUpdateFail && <p className="text-danger">Update Failed</p>}
+            </div>
             <div className="d-grid gap-2">
               <button className="btn btn-success btn-lg" type="submit">
                 Update
@@ -164,7 +166,7 @@ function Basics() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

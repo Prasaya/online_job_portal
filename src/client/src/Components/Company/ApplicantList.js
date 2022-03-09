@@ -98,7 +98,10 @@ function ApplicantList() {
                     <h6>Email: {applicant.email}</h6>
                   </div>
                   <div>
-                    <Link to={``} className="btn btn-primary btn-lg mx-2">
+                    <Link
+                      to={`/company/applicants/${applicant.applicantId}`}
+                      className="btn btn-primary btn-lg mx-2"
+                    >
                       View Profile
                     </Link>
                   </div>

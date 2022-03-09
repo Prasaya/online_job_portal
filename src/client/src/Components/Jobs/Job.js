@@ -20,7 +20,7 @@ function Job() {
   useEffect(() => {
     async function getJobs() {
       const overviewJobs = await fetchJobs();
-      if (overviewJobs.success) {
+      if (overviewJobs.success && overviewJobs.jobDetails) {
         setJob(overviewJobs.jobDetails);
         setValid(true);
       } else {
@@ -55,74 +55,85 @@ function Job() {
       </Link>
     );
   } else if (userCtx.type === 'Users') {
-    buttons = <JobSeekerOptions id={job} />;
+    buttons = <JobSeekerOptions id={job} userCtx={userCtx} />;
   } else if (userCtx.type === 'Organizations') {
     buttons = <CompanyOptions job={job} />;
   }
 
   return (
-    <div className="container job bg-light p-4 my-4">
-      <h2>{job.title}</h2>
-      <div className="job-details mb-4">
-        <div className="basic-details mt-3">
-          <h6>Posted By:</h6>
-          <p>{job.companyName}</p>
-          <h6>Address:</h6>
-          <p>
-            {job.address}, {job.district}
-          </p>
-          <h6>Deadline:</h6>
-          <p>{job.deadline}</p>
-          <h6>No. of Vacancies:</h6>
-          <p>{job.vacancies}</p>
+    <div className="container job bg-light p-5 my-4">
+      <div className="px-5">
+        <h2>{job.title}</h2>
+        <div className="job-details mb-4">
+          <div className="basic-details mt-3">
+            <h6>Posted By:</h6>
+            <p>
+              <Link to={`/company-profile/${job.companyId}`}>
+                {job.companyName}
+              </Link>
+            </p>
+            <h6>Address:</h6>
+            <p>
+              {job.address}, {job.district}
+            </p>
+            <h6>Deadline:</h6>
+            <p>{job.deadline}</p>
+            <h6>No. of Vacancies:</h6>
+            <p>{job.vacancies}</p>
+          </div>
+          <div className="job-description my-2">
+            <h6>Job Description:</h6>
+            <p>{job.description}</p>
+          </div>
         </div>
-        <div className="job-description my-2">
-          <h6>Job Description:</h6>
-          <p>{job.description}</p>
-        </div>
-      </div>
-      <div className="job-requirements row">
-        <h5>Job Requirements:</h5>
-        <div className="experience mt-3">
-          <h6>Experience:</h6>
-          <p>{job.experience} years</p>
-        </div>
+        <div className="job-requirements row">
+          <h5>Job Requirements:</h5>
+          <div className="experience mt-3">
+            <h6>Experience:</h6>
+            <p>{job.experience} years</p>
+          </div>
 
-        <div className="mt-3 education col-lg-6">
-          <h6>Education:</h6>
-          <ul className="list-group-flush">
-            {job.qualifications.map((education) => {
-              return (
-                <li className="list-group-item bg-light">{education.degree}</li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="mt-3 skills col-lg-7">
-          <h6>Skills:</h6>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Skill Name</th>
-                <th scope="col">Proficiency</th>
-              </tr>
-            </thead>
-            <tbody>
-              {job.skills.map((skill, index) => {
+          <div className="mt-3 education col-lg-6">
+            <h6>Education:</h6>
+            <ul className="list-group-flush">
+              {job.qualifications.map((education) => {
                 return (
-                  <tr key={skill.id}>
-                    <td>{index + 1}</td>
-                    <td>{skill.name}</td>
-                    <td>{skill.proficiency}</td>
-                  </tr>
+                  <li
+                    className="list-group-item bg-light"
+                    key={education.degree}
+                  >
+                    {education.degree}
+                  </li>
                 );
               })}
-            </tbody>
-          </table>
+            </ul>
+          </div>
+          <div className="mt-3 skills col-lg-7">
+            <h6>Skills:</h6>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Skill Name</th>
+                  <th scope="col">Proficiency</th>
+                </tr>
+              </thead>
+              <tbody>
+                {job.skills.map((skill, index) => {
+                  return (
+                    <tr key={skill.name}>
+                      <td>{index + 1}</td>
+                      <td>{skill.name}</td>
+                      <td>{skill.proficiency}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
+        <div className="buttons my-3">{buttons}</div>
       </div>
-      <div className="buttons my-3">{buttons}</div>
     </div>
   );
 }
