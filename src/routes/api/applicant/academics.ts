@@ -1,7 +1,7 @@
 import connection from '@utils/dbSetup';
 import express, { Request, Response } from 'express';
 import { isApplicant } from '@middleware/authorization';
-import { userAcademicsSchema } from '@models/User';
+import { replaceApplicantSkills, userAcademicsSchema } from '@models/User';
 import logger from '@utils/logger';
 import { checkSchema, validationResult } from 'express-validator';
 import { User } from '@typings/User';
@@ -50,6 +50,24 @@ router.post(
       return;
     }
     res.json({ skills: req.body.skills, success: true });
+  },
+);
+
+
+router.put(
+  '/',
+  checkSchema(userAcademicsSchema),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array(), success: false });
+    }
+
+    const { status, ...message } = await replaceApplicantSkills(
+      req.user!.user.basics.id,
+      req.body.skills,
+    );
+    res.json(message);
   },
 );
 
