@@ -29,7 +29,7 @@ function Profile() {
       <h1 className="card-header">
         My Profile{' '}
         <span>
-          <Link className="btn btn-secondary" to="/company/editprofile/avatar">
+          <Link className="btn btn-outline-secondary mb-2" to="/company/editprofile/avatar">
             Edit
           </Link>
         </span>
