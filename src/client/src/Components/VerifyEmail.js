@@ -27,7 +27,7 @@ function VerifyEmail() {
     }
   }, []);
   console.log(status);
-  if (userCtx.verifyStatus) {
+  if (userCtx.verifyStatus && !status) {
     return (
       <div className="container text-center">
         <div className="py-3 px-5 m-5 bg-light">
