@@ -10,8 +10,11 @@ import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
 import { getAuthUser } from '@models/Auth';
 import { insertVerificationRegister } from '@models/Verify';
+import axios from "axios";
 
 const router = express.Router();
+
+const url = `localhost:${process.env.PORT || 8080}`;
 
 router.post(
   '/organization',
@@ -92,6 +95,8 @@ router.post(
       const user: User = await createNewUser(userData);
 
       await insertVerificationRegister(user.id);
+
+      // await axios.get(`http://localhost:5000/newUser/${user.id}`);
 
       return res.json({ user, success: true });
     } catch (err) {
