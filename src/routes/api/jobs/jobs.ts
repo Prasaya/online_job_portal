@@ -10,61 +10,75 @@ import {
 import { JobInput, JobReturn } from '@typings/Jobs';
 import connection from '@utils/dbSetup';
 import { RowDataPacket, FieldPacket } from 'mysql2';
-import { isOrganization } from '@middleware/authorization';
+import { isApplicant, isOrganization } from '@middleware/authorization';
 import logger from '@utils/logger';
-import { fetchOrganizationJobs } from '../organization/organization';
+import { fetchOrganizationJobs } from '@models/Organization';
 import { formatDate } from '@utils/date';
+import { incrementLinkOpen, insertNewJobStatistics } from '@models/Statistics';
+const axios = require('axios');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  try {
-    const numPerPage = 10;
-    let page = 1;
+router.get('/',
+  isApplicant,
+  async (req, res) => {
     try {
-      page = req.query.page ? parseInt(req.query.page as string) : 1;
-    } catch (error) {}
-    const [count_result]: [RowDataPacket[], FieldPacket[]] =
-      await connection.execute(
-        'SELECT count(*) as numRows FROM allJobsFromDatabase',
-      );
-    const numRows = count_result[0].numRows;
-    const numPages = Math.ceil(numRows / numPerPage);
-    let to_send;
-    if (numPages > 0) {
-      if (page > numPages) {
-        page = numPages;
-      }
-      const skip = (page - 1) * numPerPage;
-      const limit = skip + ',' + numPerPage;
-      const [result]: [RowDataPacket[], FieldPacket[]] =
-        await connection.execute(
-          'SELECT * FROM allJobsFromDatabase LIMIT ' + limit,
-        );
-      (result as RowDataPacket).forEach((entry) => {
-        entry.deadline = formatDate(entry.deadline);
-      });
-      to_send = {
-        page: page,
-        numPages: numPages,
-        totalJobs: numRows,
-        jobs: result,
-      };
-    } else {
-      to_send = {
-        page: 0,
-        numPages: 0,
-        totalJobs: 0,
-        jobs: [],
-      };
-    }
+      const applicantId = req.user?.user.basics.id;
 
-    res.json({ ...to_send, success: true });
-  } catch (err) {
-    logger.error('Error in Getting all jobs by page', err);
-    res.status(500).json({ message: 'Something went wrong!', success: false });
-  }
-});
+      const numPerPage = 10;
+      let page = 1;
+      try {
+        page = req.query.page ? parseInt(req.query.page as string) : 1;
+      } catch (error) { }
+      const [count_result]: [RowDataPacket[], FieldPacket[]] =
+        await connection.execute(
+          'SELECT count(*) as numRows FROM allJobsFromDatabase',
+        );
+      const numRows = count_result[0].numRows;
+      const numPages = Math.ceil(numRows / numPerPage);
+      let to_send;
+      if (numPages > 0) {
+        if (page > numPages) {
+          page = numPages;
+        }
+        const skip = (page - 1) * numPerPage;
+        const limit = skip + ',' + numPerPage;
+        const [result]: [RowDataPacket[], FieldPacket[]] =
+          await connection.execute(
+            'SELECT j.*, jm.score, od.name as companyName ' +
+            'FROM jobMatchScore as jm ' +
+            'INNER JOIN jobs as j ON jm.jobId = j.jobId ' +
+            'INNER JOIN organization_data as od ON j.companyId = od.id ' +
+            'WHERE jm.applicantId = ? ' +
+            'ORDER BY score DESC ' +
+            'LIMIT ' + limit,
+            [applicantId],
+          );
+        console.log(result);
+        (result as RowDataPacket).forEach((entry) => {
+          entry.deadline = formatDate(entry.deadline);
+        });
+        to_send = {
+          page: page,
+          numPages: numPages,
+          totalJobs: numRows,
+          jobs: result,
+        };
+      } else {
+        to_send = {
+          page: 0,
+          numPages: 0,
+          totalJobs: 0,
+          jobs: [],
+        };
+      }
+
+      res.json({ ...to_send, success: true });
+    } catch (err) {
+      logger.error('Error in Getting all jobs by page', err);
+      res.status(500).json({ message: 'Something went wrong!', success: false });
+    }
+  });
 
 router.get('/search', async (req, res) => {
   try {
@@ -84,6 +98,10 @@ router.get('/search', async (req, res) => {
 
 router.get(
   '/:id',
+  (req, res, next) => {
+    incrementLinkOpen(req.params.id);
+    next();
+  },
   param('id').isString().isLength({ min: 36, max: 36 }),
   async (req: Request, res: Response) => {
     try {
@@ -133,8 +151,13 @@ router.post(
         skills: req.body.skills,
         deadline: req.body.deadline,
       };
-      const user = await createNewJobPost(jobPostData);
-      return res.json({ jobDetails: user, success: true });
+
+      const job = await createNewJobPost(jobPostData);
+
+      await insertNewJobStatistics(job.jobId);
+      await axios.get(`http://localhost:5000/newJob/${job.jobId}`);
+
+      return res.json({ jobDetails: job, success: true });
     } catch (err) {
       logger.error(err);
       return res
