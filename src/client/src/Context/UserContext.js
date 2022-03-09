@@ -32,14 +32,16 @@ export function UserContextProvider(props) {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const verifyRes = await fetch('/api/verify/status');
-      const verifyData = await verifyRes.json();
-      if (verifyData.success) {
-        setUserVerifyStatus(verifyData.message ? true : false);
-      }
-    })();
-  }, [isLoading]);
+    if (userAuthStatus) {
+      (async () => {
+        const verifyRes = await fetch('/api/verify/status');
+        const verifyData = await verifyRes.json();
+        if (verifyData.success) {
+          setUserVerifyStatus(verifyData.message ? true : false);
+        }
+      })();
+    }
+  }, [userAuthStatus]);
 
   function updateUserStatusHandler({
     authStatus: newAuthStatus,
