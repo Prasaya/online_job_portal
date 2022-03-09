@@ -46,17 +46,17 @@ function VerifyEmail() {
         </div>
       </div>
     );
-  } else {
+  }
+
+  return (
     <div className="container text-center">
       <div className="py-3 px-5 m-5 bg-light">
         <p>
           User successfully verified. Continue to <Link to="/">Home Page.</Link>
         </p>
       </div>
-    </div>;
-  }
-
-  return <></>;
+    </div>
+  );
 }
 
 export default VerifyEmail;
