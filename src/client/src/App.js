@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 //Public
 import Header from './Components/Header';
 import Login from './Components/Login';
-import RegisterJobSeeker from './Components/RegisterJobSeeker';
-import RegisterCompany from './Components/RegisterCompany';
+import RegisterJobSeeker from './Components/LoginRegister/RegisterJobSeeker';
+import RegisterCompany from './Components/LoginRegister/RegisterCompany';
 import PageNotFound from './Components/PageNotFound';
 import Job from './Components/Jobs/Job';
 import Search from './Components/Jobs/Search';

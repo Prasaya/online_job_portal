@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../Context/UserContext';
-import District from './District';
-import { logIn } from './LoginRegister/logIn';
+import UserContext from '../../Context/UserContext';
+import District from '../District';
+import { logIn } from './logIn';
 
 function RegisterCompany() {
   const {
