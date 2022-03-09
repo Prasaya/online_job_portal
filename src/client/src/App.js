@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 //Public
 import Header from './Components/Header';
-import Login from './Components/Login';
+import Login from './Components/LoginRegister/LoginPage';
 import RegisterJobSeeker from './Components/LoginRegister/RegisterJobSeeker';
 import RegisterCompany from './Components/LoginRegister/RegisterCompany';
 import PageNotFound from './Components/PageNotFound';
