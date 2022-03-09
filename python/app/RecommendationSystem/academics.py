@@ -71,7 +71,7 @@ class AcademicQualification:
                         qidByLevelDiscipline[level][discipline]
                     )
             self.cached = temp
-            return cached
+            return self.cached
 
     async def getUserAcademics(self, uid):
         cursor = self.db.cursor()
@@ -91,6 +91,8 @@ class AcademicQualification:
         rowData = await self.academicData()
         userAcademics = await self.getUserAcademics(user)
         jobAcademics = await self.getJobAcademics(job)
+        if len(jobAcademics) == 0:
+            return 0
         valid = []
         for jobAcademic in jobAcademics:
             accepted = rowData[jobAcademic]
