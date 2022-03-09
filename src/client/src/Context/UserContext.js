@@ -7,6 +7,7 @@ const UserContext = createContext({
   type: '',
   updateUserStatus: ({
     authStatus: newAuthStatus,
+    verifyStatus: newVerifyStatus,
     id: uid,
     type: userType,
   }) => {},
@@ -35,10 +36,12 @@ export function UserContextProvider(props) {
 
   function updateUserStatusHandler({
     authStatus: newAuthStatus,
+    verifyStatus: newVerifyStatus,
     id: uid,
     type: userType,
   }) {
     setUserAuthStatus(newAuthStatus);
+    setUserVerifyStatus(newVerifyStatus);
     setUid(uid);
     setUserType(userType);
   }
