@@ -3,6 +3,7 @@ import mysql.connector
 from dotenv import dotenv_values
 import asyncio
 from .utils import computeScore
+from .academics import determineAcademicCompatibility
 
 
 class Recommender():
