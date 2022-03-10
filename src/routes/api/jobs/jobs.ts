@@ -43,7 +43,7 @@ router.get('/',
         }
         const skip = (page - 1) * numPerPage;
         const limit = skip + ',' + numPerPage;
-        const [result]: [RowDataPacket[], FieldPacket[]] =
+        let [result]: [RowDataPacket[], FieldPacket[]] =
           await connection.execute(
             'SELECT j.*, jm.score, od.name as companyName ' +
             'FROM jobMatchScore as jm ' +
@@ -54,7 +54,15 @@ router.get('/',
             'LIMIT ' + limit,
             [applicantId],
           );
-        console.log(result);
+
+        if (!Array.isArray(result) || result.length === 0) {
+          // console.log("length = 0");
+          [result] =
+            await connection.execute(
+              'SELECT * FROM allJobsFromDatabase LIMIT ' + limit,
+            );
+        }
+        // console.log(result);
         (result as RowDataPacket).forEach((entry) => {
           entry.deadline = formatDate(entry.deadline);
         });
