@@ -3,15 +3,19 @@ import { useEffect, useState } from 'react';
 function Statistics({ job }) {
   const [statistics, setStatistics] = useState();
   useEffect(() => {
+    console.log(job);
     (async () => {
-      const res = await fetch(`/api/statistics/${job.jobId}`);
+      const res = await fetch(`/api/organization/${job.jobId}/stats`);
       const data = await res.json();
       if (data.success) {
-        setStatistics(data);
+        setStatistics(data.data);
       }
     })();
   }, []);
 
+  if (!statistics) {
+    return <>Loading</>;
+  }
   return (
     <div>
       <button
@@ -45,11 +49,11 @@ function Statistics({ job }) {
               ></button>
             </div>
             <div className="modal-body">
-              <p>Total Notifications Sent: {7}</p>
-              <p>Total Job Post Views: {4}</p>
-              <p>Views from Email: {10}</p>
-              <p>Views from SMS: {10}</p>
-              <p>Total Applicants: {job.applicants.length}</p>
+              <p>Total Notifications Sent: {statistics.notificationSent}</p>
+              <p>Total Job Post Views: {statistics.linkOpen}</p>
+              <p>Views from Email: {statistics.emailVisitors}</p>
+              <p>Views from SMS: {statistics.smsVisitors}</p>
+              <p>Total Applicants: {}</p>
             </div>
             <div className="modal-footer">
               <button
