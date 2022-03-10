@@ -473,17 +473,29 @@ CREATE TABLE `user_roles` (
 DELIMITER ;;
 CREATE DEFINER=`webapp`@`localhost` PROCEDURE `addApplicantAcademics`(
 	IN uid char(36),
-	IN academics JSON
+	IN academics JSON,
+	IN useReplace BOOLEAN
 )
 BEGIN
-	INSERT INTO applicant_academics (
-		SELECT uid AS id, qid
-        FROM JSON_TABLE(
-			academics,
-            '$[*]' COLUMNS (
-				qid int PATH "$"
-			)
-		) AS extracted);
+	IF (useReplace = true) THEN
+		REPLACE INTO applicant_academics (
+			SELECT uid AS id, qid
+			FROM JSON_TABLE(
+				academics,
+				'$[*]' COLUMNS (
+					qid int PATH "$"
+				)
+			) AS extracted);
+	ELSE
+		INSERT INTO applicant_academics (
+			SELECT uid AS id, qid
+			FROM JSON_TABLE(
+				academics,
+				'$[*]' COLUMNS (
+					qid int PATH "$"
+				)
+			) AS extracted);
+	END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1205,4 +1217,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-10 10:07:03
+-- Dump completed on 2022-03-10 10:25:35

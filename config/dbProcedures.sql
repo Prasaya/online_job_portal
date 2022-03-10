@@ -159,7 +159,7 @@ BEGIN
 			SELECT uid AS id, qid
 			FROM JSON_TABLE(
 				academics,
-				'$[*]' COLUMNS (
+				'$[*]' COLUMNS ( 
 					qid int PATH "$"
 				)
 			) AS extracted);
