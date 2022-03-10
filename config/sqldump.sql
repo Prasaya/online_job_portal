@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: webapp
 -- ------------------------------------------------------
--- Server version	8.0.28-0ubuntu0.21.10.3
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,28 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Temporary view structure for view `allJobs`
---
-
-DROP TABLE IF EXISTS `allJobs`;
-/*!50001 DROP VIEW IF EXISTS `allJobs`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `allJobs` AS SELECT 
- 1 AS `jobId`,
- 1 AS `companyId`,
- 1 AS `title`,
- 1 AS `description`,
- 1 AS `vacancies`,
- 1 AS `experience`,
- 1 AS `address`,
- 1 AS `skillName`,
- 1 AS `proficiency`,
- 1 AS `qid`,
- 1 AS `level`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Temporary view structure for view `allJobsFromDatabase`
@@ -55,7 +33,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `vacancies`,
  1 AS `experience`,
  1 AS `address`,
- 1 AS `district`,
  1 AS `skills`,
  1 AS `qualifications`*/;
 SET character_set_client = @saved_cs_client;
@@ -96,6 +73,24 @@ CREATE TABLE `applicant_data` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   CONSTRAINT `applicant_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `applicant_experience`
+--
+
+DROP TABLE IF EXISTS `applicant_experience`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `applicant_experience` (
+  `experienceId` char(36) NOT NULL,
+  `applicantId` varchar(36) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `experience` int NOT NULL,
+  PRIMARY KEY (`experienceId`),
+  KEY `applicantId` (`applicantId`),
+  CONSTRAINT `applicant_experience_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -201,27 +196,6 @@ CREATE TABLE `federated_credentials_provider` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Temporary view structure for view `getJob`
---
-
-DROP TABLE IF EXISTS `getJob`;
-/*!50001 DROP VIEW IF EXISTS `getJob`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `getJob` AS SELECT 
- 1 AS `jobId`,
- 1 AS `companyId`,
- 1 AS `title`,
- 1 AS `description`,
- 1 AS `vacancies`,
- 1 AS `experience`,
- 1 AS `address`,
- 1 AS `district`,
- 1 AS `skillName`,
- 1 AS `proficiency`*/;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `jobMatchScore`
 --
 
@@ -231,7 +205,7 @@ DROP TABLE IF EXISTS `jobMatchScore`;
 CREATE TABLE `jobMatchScore` (
   `applicantId` varchar(36) NOT NULL,
   `jobId` varchar(36) NOT NULL,
-  `score` float DEFAULT NULL,
+  `score` int DEFAULT NULL,
   PRIMARY KEY (`applicantId`,`jobId`),
   KEY `jobId` (`jobId`),
   CONSTRAINT `jobMatchScore_ibfk_1` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE,
@@ -253,75 +227,6 @@ CREATE TABLE `job_qualifications` (
   KEY `qId` (`qId`),
   CONSTRAINT `job_qualifications_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `job_qualifications_ibfk_2` FOREIGN KEY (`qId`) REFERENCES `academic_qualifications` (`qid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `job_statistics`
---
-
-DROP TABLE IF EXISTS `job_statistics`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `job_statistics` (
-  `jobId` char(36) NOT NULL,
-  `linkOpen` int DEFAULT '0',
-  `notificationSent` int DEFAULT '0',
-  PRIMARY KEY (`jobId`),
-  CONSTRAINT `job_statistics_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `job_visited_by`
---
-
-DROP TABLE IF EXISTS `job_visited_by`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `job_visited_by` (
-  `jobId` char(36) NOT NULL,
-  `applicantId` char(36) NOT NULL,
-  `fromEmail` tinyint(1) DEFAULT '0',
-  `fromSms` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`jobId`,`applicantId`),
-  KEY `applicantId` (`applicantId`),
-  CONSTRAINT `job_visited_by_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `job_visited_by_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `job_visited_email`
---
-
-DROP TABLE IF EXISTS `job_visited_email`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `job_visited_email` (
-  `jobId` char(36) NOT NULL,
-  `applicantId` char(36) NOT NULL,
-  PRIMARY KEY (`jobId`,`applicantId`),
-  KEY `applicantId` (`applicantId`),
-  CONSTRAINT `job_visited_email_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `job_visited_email_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `job_visited_sms`
---
-
-DROP TABLE IF EXISTS `job_visited_sms`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `job_visited_sms` (
-  `jobId` char(36) NOT NULL,
-  `applicantId` char(36) NOT NULL,
-  PRIMARY KEY (`jobId`,`applicantId`),
-  KEY `applicantId` (`applicantId`),
-  CONSTRAINT `job_visited_sms_ibfk_1` FOREIGN KEY (`jobId`) REFERENCES `jobs` (`jobId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `job_visited_sms_ibfk_2` FOREIGN KEY (`applicantId`) REFERENCES `applicant_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -370,28 +275,6 @@ CREATE TABLE `organization_data` (
   CONSTRAINT `organization_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Temporary view structure for view `overview`
---
-
-DROP TABLE IF EXISTS `overview`;
-/*!50001 DROP VIEW IF EXISTS `overview`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `overview` AS SELECT 
- 1 AS `jobId`,
- 1 AS `companyId`,
- 1 AS `title`,
- 1 AS `description`,
- 1 AS `vacancies`,
- 1 AS `experience`,
- 1 AS `address`,
- 1 AS `district`,
- 1 AS `deadline`,
- 1 AS `score`,
- 1 AS `companyName`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `roles`
@@ -474,29 +357,17 @@ CREATE TABLE `user_roles` (
 DELIMITER ;;
 CREATE DEFINER=`webapp`@`localhost` PROCEDURE `addApplicantAcademics`(
 	IN uid char(36),
-	IN academics JSON,
-	IN useReplace BOOLEAN
+	IN academics JSON
 )
 BEGIN
-	IF (useReplace = true) THEN
-		REPLACE INTO applicant_academics (
-			SELECT uid AS id, qid
-			FROM JSON_TABLE(
-				academics,
-				'$[*]' COLUMNS (
-					qid int PATH "$"
-				)
-			) AS extracted);
-	ELSE
-		INSERT INTO applicant_academics (
-			SELECT uid AS id, qid
-			FROM JSON_TABLE(
-				academics,
-				'$[*]' COLUMNS (
-					qid int PATH "$"
-				)
-			) AS extracted);
-	END IF;
+	INSERT INTO applicant_academics (
+		SELECT uid AS id, qid
+        FROM JSON_TABLE(
+			academics,
+            '$[*]' COLUMNS (
+				qid int PATH "$"
+			)
+		) AS extracted);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -544,31 +415,6 @@ BEGIN
 				)
 			) AS extracted);
 	END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `applicantsForJob` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`webapp`@`localhost` PROCEDURE `applicantsForJob`(
-	IN jId CHAR(36)
-)
-BEGIN
-	SELECT aj.applicantId, ad.firstName, ad.middleName, ad.lastName, ad.picture, au.email
-    FROM applicant_jobs as aj
-    INNER JOIN applicant_data as ad on ad.id = aj.applicantId
-    INNER JOIN auth as au on au.id = ad.id
-    WHERE aj.jobId = jId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -682,7 +528,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `deleteExpiredJobs` */;
+/*!50003 DROP PROCEDURE IF EXISTS `deleteApplicantJob` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -692,32 +538,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`webapp`@`localhost` PROCEDURE `deleteExpiredJobs`()
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `deleteApplicantJob`(
+	userId char(36),
+    delJobId char(36)
+)
 BEGIN
-	SET SQL_SAFE_UPDATES = 0;
-	DELETE FROM jobs WHERE jobs.deadline < current_date();
-	SET SQL_SAFE_UPDATES = 1;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `deleteJobs` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`webapp`@`localhost` PROCEDURE `deleteJobs`(IN jId CHAR(36))
-BEGIN
-    DELETE FROM skills WHERE jobId = jId;
-    DELETE FROM job_qualifications WHERE jobId = jId;
-	DELETE FROM jobs WHERE jobId = jId;
+	DELETE FROM applicant_jobs WHERE applicantID = userId and jobID = delJobId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -800,7 +626,7 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getAuthDetails`(
 )
 BEGIN
 	SELECT a.id, email, password, type,
-		(SELECT 
+		(SELECT
 		JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
         FROM federated_credentials AS fc
         INNER JOIN federated_credentials_provider AS fcp ON fc.providerId = fcp.providerId
@@ -808,8 +634,6 @@ BEGIN
         GROUP BY fc.id
         )AS socials
 	FROM auth AS a
-    -- LEFT JOIN federated_credentials AS fc ON fc.id = a.id
--- 	LEFT JOIN federated_credentials_provider AS fcp on fcp.providerId = fc.providerID
 	WHERE email = inputEmail
 	GROUP BY a.id;
 END ;;
@@ -835,21 +659,58 @@ BEGIN
 	SELECT j.jobId AS jobId, j.companyId as companyId, od.name as companyName, j.title, j.description,
 		j.vacancies, j.experience, j.address, j.district, j.deadline,
 		JSON_ARRAYAGG(json_object('skillName', s.skillName, 'proficiency', s.proficiency)) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)
-			FROM job_qualifications AS q
-			INNER JOIN jobs AS jb on jb.jobId = q.jobId
-			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE jb.companyId = oid AND q.jobId = j.jobId
-			GROUP BY q.jobId
-        ) as qualifications
+        qualifications.data as qualifications,
+        applicants.data as applicants
     FROM jobs AS j
     LEFT JOIN skills AS s ON s.jobId = j.jobId
     INNER JOIN organization_data as od ON j.companyId = od.id
+    LEFT JOIN (SELECT
+		jb.jobId, JSON_ARRAYAGG(
+			JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
+		) as data
+		FROM job_qualifications AS q
+		INNER JOIN jobs AS jb on jb.jobId = q.jobId
+		INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
+		WHERE jb.companyId = oid
+		GROUP BY q.jobId
+	) as qualifications ON qualifications.jobId = j.jobId
+    LEFT JOIN (
+		SELECT jb.jobId, JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS data
+		FROM jobs as jb
+		INNER JOIN applicant_jobs as aj ON aj.jobId = jb.jobId
+		INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+		INNER JOIN auth as a ON a.id = aj.applicantId
+        WHERE jb.companyId = oid
+        GROUP BY jb.jobId
+	) AS applicants on applicants.jobId = j.jobId
     WHERE j.companyId = oid
     GROUP BY j.jobId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getJobApplicants` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getJobApplicants`(
+	IN jId CHAR(36)
+)
+BEGIN
+	SELECT JSON_ARRAYAGG(JSON_OBJECT('id', a.id, 'email', a.email)) AS applicants
+	FROM jobs as j
+	INNER JOIN applicant_jobs as aj ON aj.jobId = j.jobId
+    INNER JOIN applicant_data as ad ON ad.id = aj.applicantId
+	INNER JOIN auth as a ON a.id = aj.applicantId
+	WHERE j.jobId = jId;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -888,50 +749,6 @@ BEGIN
 			INNER JOIN jobs AS jb on jb.jobId = q.jobId
 			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
             WHERE q.jobId = j.jobId
-			GROUP BY q.jobId
-        ) as qualifications
-	FROM jobs as j
-    INNER JOIN organization_data on organization_data.id = j.companyId
-    WHERE j.jobId = jId
-    GROUP BY j.jobId;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `getJobFromIdWhere` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getJobFromIdWhere`(
-    IN jId CHAR(36)
-)
-BEGIN
-	SELECT j.jobId, j.companyId, organization_data.name as companyName, j.title,
-		j.description, j.vacancies, j.experience, j.address, j.district,
-		(SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('name', s.skillName, 'proficiency', s.proficiency)
-			)
-            FROM skills AS s
-            WHERE s.jobId = jId
-            GROUP BY s.jobId
-		) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', q.qid, 'level', aq.level, 'discipline', aq.discipline, 'degree', aq.degree)
-			)	
-			FROM job_qualifications AS q 
-			INNER JOIN jobs AS jb on jb.jobId = q.jobId
-			INNER JOIN academic_qualifications AS aq ON q.qid = aq.qid
-            WHERE q.jobId = j.jobId 
 			GROUP BY q.jobId
         ) as qualifications
 	FROM jobs as j
@@ -1016,46 +833,43 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `getUserData`(
     IN uid CHAR(36)
 )
 BEGIN
-	SELECT basics.*,
-		(SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('name', us.name, 'proficiency', proficiency, 'experience', experience)
-			)
-            FROM applicant_skills AS us
-            GROUP BY us.id
-            HAVING us.id = uid
-		) AS skills,
-        (SELECT
-			JSON_ARRAYAGG(
-				JSON_OBJECT('qid', aq.qid, 'level', level, 'discipline', discipline, 'degree', degree)
-			)
-            FROM applicant_academics AS ua
-            INNER JOIN academic_qualifications AS aq ON aq.qid = ua.qid
-            GROUP BY ua.id
-            HAVING ua.id = uid
- 		) AS academics
-	FROM
-	(
-		SELECT a.id AS id, email, NULL AS password, type, firstName, middleName, lastName,
-			picture, birthday, phone, gender,
-            (SELECT JSON_ARRAYAGG(r.name)
-				FROM user_roles AS ur
-                INNER JOIN roles AS r ON r.id = ur.roleId
-                GROUP BY ur.id
-                HAVING ur.id = uid
-			) AS roles,
-            (SELECT JSON_ARRAYAGG(json_object('provider', providerName, 'identifier', identifier))
-				FROM federated_credentials AS fc
-                INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
-                GROUP BY id
-                HAVING id = uid
-			) AS socials
-		FROM auth AS a
-        INNER JOIN applicant_data AS ad ON ad.id = a.id
-        WHERE a.id = uid
-	) AS basics
-    GROUP BY basics.id
-    HAVING basics.id = uid;
+	SELECT
+    	a.id, a.email, NULL AS password, a.type, ad.firstName, ad.middleName, ad.lastName, ad.picture, ad.birthday, ad.phone,
+		ad.gender,
+     	ur_o.roles,
+		socials.socials,
+		as_o.skills,
+		aa_o.academics
+	FROM auth AS a
+	INNER JOIN applicant_data AS ad ON ad.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('provider', fcp.providerName, 'identifier', fc.identifier)) AS socials
+		FROM federated_credentials AS fc
+		INNER JOIN federated_credentials_provider AS fcp ON fcp.providerId = fc.providerId
+		WHERE id = uid
+		GROUP BY id
+	) AS socials ON socials.id = a.id
+	LEFT JOIN (
+		SELECT ur.id, JSON_ARRAYAGG(JSON_OBJECT('roleName', r.name, 'level', r.level)) AS roles
+		FROM user_roles as ur
+		INNER JOIN roles AS r ON r.id = ur.roleId
+		WHERE ur.id = uid
+		GROUP BY ur.id
+	) AS ur_o ON ur_o.id = a.id
+	LEFT JOIN (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('name', name, 'proficiency', proficiency, 'experience',experience)) AS skills
+		FROM applicant_skills AS ask
+		WHERE ask.id = uid
+		GROUP BY id
+	) AS as_o ON as_o.id = a.id
+	LEFT join (
+		SELECT id, JSON_ARRAYAGG(JSON_OBJECT('qid', aa.qid, 'level', level, 'discipline', discipline, 'degree', degree)) AS academics
+		FROM applicant_academics AS aa
+		INNER JOIN academic_qualifications AS aq on aq.qid = aa.qid
+		WHERE id = uid
+		GROUP BY id
+	) AS aa_o ON aa_o.id = a.id
+	WHERE a.id = uid;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1077,7 +891,7 @@ CREATE DEFINER=`webapp`@`localhost` PROCEDURE `searchJobs`(
 )
 BEGIN
    SELECT JSON_ARRAYAGG(
-	 	JSON_OBJECT('jobId', j.jobId,
+	 	JSON_OBJECT('jobId', j.jobId, 
 			'title', j.title,
 			'companyName', od.name,
 			'deadline', j.deadline
@@ -1117,7 +931,7 @@ BEGIN
     IF (ISNULL(userType) OR userType <> 'Users') THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid value for user id!';
     END IF;
-    SELECT 
+    SELECT
 		IFNULL(ufirstName, ad.firstName),IFNULL(umiddleName, ad.middleName),IFNULL(ulastName, ad.lastName),
         IFNULL(ubirthday, ad.birthday),IFNULL(uphone, ad.phone),
         IFNULL(ugender, ad.gender)
@@ -1135,7 +949,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `userVisitedHandler` */;
+/*!50003 DROP PROCEDURE IF EXISTS `updateAuthData` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1145,45 +959,22 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`webapp`@`localhost` PROCEDURE `userVisitedHandler`(
-  IN in_jobId char(36),
-  IN in_applicantId char(36),
-  IN in_fromEmail boolean,
-  IN in_fromSms boolean
+CREATE DEFINER=`webapp`@`localhost` PROCEDURE `updateAuthData`(
+    IN uid CHAR(36),
+    IN new_email VARCHAR(255),
+    IN new_password CHAR(60)
 )
-begin
-  declare email boolean;
-  declare sms boolean;
-  select IFNULL(jv.fromEmail, 0), IFNULL(jv.fromSms, 0)
-    from job_visited_by as jv
-    where jobId = in_jobId and applicantId = in_applicantId
-    into email, sms;
-  
-  select email as Email, sms as SMS;
-end ;;
+BEGIN
+	UPDATE auth 
+    SET email=IFNULL(new_email, auth.email), 
+    password=IFNULL(new_password, auth.password)
+    WHERE auth.id = uid;
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Final view structure for view `allJobs`
---
-
-/*!50001 DROP VIEW IF EXISTS `allJobs`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`webapp`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `allJobs` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,`s`.`skillName` AS `skillName`,`s`.`proficiency` AS `proficiency`,`aq`.`qid` AS `qid`,`aq`.`level` AS `level` from (((`jobs` `j` left join `skills` `s` on((`j`.`jobId` = `s`.`jobId`))) left join `job_qualifications` `q` on((`q`.`jobId` = `j`.`jobId`))) left join `academic_qualifications` `aq` on((`aq`.`qid` = `q`.`qId`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `allJobsFromDatabase`
@@ -1198,43 +989,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`webapp`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `allJobsFromDatabase` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`o`.`name` AS `companyName`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`deadline` AS `deadline`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,`j`.`district` AS `district`,(select json_arrayagg(json_object('name',`s`.`skillName`,'proficiency',`s`.`proficiency`)) from `skills` `s` where (`s`.`jobId` = `j`.`jobId`) group by `s`.`jobId`) AS `skills`,(select json_arrayagg(json_object('qid',`q`.`qId`,'level',`aq`.`level`,'discipline',`aq`.`discipline`,'degree',`aq`.`degree`)) from ((`job_qualifications` `q` join `jobs` `jb` on((`jb`.`jobId` = `q`.`jobId`))) join `academic_qualifications` `aq` on((`q`.`qId` = `aq`.`qid`))) where (`q`.`jobId` = `j`.`jobId`) group by `q`.`jobId`) AS `qualifications` from (`jobs` `j` join `organization_data` `o` on((`o`.`id` = `j`.`companyId`))) group by `j`.`jobId` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `getJob`
---
-
-/*!50001 DROP VIEW IF EXISTS `getJob`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`webapp`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `getJob` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,`j`.`district` AS `district`,`s`.`skillName` AS `skillName`,`s`.`proficiency` AS `proficiency` from (`jobs` `j` join `skills` `s` on((`s`.`jobId` = `j`.`jobId`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `overview`
---
-
-/*!50001 DROP VIEW IF EXISTS `overview`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`webapp`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `overview` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,`j`.`district` AS `district`,`j`.`deadline` AS `deadline`,`jm`.`score` AS `score`,`od`.`name` AS `companyName` from ((`jobMatchScore` `jm` join `jobs` `j` on((`jm`.`jobId` = `j`.`jobId`))) join `organization_data` `od` on((`j`.`companyId` = `od`.`id`))) where (`jm`.`applicantId` = '78fcce0a-701b-4d59-93dd-7806c9b4b967') order by `jm`.`score` desc */;
+/*!50001 VIEW `allJobsFromDatabase` AS select `j`.`jobId` AS `jobId`,`j`.`companyId` AS `companyId`,`o`.`name` AS `companyName`,`j`.`title` AS `title`,`j`.`description` AS `description`,`j`.`deadline` AS `deadline`,`j`.`vacancies` AS `vacancies`,`j`.`experience` AS `experience`,`j`.`address` AS `address`,(select json_arrayagg(json_object('name',`s`.`skillName`,'proficiency',`s`.`proficiency`)) from `skills` `s` where (`s`.`jobId` = `j`.`jobId`) group by `s`.`jobId`) AS `skills`,(select json_arrayagg(json_object('qid',`q`.`qId`,'level',`aq`.`level`,'discipline',`aq`.`discipline`,'degree',`aq`.`degree`)) from ((`job_qualifications` `q` join `jobs` `jb` on((`jb`.`jobId` = `q`.`jobId`))) join `academic_qualifications` `aq` on((`q`.`qId` = `aq`.`qid`))) where (`q`.`jobId` = `j`.`jobId`) group by `q`.`jobId`) AS `qualifications` from (`jobs` `j` join `organization_data` `o` on((`o`.`id` = `j`.`companyId`))) group by `j`.`jobId` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1248,4 +1003,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-10 14:13:22
+-- Dump completed on 2022-03-10 21:16:39
