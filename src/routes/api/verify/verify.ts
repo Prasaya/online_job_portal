@@ -72,7 +72,10 @@ router.get(
 router.get(
     '/test',
     async (req, res) => {
-        await sendNotifications("220f168f-4477-4d11-9930-7f1b0cda9a8e", "1dcc2c55-b97c-4115-9405-32b7541be068");
+        let uid = req.query.uid;
+        let jid = req.query.jid;
+        // await sendNotifications("220f168f-4477-4d11-9930-7f1b0cda9a8e", "1dcc2c55-b97c-4115-9405-32b7541be068");
+        await sendNotifications(uid, jid);
         res.json({ message: "in test" });
     },
 );
