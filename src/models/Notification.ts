@@ -6,6 +6,8 @@ import sendNotificationEmail from '@utils/notificationEmail';
 import { getJobById } from './Jobs';
 import { getUserById } from './User';
 const shortUrl = require('node-url-shortener');
+import connection from '@utils/dbSetup';
+import { RowDataPacket, FieldPacket } from 'mysql2';
 
 
 export const sendNotifications = async (userId: string, jobId: string) => {
@@ -14,6 +16,13 @@ export const sendNotifications = async (userId: string, jobId: string) => {
         let job = await getJobById(jobId);
 
         let user = await getUserById(userId);
+
+        await connection.execute(
+            `update job_statistics 
+            set notificationSent = notificationSent + 2
+            where jobId = ? `,
+            [jobId],
+        );
 
         sendNotificationEmail(user, job);
 
