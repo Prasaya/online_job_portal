@@ -10,7 +10,7 @@ from scipy.spatial import distance
 
 class Recommender():
     def __init__(self):
-        config = dotenv_values("./config/.env")
+        config = dotenv_values("../config/.env")
         self.db = mysql.connector.connect(
             host=config["DB_HOST"],
             user=config["DB_USER"],
