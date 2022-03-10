@@ -17,20 +17,21 @@ function MyProfile() {
     return data.user;
   };
   //delete this
-  const fetchExperience = async () => {
-    const res = await fetch('http://localhost:4000/profile');
-    const data = await res.json();
-    return data.experience;
-  };
+  // const fetchExperience = async () => {
+  //   const res = await fetch('http://localhost:4000/profile');
+
+  //   const data = await res.json();
+  //   return data.experience;
+  // };
 
   useEffect(() => {
     const getInfo = async () => {
       const user = await fetchInfo();
-      const experienceData = await fetchExperience(); //delete this
+      // const experienceData = await fetchExperience(); //delete this
       setBasicInfo(user.basics);
       setSkills(user.skills);
       setEducation(user.academics);
-      setExperience(experienceData); // user.experience
+      // setExperience(experienceData); // user.experience
       setPicture(user.basics.picture ? '/api/applicant/avatar' : defaultAvatar);
     };
     getInfo();
@@ -125,7 +126,7 @@ function MyProfile() {
                   </tbody>
                 </table>
               </div>
-              <div className="skills col-lg-6">
+              {/* <div className="skills col-lg-6">
                 <h3>Experience</h3>
                 <table className="table">
                   <tbody>
@@ -145,7 +146,7 @@ function MyProfile() {
                     })}
                   </tbody>
                 </table>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
