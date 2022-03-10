@@ -162,7 +162,7 @@ export const getApplicantsForJob = async (jobId: string) => {
       ORDER BY score DESC`,
       [jobId],
     );
-    return result[0];
+    return result;
   } catch (error) {
     logger.error('Error deleting jobs', error);
   }
