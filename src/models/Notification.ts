@@ -29,7 +29,7 @@ export const sendNotifications = async (userId: string, jobId: string) => {
             return { status: 400, message: 'User has no phone number', success: false };
         }
 
-        let jobURL = `http://nepaljobs.cf/job/${job.jobId}?from=sms&applicantId=${userId}`;
+        let jobURL = `http://nepaljobs.cf/jobs/${job.jobId}?from=sms&applicantId=${userId}`;
         let smsURL = "";
         shortUrl.short(jobURL, function (err, url) {
             smsURL = url;

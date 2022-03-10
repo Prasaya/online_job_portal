@@ -19,7 +19,7 @@ export default async function sendNotificationEmail(user: User, job: DBJob) {
             username: user.basics.firstName || 'New User',
             jobTitle: job.title,
             companyName: companyDetails.name,
-            jobUrl: `http://nepaljobs.cf/jobs/${job.jobId}}?from=email&applicantId=${user.basics.id}`,
+            jobUrl: `http://nepaljobs.cf/jobs/${job.jobId}?from=email&applicantId=${user.basics.id}`,
         },
     };
 
