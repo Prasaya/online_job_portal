@@ -88,6 +88,7 @@ router.get('/',
     }
   });
 
+
 router.get('/search', async (req, res) => {
   try {
     const query = req.query.query;
@@ -96,7 +97,7 @@ router.get('/search', async (req, res) => {
       return;
     }
     const jobs = await searchJobs(query);
-    // console.log(jobs);
+    console.log(jobs);
     res.json({ jobs, success: true });
   } catch (err) {
     logger.error('Error in searching jobs', err);
