@@ -10,37 +10,33 @@ router.get('/rank/:id', async (req, res) => {
   try {
     const jobId = req.params.id;
     const applicantId = req.user?.user.basics.id;
-    const [result]: [RowDataPacket[], FieldPacket[]] =
-      await connection.execute(
-        `SELECT position from (
+    const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+      `SELECT position from (
         SELECT aj.jobId, aj.applicantId,
                 RANK() OVER(ORDER BY jm.score DESC) position
         FROM jobMatchScore as jm
         INNER JOIN applicant_jobs as aj ON(jm.jobId = aj.jobId) AND(aj.applicantId = jm.applicantId)  
         ORDER BY position DESC) as val
             WHERE(val.jobId = ?) AND(val.applicantId = ?) `,
-        [jobId, applicantId],
-      );
-    const [count]: [RowDataPacket[], FieldPacket[]] =
-      await connection.execute(
-        `select count(*) as count from applicant_jobs
+      [jobId, applicantId],
+    );
+    const [count]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+      `select count(*) as count from applicant_jobs
           where jobId = ? `,
-        [jobId]
-      );
+      [jobId],
+    );
 
     let data = {
-      rank: result[0].position,
-      totalApplicants: count[0].count
-    }
+      rank: result.length > 0 ? result[0].position : 1,
+      totalApplicants: count[0].count,
+    };
 
     res.json({ data, success: true });
   } catch (err) {
     logger.error(`Error in getting job details: ${err}`);
     res.status(500).json({ message: 'Something went wrong!', success: false });
   }
-}
-);
-
+});
 
 router.get('/', async (req, res) => {
   try {
