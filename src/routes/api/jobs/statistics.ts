@@ -19,10 +19,10 @@ router.post('/insert',
             let applicantId = req.body.applicantId;
 
             if (type === 'sms') {
-                insertJobSmsStatistics(jobId, applicantId);
+                await insertJobSmsStatistics(jobId, applicantId);
             }
             else if (type === 'email') {
-                insertJobEmailStatistics(jobId, applicantId);
+                await insertJobEmailStatistics(jobId, applicantId);
             }
 
             res.json({ message: "Inserted into table", success: true });
