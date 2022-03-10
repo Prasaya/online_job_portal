@@ -1,3 +1,4 @@
+from aiohttp import request
 from SkillParser import SkillParser
 import mysql.connector
 from dotenv import dotenv_values
@@ -89,4 +90,12 @@ class Recommender():
             "SELECT id FROM applicant_data"
         )
         applicants = [i[0] for i in applicantCursor]
-        await asyncio.gather(*[self.processTuple(aId, jId) for aId in applicants])
+        finalScores = await asyncio.gather(*[self.processTuple(aId, jId) for aId in applicants])
+        for index, score in enumerate(finalScores):
+            if score > 0.5:
+                params = {
+                    "uid": applicants[index],
+                    "jid": jId,
+                }
+                async with self.parser.session.get('/api/verify/test', params=params) as response:
+                    print(await response.json())
