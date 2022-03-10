@@ -45,7 +45,7 @@ async def newJob(job):
     await recommender.calculateRankingJob(job)
     return f'<p>Hello {job}!</p>'
 
-@app.route('computeAll')
+@app.route('/computeAll')
 async def computeAll():
     try:
         await recommender.computeRecommendation()

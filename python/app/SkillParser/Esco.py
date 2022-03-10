@@ -56,6 +56,7 @@ class Esco:
             return [i['uri']for i in results]
 
     async def getScores(self, startURI):
+        print(startURI)
         query = f"""
         {self.prefixes}
         prefix start: <{startURI}>

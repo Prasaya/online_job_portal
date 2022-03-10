@@ -12,10 +12,10 @@ class Recommender():
     def __init__(self):
         config = dotenv_values("../config/.env")
         self.db = mysql.connector.connect(
-            host=config["DB_HOST"],
-            user=config["DB_USER"],
-            password=config["DB_PASSWORD"],
-            database=config["DB_NAME"],
+            host="localhost",
+            user="webapp",
+            password="Rewash-Kennel-Gift-Drew5-Generous",
+            database="webapp",
             buffered=True,
         )
         self.parser = SkillParser()
