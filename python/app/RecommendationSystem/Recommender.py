@@ -52,7 +52,9 @@ class Recommender():
         parsedJobSkills = await self.parser.parse(jobSkills)
         skillScore = await computeScore(parsedUserSkills, parsedJobSkills)
         academicScore = await self.academics.determineAcademicCompatibility(uid, jid)
-        finalScore = distance.cosine([academicScore, skillScore], [
+        skillScore = max(skillScore, 0.0001)
+        academicScore = max(academicScore, 0.0001)
+        finalScore = 1 - distance.cosine([academicScore, skillScore], [
                                      self.config['academicsWeight'], self.config['skillsWeight']])
         cursor = self.db.cursor()
         cursor.execute("""
@@ -97,5 +99,5 @@ class Recommender():
                     "uid": applicants[index],
                     "jid": jId,
                 }
-                async with self.parser.session.get('/api/verify/test', params=params) as response:
+                async with self.parser.session.get('http://localhost:3500/api/verify/test', params=params) as response:
                     print(await response.json())

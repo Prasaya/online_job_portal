@@ -20,6 +20,8 @@ export const sendNotifications = async (userId: string, jobId: string) => {
         let userFirstName = user.basics.firstName;
         let jobTitle = job.title;
         let userPhoneNumber = user.basics.phone;
+        if (userPhoneNumber === null)
+            return;
         if (!userPhoneNumber.startsWith('+')) {
             userPhoneNumber = '+' + user.basics.phone;
         }
