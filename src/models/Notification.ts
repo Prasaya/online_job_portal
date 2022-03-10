@@ -20,6 +20,9 @@ export const sendNotifications = async (userId: string, jobId: string) => {
         let userFirstName = user.basics.firstName;
         let jobTitle = job.title;
         let userPhoneNumber = user.basics.phone;
+        if (!userPhoneNumber.startsWith('+')) {
+            userPhoneNumber = '+' + user.basics.phone;
+        }
         if (!userPhoneNumber) {
             return { status: 400, message: 'User has no phone number', success: false };
         }
