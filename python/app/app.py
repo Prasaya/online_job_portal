@@ -45,6 +45,14 @@ async def newJob(job):
     await recommender.calculateRankingJob(job)
     return f'<p>Hello {job}!</p>'
 
+@app.route('computeAll')
+async def computeAll():
+    try:
+        await recommender.computeRecommendation()
+        recommender = await getRecommender()
+        return f'<p>Success!</p>'
+    except:
+        return f'<p>Failed</p>'
 
 async def main():
     skill = SkillParser()
