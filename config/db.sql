@@ -1,3 +1,6 @@
+drop table if exists job_statistics;
+drop table if exists job_visited_sms;
+drop table if exists job_visited_email;
 drop table if exists jobMatchScore;
 drop table if exists applicant_verification;
 drop table if exists applicant_jobs;
@@ -177,6 +180,31 @@ CREATE TABLE jobMatchScore (
     primary key (applicantId, jobId),
     foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE,
 	foreign key (jobId) references jobs(jobId) ON DELETE CASCADE
+);
+
+
+CREATE TABLE job_statistics (
+	jobId char(36) not null,
+    linkOpen int DEFAULT 0,
+    notificationSent int DEFAULT 0,
+    primary key(jobId),
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+create table job_visited_sms (
+	jobId char(36) not null,
+    applicantId char(36) not null,
+    primary key (jobId, applicantId),
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (applicantId) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+create table job_visited_email (
+	jobId char(36) not null,
+    applicantId char(36) not null,
+    primary key (jobId, applicantId),
+    foreign key (jobId) references jobs(jobId) ON UPDATE CASCADE ON DELETE CASCADE,
+    foreign key (applicantId) references applicant_data(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
