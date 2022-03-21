@@ -1,26 +1,31 @@
 # Introduction
 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.
+Online Job Portal is a job recommendation system using ontology based recommendation system. It uses user's and job's profile to determine job compatibility. A job seeker can subscribe for new job notifications via email or sms.
 
 # Getting Started
 
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+1. Tools required
+   - mysql
+   - npm
+   - yarn
+   - python3
+   - SPARQL server with [ESCO Ontology](https://ec.europa.eu/esco/portal) loaded into database
 
-1. Installation process
-2. Software dependencies
-3. Latest releases
-4. API references
+2. Setup
+  - Mysql: The database structure is stored on config/sqldump.sql and academicdump.sql Run both to generate complete table.
+  - Node: 
+    - From root directory run
+      ```
+      yarn install
+      ```
+    - From src/client run
+      ```
+      npm install
+      ```
+  - Python: Create a virtual environment and install dependencies using python/requirements.txt
+  - Esco: This application assumes SPARQL query service to be running at `http://localhost:3030/esco/query`. The original implentation used apache fuseki       server with data loaded from [ESCO Portal Download](https://ec.europa.eu/esco/portal/download)
 
 # Build and Test
-
-TODO: Describe and show how to build your code and run the tests.
-
-# Contribute
-
-TODO: Explain how other users and developers can contribute to make your code better.
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+  - Run: `yarn build` to build both server and client.
+  - Run: `yarn start` to start react server and express backend.
+  - Inside python/app directory run: `python app.py` to start recommendation service.
