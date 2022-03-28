@@ -48,8 +48,9 @@ BEGIN
     INNER JOIN applicant_data AS ad ON ad.id = auth.id
     WHERE auth.id = uid
     INTO uemail, upassword, ufirstName, umiddleName, ulastName, upicture, ubirthday,uphone, ugender;
-    
-    SELECT uid, uemail, upassword, ufirstName, umiddleName, ulastName, upicture, ubirthday,uphone, ugender;
+    UPDATE applicant_data
+    SET firstName = ufirstName, middleName = umiddleName, lastName = ulastName, birthday = ubirthday, phone = uphone, gender = ugender
+    WHERE applicant_data.id = uid;
 END |
 DELIMITER ;
 
