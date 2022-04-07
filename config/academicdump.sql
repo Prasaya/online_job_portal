@@ -28,7 +28,7 @@ CREATE TABLE `academic_qualifications` (
   `discipline` varchar(100) DEFAULT NULL,
   `degree` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`qid`)
-) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
