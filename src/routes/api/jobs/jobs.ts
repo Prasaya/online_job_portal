@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import express, { Request, Response } from 'express';
 import { param, validationResult, checkSchema } from 'express-validator';
 import {
@@ -19,75 +21,71 @@ const axios = require('axios');
 
 const router = express.Router();
 
-router.get('/',
-  isApplicant,
-  async (req, res) => {
+router.get('/', isApplicant, async (req, res) => {
+  try {
+    const applicantId = req.user?.user.basics.id;
+
+    const numPerPage = 10;
+    let page = 1;
     try {
-      const applicantId = req.user?.user.basics.id;
-
-      const numPerPage = 10;
-      let page = 1;
-      try {
-        page = req.query.page ? parseInt(req.query.page as string) : 1;
-      } catch (error) { }
-      const [count_result]: [RowDataPacket[], FieldPacket[]] =
-        await connection.execute(
-          'SELECT count(*) as numRows FROM allJobsFromDatabase',
-        );
-      const numRows = count_result[0].numRows;
-      const numPages = Math.ceil(numRows / numPerPage);
-      let to_send;
-      if (numPages > 0) {
-        if (page > numPages) {
-          page = numPages;
-        }
-        const skip = (page - 1) * numPerPage;
-        const limit = skip + ',' + numPerPage;
-        let [result]: [RowDataPacket[], FieldPacket[]] =
-          await connection.execute(
-            'SELECT j.*, jm.score, od.name as companyName ' +
-            'FROM jobMatchScore as jm ' +
-            'INNER JOIN jobs as j ON jm.jobId = j.jobId ' +
-            'INNER JOIN organization_data as od ON j.companyId = od.id ' +
-            'WHERE jm.applicantId = ? ' +
-            'ORDER BY score DESC ' +
-            'LIMIT ' + limit,
-            [applicantId],
-          );
-
-        if (!Array.isArray(result) || result.length === 0) {
-          // console.log("length = 0");
-          [result] =
-            await connection.execute(
-              'SELECT * FROM allJobsFromDatabase LIMIT ' + limit,
-            );
-        }
-        // console.log(result);
-        (result as RowDataPacket).forEach((entry) => {
-          entry.deadline = formatDate(entry.deadline);
-        });
-        to_send = {
-          page: page,
-          numPages: numPages,
-          totalJobs: numRows,
-          jobs: result,
-        };
-      } else {
-        to_send = {
-          page: 0,
-          numPages: 0,
-          totalJobs: 0,
-          jobs: [],
-        };
+      page = req.query.page ? parseInt(req.query.page as string) : 1;
+    } catch (error) {}
+    const [count_result]: [RowDataPacket[], FieldPacket[]] =
+      await connection.execute(
+        'SELECT count(*) as numRows FROM allJobsFromDatabase',
+      );
+    const numRows = count_result[0].numRows;
+    const numPages = Math.ceil(numRows / numPerPage);
+    let to_send;
+    if (numPages > 0) {
+      if (page > numPages) {
+        page = numPages;
       }
+      const skip = (page - 1) * numPerPage;
+      const limit = skip + ',' + numPerPage;
+      let [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+        'SELECT j.*, jm.score, od.name as companyName ' +
+          'FROM jobMatchScore as jm ' +
+          'INNER JOIN jobs as j ON jm.jobId = j.jobId ' +
+          'INNER JOIN organization_data as od ON j.companyId = od.id ' +
+          'WHERE jm.applicantId = ? ' +
+          'ORDER BY score DESC ' +
+          'LIMIT ' +
+          limit,
+        [applicantId],
+      );
 
-      res.json({ ...to_send, success: true });
-    } catch (err) {
-      logger.error('Error in Getting all jobs by page', err);
-      res.status(500).json({ message: 'Something went wrong!', success: false });
+      if (!Array.isArray(result) || result.length === 0) {
+        // console.log("length = 0");
+        [result] = await connection.execute(
+          'SELECT * FROM allJobsFromDatabase LIMIT ' + limit,
+        );
+      }
+      // console.log(result);
+      (result as RowDataPacket).forEach((entry) => {
+        entry.deadline = formatDate(entry.deadline);
+      });
+      to_send = {
+        page: page,
+        numPages: numPages,
+        totalJobs: numRows,
+        jobs: result,
+      };
+    } else {
+      to_send = {
+        page: 0,
+        numPages: 0,
+        totalJobs: 0,
+        jobs: [],
+      };
     }
-  });
 
+    res.json({ ...to_send, success: true });
+  } catch (err) {
+    logger.error('Error in Getting all jobs by page', err);
+    res.status(500).json({ message: 'Something went wrong!', success: false });
+  }
+});
 
 router.get('/search', async (req, res) => {
   try {

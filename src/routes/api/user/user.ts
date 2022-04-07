@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { isLoggedIn } from '@middleware/authentication';
 import { searchUser } from '@models/Auth';
 import express from 'express';

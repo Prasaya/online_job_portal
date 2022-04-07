@@ -1,22 +1,20 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import session from 'express-session';
 import morgan from 'morgan';
 import passport from 'passport';
 import logger from '@utils/logger';
-import mysqlSession from 'express-mysql-session';
 import viewCounter from '@middleware/viewCounter';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
-
-const MySQLStore = mysqlSession(session);
+let session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
 const appSetup = (app: express.Application) => {
   app.use(express.static('./dist/public'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  const sessionStore = new MySQLStore({}, dbConnection, (err) => {
+  const sessionStore = new MySQLStore({}, dbConnection, (err: any) => {
     if (err) {
       logger.error(`Error setting up sessionStore: ${err}`);
     } else {

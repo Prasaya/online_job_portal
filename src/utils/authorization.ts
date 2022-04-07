@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Role } from '@typings/authorization';
 import connection from './dbSetup';
 

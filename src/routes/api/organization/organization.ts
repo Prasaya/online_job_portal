@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import express, { Request, Response } from 'express';
 import { isOrganization } from '@middleware/authorization';
 import logger from '@utils/logger';
@@ -10,11 +12,12 @@ import {
 import logoRouter from './logo';
 import { checkSchema, param, validationResult } from 'express-validator';
 import { UpdateOrganization } from '@typings/Organization';
-import { getStatistics } from '@models/Statistics'
+import { getStatistics } from '@models/Statistics';
 
 const router = express.Router();
 
-router.get('/public/:organizationId',
+router.get(
+  '/public/:organizationId',
   param('organizationId').isString().isLength({ min: 36, max: 36 }),
   async (req, res) => {
     try {
@@ -28,11 +31,10 @@ router.get('/public/:organizationId',
       let organization = await getOrganizationById(organizationId);
 
       res.json({ organizationData: organization, success: true });
-
     } catch (err) {
       logger.error('Error in getting organization by id', err);
     }
-  }
+  },
 );
 
 router.use(isOrganization);
@@ -91,16 +93,12 @@ router.get('/jobs', async (req, res) => {
   }
 });
 
-router.get(
-  '/:jobId/stats',
-  async (req, res) => {
-    const jobId = req.params.jobId;
-    const { status, ...rest } = await getStatistics(jobId);
-    return res.status(status).json(rest);
-  }
-);
+router.get('/:jobId/stats', async (req, res) => {
+  const jobId = req.params.jobId;
+  const { status, ...rest } = await getStatistics(jobId);
+  return res.status(status).json(rest);
+});
 
-getStatistics("4f839335-cfd1-494d-a83d-ded26312187c")
-
+getStatistics('4f839335-cfd1-494d-a83d-ded26312187c');
 
 export default router;

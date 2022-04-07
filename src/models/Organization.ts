@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { v4 as uuidv4 } from 'uuid';
 import { Schema } from 'express-validator';
 import {
@@ -174,16 +176,14 @@ export const updateOrganization = async (
 export const getOrganizationById = async (companyId: string) => {
   try {
     const [result] = await connection.execute(
-      'select * from organization_data ' +
-      'where id = ?',
+      'select * from organization_data ' + 'where id = ?',
       [companyId],
     );
 
     let organization = result;
     return organization;
-
   } catch (err) {
     logger.error('Error when applying for job: ', err);
-    return "";
+    return '';
   }
 };

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import { createNewUser, applicantRegisterSchema } from '@models/User';
@@ -10,7 +12,7 @@ import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
 import { getAuthUser } from '@models/Auth';
 import { insertVerificationRegister } from '@models/Verify';
-import axios from "axios";
+import axios from 'axios';
 
 const router = express.Router();
 
@@ -44,7 +46,6 @@ router.post(
         city: req.body.city || null,
         website: req.body.website || null,
         phone: req.body.phone || null,
-        logo: req.body.logo || null,
       };
       const organization: Organization = await createNewOrganization(
         organizationData,

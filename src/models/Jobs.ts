@@ -81,8 +81,8 @@ export const createNewJobPost = async (
   const { qualifications, skills } = jobPostData;
   await connection.execute(
     'INSERT INTO jobs ' +
-    '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
-    'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      '(jobId, companyId, title, description, vacancies, experience, address, district, deadline) ' +
+      'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [...Object.values(jobData)],
   );
 
@@ -121,7 +121,7 @@ export const createNewJobPost = async (
     // This is to avoid the max bytes limitation of mysql
     if (
       Math.floor(index / 20) ===
-      PromiseArray.length - initialPromiseArrayLength &&
+        PromiseArray.length - initialPromiseArrayLength &&
       index !== skills.length - 1
     ) {
       query += '(?, ?, ?), ';
@@ -155,7 +155,7 @@ export const getApplicantsForJob = async (jobId: string) => {
     const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
       `SELECT ad.firstName, ad.lastName, ad.middleName, a.email, jm.score, aj.applicantId, aj.jobId
       FROM applicant_jobs as aj
-      INNER JOIN jobMatchScore as jm ON(jm.jobId = aj.jobId) AND(jm.applicantId = aj.applicantId) 
+      INNER JOIN jobMatchScore as jm ON(jm.jobId = aj.jobId) AND(jm.applicantId = aj.applicantId)
       INNER JOIN auth as a ON a.id = aj.applicantId
       INNER JOIN applicant_data as ad on ad.id = a.id
       WHERE aj.jobId = ?
@@ -187,16 +187,19 @@ export const searchJobs = async (query: string) => {
   }
 };
 
-
 export const getJobById = async (jobId: string) => {
   try {
-    const [result]: [RowDataPacket[], FieldPacket[]] =
-      await connection.execute('CALL getJobFromId(?)', [jobId]);
-    (result as RowDataPacket)[0].forEach((entry) => {
-      entry.deadline = formatDate(entry.deadline);
-    });
+    const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+      'CALL getJobFromId(?)',
+      [jobId],
+    );
+    (result as RowDataPacket)[0].forEach(
+      (entry: { deadline: String | Date }) => {
+        entry.deadline = formatDate(entry.deadline as Date);
+      },
+    );
     return result[0][0];
   } catch (error) {
     logger.error('Error getting jobs by ID', error);
   }
-}
+};

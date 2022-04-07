@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { v4 as uuidv4 } from 'uuid';
 import {
   NewUserInput,
@@ -283,17 +285,17 @@ export const getUserById = async (userId: string) => {
     const [skills_result]: [RowDataPacket[][], FieldPacket[]] =
       await connection.execute(
         'SELECT name, proficiency, experience FROM applicant_skills ' +
-        'WHERE id = ?',
+          'WHERE id = ?',
         [userId],
       );
 
     const [academics_result]: [RowDataPacket[][], FieldPacket[]] =
       await connection.execute(
         'SELECT aq.qid, aq.level, aq.discipline, aq.degree ' +
-        'FROM applicant_academics as aa ' +
-        'INNER JOIN academic_qualifications as aq ' +
-        'ON aa.qid = aq.qid ' +
-        'WHERE id = ? ',
+          'FROM applicant_academics as aa ' +
+          'INNER JOIN academic_qualifications as aq ' +
+          'ON aa.qid = aq.qid ' +
+          'WHERE id = ? ',
         [userId],
       );
 

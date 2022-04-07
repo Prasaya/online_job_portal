@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import express from 'express';
 import connection from '@utils/dbSetup';
 import { param } from 'express-validator';
@@ -15,7 +17,7 @@ router.get('/rank/:id', async (req, res) => {
         SELECT aj.jobId, aj.applicantId,
                 RANK() OVER(ORDER BY jm.score DESC) position
         FROM jobMatchScore as jm
-        INNER JOIN applicant_jobs as aj ON(jm.jobId = aj.jobId) AND(aj.applicantId = jm.applicantId)  
+        INNER JOIN applicant_jobs as aj ON(jm.jobId = aj.jobId) AND(aj.applicantId = jm.applicantId)
         ORDER BY position DESC) as val
             WHERE(val.jobId = ?) AND(val.applicantId = ?) `,
       [jobId, applicantId],
