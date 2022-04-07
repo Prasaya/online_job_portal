@@ -5,9 +5,7 @@ const path = require('path');
 const dirname = __dirname;
 
 const config = {
-  /**
-   * @type {("none" | "development" | "production")}
-   */
+  // @ts-ignore
   mode: process.env.NODE_ENV || 'development',
   entry: './src/bin/www',
   output: {
@@ -18,7 +16,7 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'babel-loader',
+        loader: 'ts-loader',
         exclude: [
           path.resolve('./src/client/'),
           path.resolve('./python/'),
