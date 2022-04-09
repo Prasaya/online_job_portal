@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+    app:
+        image: node:current
+        command: sh -c "yarn install && yarn run start"
+        ports:
+            - 3000:3000
+        working_dir: /app
+        volumes:
+            - ./:/app
+        environment:
+            MYSQL_HOST: mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: secret
+            MYSQL_DB: todos
+
+    mysql:
+        image: mysql:latest
+        volumes:
+            - online-job-portal-data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: todos
+
+volumes:
+    online-job-portal-data:
