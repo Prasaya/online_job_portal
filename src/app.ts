@@ -16,9 +16,10 @@ app.use('*', (_req, res) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- this is a global error handler
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (err) {
-    logger.error(err);
+  if (res.headersSent) {
+    return next(err);
   }
+  logger.log(err.stack);
   const sentError = err.expose ? err : {};
   return res
     .status(err.status || 500)
