@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+    app:
+        build: .
+        ports:
+            - 3000:3000
+        volumes:
+            - ./:/app
+        env_file: config/.env
+
+    mysql:
+        image: mysql:latest
+        volumes:
+            - online-job-portal-data:/var/lib/mysql
+        env_file: config/.env
+
+volumes:
+    online-job-portal-data:
