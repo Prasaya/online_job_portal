@@ -10225,6 +10225,8 @@ __metadata:
 "online_job_portal@workspace:.":
   version: 0.0.0-use.local
   resolution: "online_job_portal@workspace:."
+  dependencies:
+    typescript: ^4.6.3
   languageName: unknown
   linkType: soft
 
@@ -13847,7 +13849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.5.5":
+"typescript@npm:^4.5.5, typescript@npm:^4.6.3":
   version: 4.6.3
   resolution: "typescript@npm:4.6.3"
   bin:
@@ -13857,7 +13859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>":
   version: 4.6.3
   resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
   bin:

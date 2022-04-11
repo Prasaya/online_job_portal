@@ -14,5 +14,8 @@
   },
   "repository": "git@github.com:Suven-p/online_job_portal.git",
   "author": "Suven-p <pandeysuven@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.6.3"
+  }
 }
