@@ -7,39 +7,40 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "typeRoots": [
-      "packages/api/typings",
       "node_modules/@types",
+      "packages/api/typings"
     ],
     "outDir": "./dist",
     "allowJs": true,
-    "checkJs": false,api/middleware /*
-    "baseUrl": ".",api/models/*
-    "paths": {api/routes/*
-      "@middleware/*api/utils/*
-        "api/middlewarapi/typings/*
-      ],api/*
+    "checkJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@middleware/*": [
+        "packages/api/middleware/*"
+      ],
       "@models/*": [
-        "api/models/*"
-      ],api/**/*.ts
-      "@routes/*": [api/client /**
-        "api/routes/*"
+        "packages/api/models/*"
+      ],
+      "@routes/*": [
+        "packages/api/routes/*"
       ],
       "@utils/*": [
-        "api/utils/*"
+        "packages/api/utils/*"
       ],
       "@typings/*": [
-        "api/typings/*"
+        "packages/api/typings/*"
       ],
       "@root/*": [
-        "api/*"
+        "packages/api/*"
       ]
     }
   },
   "include": [
-    "api/**/*.ts"
-    ],
-    "exclude": [
-      "**/node_modules/**",
-      "client/**python/**"
-    ]
-  }
+    "packages/api/**/*.ts"
+  ],
+  "exclude": [
+    "**/node_modules/**",
+    "packages/client/",
+    "**python/**"
+  ]
+}
