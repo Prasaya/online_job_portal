@@ -1,6 +1,6 @@
 import { isApplicant } from '@middleware/authorization';
 import express, { Request, Response } from 'express';
-import academicsRoute from '../applicant/academics';
+import academicsRoute from './academics';
 import avatarRoute from './avatar';
 import jobsRoute from './jobs';
 import skillsRoute from './skills';
