@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import express from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
