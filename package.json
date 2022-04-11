@@ -1,22 +1,41 @@
 {
   "name": "online_job_portal",
   "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/api",
+    "packages/client"
+  ],
   "scripts": {
+    "clean": "rimraf ./dist && mkdir dist",
     "buildServer": "webpack --config webpack.config.js --progress --color",
-    "buildClient": "yarn workspace client run build",
-    "startServer": "yarn workspace api run start",
-    "startClient": "yarn workspace client run start"
+    "buildClient": "yarn workspace client run build && cp -a packages/client/build ./dist/public",
+    "build": "npm-run-all --parallel buildServer buildClient",
+    "rebuild": "npm-run-all --serial clean build",
+    "watchServer": "webpack --watch --config webpack.config.js --progress --color",
+    "watchOutput": "nodemon dist/backend.cjs --watch dist/backend.cjs --watch dist/public",
+    "predevServer": "npm-run-all buildServer",
+    "devServer": "npm-run-all --parallel watchOutput watchServer",
+    "devClient": "yarn workspace client run start",
+    "startServer": "node dist/backend.cjs",
+    "prestartPython": "./Local_API_v0_19_4/tomcat-esp-api-v03_94/bin/startup.sh",
+    "startPython": "python app/app.py",
+    "poststartPython": "./Local_API_v0_19_4/tomcat-esp-api-v03_94/bin/shutdown.sh"
   },
   "repository": "git@github.com:Suven-p/online_job_portal.git",
   "author": "Suven-p <pandeysuven@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "rimraf": "^3.0.2",
     "ts-loader": "^9.2.6",
     "typescript": "^4.6.3"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
+    "npm-run-all": "^4.1.5",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.1",
     "webpack-node-externals": "^3.0.0"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
