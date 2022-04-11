@@ -4,5 +4,15 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "version": "1.0.0",
+  "scripts": {
+    "buildServer": "yarn workspace api run build",
+    "buildClient": "yarn workspace client run build",
+    "startServer": "yarn workspace api run start",
+    "startClient": "yarn workspace client run start"
+  },
+  "repository": "git@github.com:Suven-p/online_job_portal.git",
+  "author": "Suven-p <pandeysuven@gmail.com>",
+  "license": "MIT"
 }
