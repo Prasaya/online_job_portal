@@ -2,7 +2,6 @@ import express from 'express';
 import morgan from 'morgan';
 import passport from 'passport';
 import logger from '@utils/logger';
-import viewCounter from '@middleware/viewCounter';
 import passportSetup from './passportSetup';
 import dbConnection from './dbSetup';
 let session = require('express-session');
@@ -16,6 +15,7 @@ const appSetup = (app: express.Application) => {
   const sessionStore = new MySQLStore({}, dbConnection, (err: any) => {
     if (err) {
       logger.error(`Error setting up sessionStore: ${err}`);
+      throw err;
     } else {
       logger.info('Session store connected!');
     }
@@ -47,7 +47,6 @@ const appSetup = (app: express.Application) => {
   app.use(passport.session());
 
   app.use(morgan('combined'));
-  app.use(viewCounter);
 };
 
 export default appSetup;
