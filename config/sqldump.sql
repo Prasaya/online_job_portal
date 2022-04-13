@@ -92,7 +92,7 @@ CREATE TABLE `applicant_data` (
   `picture` varchar(200) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `gender` varchar(10) DEFAULT NULL,
+  `gender` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   CONSTRAINT `applicant_data_ibfk_1` FOREIGN KEY (`id`) REFERENCES `auth` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

@@ -77,7 +77,7 @@ CREATE TABLE applicant_data (
     picture varchar(200),
     birthday date,
     phone varchar(20),
-    gender varchar(10),
+    gender varchar(20),
     primary key (id),
     foreign key (id) references auth(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -174,9 +174,9 @@ CREATE TABLE applicant_experience (
 );
 
 CREATE TABLE jobMatchScore (
-	applicantId	VARCHAR(36), 
-	jobId VARCHAR(36), 
-	score INT, 
+	applicantId	VARCHAR(36),
+	jobId VARCHAR(36),
+	score INT,
     primary key (applicantId, jobId),
     foreign key (applicantId) references applicant_data(id) ON DELETE CASCADE,
 	foreign key (jobId) references jobs(jobId) ON DELETE CASCADE

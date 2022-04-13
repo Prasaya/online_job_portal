@@ -77,7 +77,7 @@ export const applicantRegisterSchema: Schema = {
     in: ['body'],
     optional: { options: { checkFalsy: true } },
     isString: true,
-    isLength: { options: [{ max: 10 }] },
+    isLength: { options: [{ max: 20 }] },
   },
 };
 const updateApplicantSchema: Schema = { ...applicantRegisterSchema };
