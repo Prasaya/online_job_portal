@@ -7,7 +7,7 @@ import connection from '@utils/dbSetup';
 import applicantRoute from '@routes/api/applicant/applicant';
 import { param, validationResult } from 'express-validator';
 import logger from '@utils/logger';
-import { getUserById } from '@models/User';
+import { getJobseekerById } from '@models/User';
 import { formatDate } from '@utils/date';
 
 const router = express.Router();
@@ -24,7 +24,7 @@ router.get(
       }
       const userId = req.params.userId;
 
-      let user = await getUserById(userId);
+      let user = await getJobseekerById(userId);
 
       user.basics.birthday = formatDate(user.basics.birthday);
 

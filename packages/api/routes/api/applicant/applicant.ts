@@ -5,8 +5,8 @@ import avatarRoute from './avatar';
 import jobsRoute from './jobs';
 import skillsRoute from './skills';
 import { checkSchema, validationResult } from 'express-validator';
-import { updateUser, updateUserSchema } from '@models/User';
-import { UpdateUser } from '@typings/User';
+import { updateJobseeker, jobseekerUpdateSchema } from '@models/User';
+import { UpdateJobseekerParameters } from '@typings/User';
 import logger from '@utils/logger';
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 
 router.put(
   '/',
-  checkSchema(updateUserSchema),
+  checkSchema(jobseekerUpdateSchema),
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
@@ -37,7 +37,7 @@ router.put(
       }
 
       let uId = req.user!.user.basics.id;
-      const userData: UpdateUser = {
+      const userData: UpdateJobseekerParameters = {
         id: req.user!.user.basics.id,
         firstName: req.body.firstName || null,
         middleName: req.body.middleName || null,
@@ -46,7 +46,7 @@ router.put(
         phone: req.body.phone || null,
         gender: req.body.gender || null,
       };
-      const result = await updateUser(userData);
+      const result = await updateJobseeker(userData);
       return res.json({ result, success: true });
     } catch (err) {
       logger.error(`Error in changing user details: ${err}`);

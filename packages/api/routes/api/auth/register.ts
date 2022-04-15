@@ -2,12 +2,12 @@
 
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createNewUser, applicantRegisterSchema } from '@models/User';
+import { createJobseeker, jobseekerRegisterSchema } from '@models/User';
 import {
   organizationRegisterSchema,
   createNewOrganization,
 } from '@models/Organization';
-import { NewUserInput, User } from '@typings/User';
+import { NewJobseekerInput, Jobseeker } from '@typings/User';
 import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
 import { getAuthUser } from '@models/Auth';
@@ -65,7 +65,7 @@ router.post(
 
 router.post(
   '/',
-  checkSchema(applicantRegisterSchema),
+  checkSchema(jobseekerRegisterSchema),
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
@@ -82,20 +82,19 @@ router.post(
           .json({ message: 'User is already registered', success: false });
       }
 
-      const userData: NewUserInput = {
+      const userData: NewJobseekerInput = {
         email: req.body.email,
         password: req.body.password,
         firstName: req.body.firstName || null,
         middleName: req.body.middleName || null,
         lastName: req.body.lastName || null,
-        picture: req.body.picture || null,
         birthday: req.body.birthday || null,
         phone: req.body.phone || null,
         gender: req.body.gender || null,
       };
-      const user: User = await createNewUser(userData);
+      const user: Jobseeker = await createJobseeker(userData);
 
-      await insertVerificationRegister(user.id);
+      await insertVerificationRegister(user.basics.id);
 
       // await axios.get(`http://localhost:5000/newUser/${user.id}`);
 

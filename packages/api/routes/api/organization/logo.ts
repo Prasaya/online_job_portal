@@ -1,7 +1,7 @@
 import { updateLogo } from '@models/Organization';
-import { updatePicture } from '@models/User';
+import { updateJobseekerPicture } from '@models/User';
 import { Organization } from '@typings/Organization';
-import { User } from '@typings/User';
+import { Jobseeker } from '@typings/User';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';

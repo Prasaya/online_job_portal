@@ -1,6 +1,6 @@
 import { Organization } from '@typings/Organization';
 import { AuthData } from '@typings/authorization';
-import { User } from '@typings/User';
+import { Jobseeker } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { RowDataPacket, FieldPacket } from 'mysql2';
 import { formatDate } from '@utils/date';
@@ -56,7 +56,7 @@ export const getAuthUser = async (email: string): Promise<AuthData | null> => {
 export async function searchUser(
   userType: 'Users',
   uid: string,
-): Promise<User | null>;
+): Promise<Jobseeker | null>;
 export async function searchUser(
   userType: 'Organizations',
   uid: string,
@@ -64,11 +64,11 @@ export async function searchUser(
 export async function searchUser(
   userType: string,
   uid: string,
-): Promise<User | Organization | null>;
+): Promise<Jobseeker | Organization | null>;
 export async function searchUser(
   userType: string,
   id: string,
-): Promise<User | Organization | null> {
+): Promise<Jobseeker | Organization | null> {
   if (!id) {
     throw new Error('You must provide either id.');
   }
@@ -91,7 +91,7 @@ export async function searchUser(
     const academics = data.academics ? data.academics : [];
     const birthday = formatDate(data.birthday);
 
-    const user: User = {
+    const user: Jobseeker = {
       basics: {
         id: data.id,
         email: data.email,

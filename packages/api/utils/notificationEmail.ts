@@ -3,12 +3,15 @@
 import { getOrganizationById } from '@models/Organization';
 import JobPost from '@typings/JobPost';
 import DBJob from '@typings/Jobs';
-import { User } from '@typings/User';
+import { Jobseeker } from '@typings/User';
 import Connection from 'mysql2/typings/mysql/lib/Connection';
 import sgMail from './sendMail';
 
 // TODO: change templateId and dynamic_template_data according to template
-export default async function sendNotificationEmail(user: User, job: DBJob) {
+export default async function sendNotificationEmail(
+  user: Jobseeker,
+  job: DBJob,
+) {
   let companyDetails = (await getOrganizationById(job.companyId))[0];
 
   const msg = {

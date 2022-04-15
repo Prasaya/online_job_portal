@@ -1,12 +1,10 @@
-// @ts-nocheck
-
 import { v4 as uuidv4 } from 'uuid';
 import {
-  NewUserInput,
-  NewUserParameters,
-  UpdateUser,
+  NewJobseekerInput,
+  NewJobseekerParameters,
+  UpdateJobseekerParameters,
   Skill,
-  User,
+  Jobseeker,
   PublicUser,
   Academics,
 } from '@typings/User';
@@ -18,7 +16,7 @@ import path from 'path';
 import logger from '@utils/logger';
 import { FieldPacket, RowDataPacket } from 'mysql2';
 
-export const applicantRegisterSchema: Schema = {
+export const jobseekerRegisterSchema: Schema = {
   email: {
     in: ['body'],
     isEmail: true,
@@ -80,12 +78,12 @@ export const applicantRegisterSchema: Schema = {
     isLength: { options: [{ max: 20 }] },
   },
 };
-const updateApplicantSchema: Schema = { ...applicantRegisterSchema };
-delete updateApplicantSchema.password;
-delete updateApplicantSchema.email;
-export { updateApplicantSchema as updateUserSchema };
+const jobseekerUpdateSchema: Schema = { ...jobseekerRegisterSchema };
+delete jobseekerUpdateSchema.password;
+delete jobseekerUpdateSchema.email;
+export { jobseekerUpdateSchema };
 
-export const userSkillsSchema: Schema = {
+export const jobseekerSkillsSchema: Schema = {
   skills: {
     in: ['body'],
     isArray: true,
@@ -107,7 +105,7 @@ export const userSkillsSchema: Schema = {
   },
 };
 
-export const userAcademicsSchema: Schema = {
+export const jobseekerAcademicsSchema: Schema = {
   academics: {
     in: ['body'],
     isArray: true,
@@ -118,15 +116,18 @@ export const userAcademicsSchema: Schema = {
   // },
 };
 
-export const createNewUser = async (userData: NewUserInput): Promise<User> => {
-  const user: NewUserParameters = {
+export const createJobseeker = async (
+  userData: NewJobseekerInput,
+): Promise<Jobseeker> => {
+  // Order is important; Separate object is created to return id
+  const user: NewJobseekerParameters = {
     id: uuidv4(),
     email: userData.email,
     password: await hashPassword(userData.password),
     firstName: userData.firstName,
     middleName: userData.middleName,
     lastName: userData.lastName,
-    picture: userData.picture,
+    picture: null,
     birthday: userData.birthday,
     phone: userData.phone,
     gender: userData.gender,
@@ -135,10 +136,23 @@ export const createNewUser = async (userData: NewUserInput): Promise<User> => {
     'CALL createApplicant(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [...Object.values(user)],
   );
-  return { ...user, type: 'Users', roles: [], socials: [], password: null };
+  return {
+    basics: {
+      ...user,
+      type: 'Users',
+      roles: [],
+      socials: [],
+      password: null,
+    },
+    skills: [],
+    academics: [],
+  };
 };
 
-export const updatePicture = async (userId: string, picture: UploadedFile) => {
+export const updateJobseekerPicture = async (
+  userId: string,
+  picture: UploadedFile,
+) => {
   try {
     const fileName = userId + path.extname(picture.name);
     await picture.mv(path.resolve('.', 'images', fileName));
@@ -160,7 +174,7 @@ export const updatePicture = async (userId: string, picture: UploadedFile) => {
   }
 };
 
-export const addApplicantSkills = async (
+export const addJobseekerSkills = async (
   userId: string,
   skills: Skill | Skill[],
   replaceIfExists: boolean,
@@ -174,6 +188,7 @@ export const addApplicantSkills = async (
     ]);
   } catch (err) {
     logger.error('Error when adding skills: ', err);
+    //@ts-ignore
     if (err.errno === 1062) {
       return {
         status: 400,
@@ -186,17 +201,17 @@ export const addApplicantSkills = async (
   return { status: 200, skills: toAdd, success: true };
 };
 
-export const replaceApplicantSkills = async (
+export const replaceJobseekerSkills = async (
   userId: string,
   skills: Skill | Skill[],
 ) => {
   await connection.execute('DELETE from applicant_skills where id = ?', [
     userId,
   ]);
-  return addApplicantSkills(userId, skills, false);
+  return addJobseekerSkills(userId, skills, false);
 };
 
-export const addApplicantAcademics = async (
+export const addJobseekerAcademics = async (
   userId: string,
   academics: Academics[],
   replaceIfExists: boolean,
@@ -210,33 +225,42 @@ export const addApplicantAcademics = async (
     ]);
   } catch (err) {
     logger.error('Error when adding qualification: ', err);
-    if (err.errno === 1062) {
-      return {
-        status: 400,
-        message: "You've already added this qualification!",
-        success: false,
-      };
+    //@ts-ignore
+    switch (err.errno) {
+      case 1062: {
+        return {
+          status: 400,
+          message: "You've already added this qualification!",
+          success: false,
+        };
+      }
+      case 1452: {
+        return {
+          status: 400,
+          message: 'Invalid qualification!',
+          success: false,
+        };
+      }
+      default: {
+        return {
+          status: 500,
+          message: 'Something went wrong!',
+          success: false,
+        };
+      }
     }
-    if (err.errno === 1452) {
-      return {
-        status: 400,
-        message: 'Invalid qualification!',
-        success: false,
-      };
-    }
-    return { status: 500, message: 'Something went wrong!', success: false };
   }
   return { status: 200, academics: academics, success: true };
 };
 
-export const replaceApplicantAcademics = async (
+export const replaceJobseeerAcademics = async (
   userId: string,
   academics: Academics[],
 ) => {
   await connection.execute('DELETE from applicant_academics where id = ?', [
     userId,
   ]);
-  return addApplicantAcademics(userId, academics, false);
+  return addJobseekerAcademics(userId, academics, false);
 };
 
 export const applyForJob = async (userId: string, jobId: string) => {
@@ -253,8 +277,10 @@ export const applyForJob = async (userId: string, jobId: string) => {
   };
 };
 
-export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
-  const user: UpdateUser = {
+export const updateJobseeker = async (
+  userData: UpdateJobseekerParameters,
+): Promise<UpdateJobseekerParameters> => {
+  const user: UpdateJobseekerParameters = {
     id: userData.id,
     firstName: userData.firstName,
     middleName: userData.middleName,
@@ -269,7 +295,7 @@ export const updateUser = async (userData: UpdateUser): Promise<UpdateUser> => {
   return { ...user };
 };
 
-export const getUserById = async (userId: string) => {
+export const getJobseekerById = async (userId: string) => {
   try {
     const [basic_result]: [RowDataPacket[][], FieldPacket[]] =
       await connection.execute(
@@ -277,27 +303,35 @@ export const getUserById = async (userId: string) => {
         [userId],
       );
 
-    const [email_result]: [RowDataPacket[][], FieldPacket[]] =
-      await connection.execute('SELECT email FROM auth ' + 'WHERE id = ?', [
-        userId,
-      ]);
+    const [email_result] = <{ email: string }[][]>(
+      (<unknown>(
+        await connection.execute('SELECT email FROM auth ' + 'WHERE id = ?', [
+          userId,
+        ])
+      ))
+    );
+    const [skills_result] = <Skill[][]>(
+      (<unknown>(
+        await connection.execute(
+          'SELECT name, proficiency, experience FROM applicant_skills ' +
+            'WHERE id = ?',
+          [userId],
+        )
+      ))
+    );
 
-    const [skills_result]: [RowDataPacket[][], FieldPacket[]] =
-      await connection.execute(
-        'SELECT name, proficiency, experience FROM applicant_skills ' +
-          'WHERE id = ?',
-        [userId],
-      );
-
-    const [academics_result]: [RowDataPacket[][], FieldPacket[]] =
-      await connection.execute(
-        'SELECT aq.qid, aq.level, aq.discipline, aq.degree ' +
-          'FROM applicant_academics as aa ' +
-          'INNER JOIN academic_qualifications as aq ' +
-          'ON aa.qid = aq.qid ' +
-          'WHERE id = ? ',
-        [userId],
-      );
+    const [academics_result] = <Academics[][]>(
+      (<unknown>(
+        await connection.execute(
+          'SELECT aq.qid, aq.level, aq.discipline, aq.degree ' +
+            'FROM applicant_academics as aa ' +
+            'INNER JOIN academic_qualifications as aq ' +
+            'ON aa.qid = aq.qid ' +
+            'WHERE id = ? ',
+          [userId],
+        )
+      ))
+    );
 
     let user = {
       basics: { ...basic_result[0], email: email_result[0].email },

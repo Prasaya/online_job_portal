@@ -1,25 +1,29 @@
 import express, { Request, Response } from 'express';
-import { userSkillsSchema, addApplicantSkills, replaceApplicantSkills } from '@models/User';
-import { User } from '@typings/User';
+import {
+  jobseekerSkillsSchema,
+  addJobseekerSkills,
+  replaceJobseekerSkills,
+} from '@models/User';
+import { Jobseeker } from '@typings/User';
 import { checkSchema, validationResult } from 'express-validator';
 import axios from 'axios';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const userData = req.user?.user as User;
+  const userData = req.user?.user as Jobseeker;
   res.json({ skills: userData.skills, success: true });
 });
 
 router.post(
   '/',
-  checkSchema(userSkillsSchema),
+  checkSchema(jobseekerSkillsSchema),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array(), success: false });
     }
-    const { status, ...message } = await addApplicantSkills(
+    const { status, ...message } = await addJobseekerSkills(
       req.user!.user.basics.id,
       req.body.skills,
       false,
@@ -32,13 +36,13 @@ router.post(
 
 router.put(
   '/',
-  checkSchema(userSkillsSchema),
+  checkSchema(jobseekerSkillsSchema),
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array(), success: false });
     }
-    const { status, ...message } = await replaceApplicantSkills(
+    const { status, ...message } = await replaceJobseekerSkills(
       req.user!.user.basics.id,
       req.body.skills,
     );

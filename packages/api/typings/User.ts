@@ -1,12 +1,12 @@
 export type social =
   | {
-    provider: string;
-    identifier: string;
-  }
+      provider: string;
+      identifier: string;
+    }
   | {
-    provider: null;
-    identifier: null;
-  };
+      provider: null;
+      identifier: null;
+    };
 
 export interface Skill {
   name: string;
@@ -21,7 +21,7 @@ export interface Academics {
   degree: string;
 }
 
-export interface User {
+export interface Jobseeker {
   basics: {
     id: string;
     email: string;
@@ -41,13 +41,20 @@ export interface User {
   academics: Academics[];
 }
 
-export interface NewUserParameters
-  extends Omit<User['basics'], 'type' | 'roles' | 'socials' | 'password' | 'picture'> {
+export interface NewJobseekerParameters
+  extends Omit<
+    Jobseeker['basics'],
+    'type' | 'roles' | 'socials' | 'password' | 'picture'
+  > {
+  picture: null;
   password: string;
 }
 
-export type NewUserInput = Omit<NewUserParameters, 'id'>;
-export type UpdateUser = Omit<NewUserParameters, 'password' | 'email' | 'type'>;
+export type NewJobseekerInput = Omit<NewJobseekerParameters, 'id' | 'picture'>;
+export type UpdateJobseekerParameters = Omit<
+  NewJobseekerParameters,
+  'password' | 'email' | 'type' | 'picture'
+>;
 
 export interface PublicUser {
   basics: {

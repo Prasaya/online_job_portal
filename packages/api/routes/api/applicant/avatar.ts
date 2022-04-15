@@ -1,6 +1,6 @@
 import { isApplicant } from '@middleware/authorization';
-import { updatePicture } from '@models/User';
-import { User } from '@typings/User';
+import { updateJobseekerPicture } from '@models/User';
+import { Jobseeker } from '@typings/User';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -8,7 +8,7 @@ import path from 'path';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const userData = req.user?.user as User;
+  const userData = req.user?.user as Jobseeker;
   const fileName = userData.basics.picture;
   if (!fileName) {
     res.status(404).json({ message: 'No avatar found!', success: false });
@@ -41,7 +41,7 @@ router.put(
       return;
     }
     const file = req.files.avatar;
-    const json = await updatePicture(req.user!.user.basics.id, file);
+    const json = await updateJobseekerPicture(req.user!.user.basics.id, file);
     res.json(json);
   },
 );
