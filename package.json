@@ -18,6 +18,7 @@
     "devServer": "npm-run-all --parallel watchOutput watchServer",
     "devClient": "yarn workspace client run start",
     "startServer": "node dist/backend.cjs",
+    "dev": "npm-run-all --parallel devServer devClient",
     "prestartPython": "./Local_API_v0_19_4/tomcat-esp-api-v03_94/bin/startup.sh",
     "startPython": "python app/app.py",
     "poststartPython": "./Local_API_v0_19_4/tomcat-esp-api-v03_94/bin/shutdown.sh"
