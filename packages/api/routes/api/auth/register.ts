@@ -12,11 +12,11 @@ import logger from '@utils/logger';
 import { Organization, NewOrganizationInput } from '@typings/Organization';
 import { getAuthUser } from '@models/Auth';
 import { insertVerificationRegister } from '@models/Verify';
-import axios from 'axios';
+import { getEnv } from '@root/services/Configuration/env';
 
 const router = express.Router();
 
-const url = `localhost:${process.env.PORT || 8080}`;
+const url = `localhost:${getEnv('PORT', '8080')}`;
 
 router.post(
   '/organization',

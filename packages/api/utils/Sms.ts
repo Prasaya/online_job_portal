@@ -1,6 +1,8 @@
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const phoneNumber = process.env.TWILIO_PHONE_NUMBER;
+import { getEnv } from '@root/services/Configuration/env';
+
+const accountSid = getEnv('TWILIO_ACCOUNT_SID');
+const authToken = getEnv('TWILIO_AUTH_TOKEN');
+const phoneNumber = getEnv('TWILIO_PHONE_NUMBER');
 const shortUrl = require('node-url-shortener');
 const client = require('twilio')(accountSid, authToken);
 

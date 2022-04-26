@@ -4,16 +4,14 @@ import passport from 'passport';
 import logger from '@utils/logger';
 import { getAuthUser, searchUser } from '@models/Auth';
 import { verifyPassword } from './password';
+import { getEnv } from '@root/services/Configuration/env';
 
 const passportConfigure = (passportInstance: passport.Authenticator) => {
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-    throw new Error('Google client id or secret is not set');
-  }
   passportInstance.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientID: getEnv('GOOGLE_CLIENT_ID'),
+        clientSecret: getEnv('GOOGLE_CLIENT_SECRET'),
         callbackURL: '/api/auth/google/callback',
         state: true,
       },

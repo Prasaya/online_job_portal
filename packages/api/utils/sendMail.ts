@@ -1,9 +1,7 @@
 import sgMail from '@sendgrid/mail';
+import { getEnv } from '@root/services/Configuration/env';
 
-const API_KEY = process.env.SENDGRID_API_KEY;
-if (!API_KEY) {
-  throw new Error('No SendGrid API key set!');
-}
+const API_KEY = getEnv('SENDGRID_API_KEY');
 sgMail.setApiKey(API_KEY);
 
 export default sgMail;

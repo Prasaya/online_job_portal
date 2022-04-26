@@ -1,4 +1,4 @@
-import './env';
+import '@root/services/Configuration/env';
 import express, { ErrorRequestHandler } from 'express';
 import apiRoute from '@routes/api/api';
 import appSetup from '@utils/appSetup';
