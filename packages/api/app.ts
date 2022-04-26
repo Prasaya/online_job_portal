@@ -28,3 +28,4 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 app.use(errorHandler);
 
 export default app;
+module.exports = app;

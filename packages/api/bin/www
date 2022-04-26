@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
-import app from '@root/app';
-import http from 'http';
-import logger from '@utils/logger';
-import { getEnv } from '@root/services/Configuration/env';
+const app = require('../app');
+const http = require('http');
 
 const port = parseInt(
-    getEnv('PORT', '8080'),
+    process.env.PORT || '8080',
     10,
 );
 app.set(
@@ -23,10 +21,10 @@ server.on(
         const formatted = typeof addr === 'string'
             ? addr
             : `${addr.address}:${addr.port}`;
-        logger.info(`Listening on ${formatted}`);
+        console.log(`App: Listening on ${formatted}`);
     },
 );
 server.on(
     'error',
-    logger.error,
+    console.error,
 );
