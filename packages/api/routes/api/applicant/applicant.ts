@@ -4,10 +4,10 @@ import academicsRoute from './academics';
 import avatarRoute from './avatar';
 import jobsRoute from './jobs';
 import skillsRoute from './skills';
-import { checkSchema, validationResult } from 'express-validator';
 import { updateJobseeker, jobseekerUpdateSchema } from '@models/User';
 import { UpdateJobseekerParameters } from '@typings/User';
 import logger from '@utils/logger';
+import schemaHandler from '@middleware/schemaHandler';
 
 const router = express.Router();
 router.use(isApplicant);
@@ -26,17 +26,9 @@ router.get('/', (req, res) => {
 
 router.put(
   '/',
-  checkSchema(jobseekerUpdateSchema),
+  schemaHandler(jobseekerUpdateSchema),
   async (req: Request, res: Response) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({ message: errors.array(), success: false });
-      }
-
-      let uId = req.user!.user.basics.id;
       const userData: UpdateJobseekerParameters = {
         id: req.user!.user.basics.id,
         firstName: req.body.firstName || null,
