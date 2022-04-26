@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { Role } from '@typings/authorization';
+import { Role } from '@typings/authentication';
 import connection from './dbSetup';
 
 // eslint-disable-next-line import/no-mutable-exports

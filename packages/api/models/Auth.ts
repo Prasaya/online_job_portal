@@ -1,5 +1,5 @@
 import { Organization } from '@typings/Organization';
-import { AuthData } from '@typings/authorization';
+import { AuthData } from '@typings/authentication';
 import { Jobseeker } from '@typings/User';
 import connection from '@utils/dbSetup';
 import { RowDataPacket, FieldPacket } from 'mysql2';
@@ -49,7 +49,7 @@ export const getAuthUser = async (email: string): Promise<AuthData | null> => {
   ) {
     return null;
   }
-  const socials = result[0].socials ? result[0].socials : [];
+  const socials = result[0].socials || [];
   return { ...result[0][0], socials } as AuthData;
 };
 

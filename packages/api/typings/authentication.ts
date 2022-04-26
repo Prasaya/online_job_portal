@@ -6,10 +6,14 @@ export interface Role {
   roleLevel: number;
 }
 
+enum UserType {
+  Jobseeker = 'Users',
+  Organization = 'Organizations',
+}
 export interface AuthData {
   id: string;
   email: string;
   password?: string;
-  type: 'Users' | 'Organizations';
+  type: UserType;
   socials: social[];
 }
