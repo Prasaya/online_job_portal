@@ -3,24 +3,29 @@ import morgan from 'morgan';
 import passport from 'passport';
 import logger from '@utils/logger';
 import passportSetup from './passportSetup';
-import dbConnection from './dbSetup';
 import { getEnv } from '@root/services/Configuration/env';
+import { databaseService } from '@root/services/bootstrap';
 let session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 
 const appSetup = (app: express.Application) => {
+  app.locals.dbService = databaseService;
   app.use(express.static('./dist/public'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  const sessionStore = new MySQLStore({}, dbConnection, (err: any) => {
-    if (err) {
-      logger.error(`Error setting up sessionStore: ${err}`);
-      throw err;
-    } else {
-      logger.info('Session store connected!');
-    }
-  });
+  const sessionStore = new MySQLStore(
+    {},
+    databaseService.getConnectionPool(),
+    (err: any) => {
+      if (err) {
+        logger.error(`Error setting up sessionStore: ${err}`);
+        throw err;
+      } else {
+        logger.info('Session store connected!');
+      }
+    },
+  );
   const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
   const sess = {
     name: 'sessionId',
@@ -39,7 +44,7 @@ const appSetup = (app: express.Application) => {
 
   app.use(session(sess));
 
-  passportSetup(passport);
+  passportSetup(passport, databaseService);
   app.use(passport.initialize());
   app.use(passport.session());
 

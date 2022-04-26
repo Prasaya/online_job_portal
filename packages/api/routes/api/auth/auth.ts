@@ -29,6 +29,7 @@ router.put(
     }
     try {
       await modifyUser(
+        req.app.locals.dbService,
         req.user?.user.basics.id!,
         req.body.email || null,
         req.body.password || null,

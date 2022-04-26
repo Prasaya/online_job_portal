@@ -5,8 +5,12 @@ import logger from '@utils/logger';
 import { getAuthUser, searchUser } from '@models/Auth';
 import { verifyPassword } from './password';
 import { getEnv } from '@root/services/Configuration/env';
+import { IDatabaseService } from '@root/services/DatabaseService/typings';
 
-const passportConfigure = (passportInstance: passport.Authenticator) => {
+const passportConfigure = (
+  passportInstance: passport.Authenticator,
+  dbService: IDatabaseService,
+) => {
   passportInstance.use(
     new GoogleStrategy(
       {
@@ -23,7 +27,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
     new LocalStrategy(async (email, password, cb) => {
       try {
         const invalidDataPrompt = 'Incorrect username or password';
-        const userData = await getAuthUser(email);
+        const userData = await getAuthUser(dbService, email);
         if (userData === null) {
           return cb(null, false, { message: invalidDataPrompt });
         }
@@ -34,7 +38,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
         if (!passwordMatches) {
           return cb(null, false, { message: invalidDataPrompt });
         }
-        const user = await searchUser(userData.type, userData.id);
+        const user = await searchUser(dbService, userData.type, userData.id);
         if (user === null) {
           return cb(null, false, { message: 'Could not find user data!' });
         }
@@ -58,7 +62,7 @@ const passportConfigure = (passportInstance: passport.Authenticator) => {
         if (!obj) {
           return cb(null, null);
         }
-        const userData = await searchUser(obj.type, obj.id);
+        const userData = await searchUser(dbService, obj.type, obj.id);
         if (userData === null) {
           return cb(null, false);
         }

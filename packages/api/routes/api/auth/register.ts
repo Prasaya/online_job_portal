@@ -30,7 +30,10 @@ router.post(
           .json({ message: errors.array(), success: false });
       }
 
-      const existingUser = await getAuthUser(req.body.email);
+      const existingUser = await getAuthUser(
+        req.app.locals.dbService,
+        req.body.email,
+      );
       if (existingUser !== null) {
         return res
           .status(400)
@@ -75,7 +78,10 @@ router.post(
           .json({ message: errors.array(), success: false });
       }
 
-      const existingUser = await getAuthUser(req.body.email);
+      const existingUser = await getAuthUser(
+        req.app.locals.dbService,
+        req.body.email,
+      );
       if (existingUser !== null) {
         return res
           .status(400)

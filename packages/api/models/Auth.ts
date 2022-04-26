@@ -1,11 +1,11 @@
 import { Organization } from '@typings/Organization';
 import { AuthData } from '@typings/authentication';
 import { Jobseeker } from '@typings/User';
-import connection from '@utils/dbSetup';
-import { RowDataPacket, FieldPacket } from 'mysql2';
 import { formatDate } from '@utils/date';
 import { Schema } from 'express-validator';
 import hashPassword from '@utils/password';
+import { IDatabaseService } from '@root/services/DatabaseService/typings';
+import { QueryType } from '@root/services/DatabaseService/typings';
 
 export const updateUserSchema: Schema = {
   email: {
@@ -37,54 +37,43 @@ export const updateUserSchema: Schema = {
   },
 };
 
-export const getAuthUser = async (email: string): Promise<AuthData | null> => {
-  const [result]: [RowDataPacket[], FieldPacket[]] = await connection.query(
+export const getAuthUser = async (
+  dbService: IDatabaseService,
+  email: string,
+): Promise<AuthData | null> => {
+  const [result] = await dbService.executeQuery(
     'CALL getAuthDetails(?)',
     [email],
+    QueryType.CALL,
   );
-  if (
-    !Array.isArray(result) ||
-    !Array.isArray(result[0]) ||
-    result[0].length === 0
-  ) {
+  if (result.length === 0) {
     return null;
   }
   const socials = result[0].socials || [];
-  return { ...result[0][0], socials } as AuthData;
+  return { ...result[0], socials } as AuthData;
 };
 
+type ParsedUserType<T extends 'Users' | 'Organizations'> = T extends 'Users'
+  ? Jobseeker
+  : Organization;
 export async function searchUser(
-  userType: 'Users',
-  uid: string,
-): Promise<Jobseeker | null>;
-export async function searchUser(
-  userType: 'Organizations',
-  uid: string,
-): Promise<Organization | null>;
-export async function searchUser(
-  userType: string,
-  uid: string,
-): Promise<Jobseeker | Organization | null>;
-export async function searchUser(
-  userType: string,
+  dbService: IDatabaseService,
+  userType: 'Users' | 'Organizations',
   id: string,
-): Promise<Jobseeker | Organization | null> {
+): Promise<ParsedUserType<typeof userType> | null> {
   if (!id) {
     throw new Error('You must provide either id.');
   }
   if (userType === 'Users') {
-    const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+    const [result] = await dbService.executeQuery(
       'CALL getUserData(?)',
       [id],
+      QueryType.CALL,
     );
-    if (
-      !Array.isArray(result) ||
-      !Array.isArray(result[0]) ||
-      result[0].length === 0
-    ) {
+    if (result.length === 0) {
       return null;
     }
-    const data = result[0][0];
+    const data = result[0];
     const roles = data.roles ? data.roles : [];
     const socials = data.socials ? data.socials : [];
     const skills = data.skills ? data.skills : [];
@@ -113,18 +102,15 @@ export async function searchUser(
     return user;
   }
   if (userType === 'Organizations') {
-    const [result]: [RowDataPacket[], FieldPacket[]] = await connection.execute(
+    const [result] = await dbService.executeQuery(
       'CALL getOrganizationData(?)',
       [id],
+      QueryType.CALL,
     );
-    if (
-      !Array.isArray(result) ||
-      !Array.isArray(result[0]) ||
-      result[0].length === 0
-    ) {
+    if (result.length === 0) {
       return null;
     }
-    const data = result[0][0];
+    const data = result[0];
     const roles = data.roles ? result[0].roles : [];
     const socials = data.socials ? result[0].socials : [];
     const organization: Organization = {
@@ -150,11 +136,16 @@ export async function searchUser(
   throw new Error(`Invalid value for userType ${userType}`);
 }
 
-export async function modifyUser(id: string, email: string, password: string) {
+export async function modifyUser(
+  dbService: IDatabaseService,
+  id: string,
+  email: string,
+  password: string,
+) {
   const hashed = (await hashPassword(password)) || null;
-  await connection.query('CALL updateAuthData(?, ?, ?)', [
-    id,
-    email || null,
-    hashed,
-  ]);
+  await dbService.executeQuery(
+    'CALL updateAuthData(?, ?, ?)',
+    [id, email || null, hashed],
+    QueryType.CALL,
+  );
 }

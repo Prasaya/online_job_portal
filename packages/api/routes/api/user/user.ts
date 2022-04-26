@@ -1,7 +1,6 @@
 // @ts-nocheck
 
 import { isLoggedIn } from '@middleware/authentication';
-import { searchUser } from '@models/Auth';
 import express from 'express';
 import connection from '@utils/dbSetup';
 import applicantRoute from '@routes/api/applicant/applicant';
