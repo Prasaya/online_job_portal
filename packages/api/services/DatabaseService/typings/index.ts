@@ -6,7 +6,7 @@ export interface DBConfig extends PoolOptions {
   user: string;
   port: number;
   password: string;
-  database: string;
+  database?: string;
 }
 
 export enum QueryType {
@@ -49,12 +49,11 @@ export type ResolveQueryType<Q extends QueryType> = Q extends QueryType.CREATE
   : never;
 
 export interface IDatabaseService {
-  config: DBConfig;
-  pool: Pool;
   getConnectionPool(): Pool;
   executeQuery<T extends QueryType>(
     query: string,
     values: Array<any>,
     _type: T,
   ): Promise<ResolveQueryType<T>>;
+  end(): Promise<void>;
 }
