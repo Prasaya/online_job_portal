@@ -21,5 +21,7 @@
     "**/.pnp.*": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "eslint.format.enable": true,
+  "eslint.packageManager": "yarn"
 }

@@ -8,11 +8,11 @@ module.exports = {
   extends: ['eslint:recommended'],
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'script',
+    sourceType: 'module',
   },
   overrides: [
     {
-      files: ['**/*.js', '**.*.ts'],
+      files: ['**/*.js', '**/*.ts'],
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint', 'import'],
       extends: [
@@ -22,7 +22,7 @@ module.exports = {
         'prettier',
       ],
       parserOptions: {
-        project: ['../../tsconfig.json'],
+        project: ['./tsconfig.json'],
       },
     },
   ],
