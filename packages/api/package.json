@@ -2,9 +2,9 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Backend API for Online Job Portal",
-  "main": "app.js",
+  "main": "bin/www.ts",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s . -o ../../dist",
     "dev": "nodemon bin/www.ts",
     "start": "ts-node bin/www.ts"
   },
