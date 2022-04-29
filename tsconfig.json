@@ -7,7 +7,7 @@
     "strict": true,
     "baseUrl": ".",
     "typeRoots": [
-      "./node_modules/@types",
+      "./node_modules/@types"
     ],
     "outDir": "./dist",
     "allowJs": true,
@@ -17,7 +17,7 @@
     "packages/api"
   ],
   "exclude": [
-    "**/node_modules/**",
+    "**/node_modules/**"
   ],
   "ts-node": {
     "require": [
