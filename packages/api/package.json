@@ -4,8 +4,9 @@
   "description": "Backend API for Online Job Portal",
   "main": "app.js",
   "scripts": {
-    "build": "webpack --progress --color",
-    "start": "gulp start"
+    "build": "tsc --build",
+    "dev": "nodemon bin/www.ts",
+    "start": "ts-node bin/www.ts"
   },
   "repository": "git@github.com:Suven-p/online_job_portal.git",
   "author": "Suven-p <pandeysuven@gmail.com>",

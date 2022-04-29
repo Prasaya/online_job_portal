@@ -18,7 +18,10 @@
   ],
   "exclude": [
     "**/node_modules/**",
-    "packages/client/",
-    "**python/**"
-  ]
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }
