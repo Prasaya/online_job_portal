@@ -8,6 +8,7 @@ import organizationRoute from './organization/organization';
 import applicantRoute from './applicant/applicant';
 import verifyRoute from './verify/verify';
 import statisticsRoute from './jobs/statistics';
+import '@typings/express'; // required for ts-node to find types
 
 const router = express.Router();
 
