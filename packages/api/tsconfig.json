@@ -1,0 +1,38 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "typeRoots": [
+            "node_modules/@types",
+            "./typings",
+            "../../node_modules/@types"
+        ],
+        "paths": {
+            "@middleware/*": [
+                "./middleware/*"
+            ],
+            "@models/*": [
+                "./models/*"
+            ],
+            "@routes/*": [
+                "./routes/*"
+            ],
+            "@utils/*": [
+                "./utils/*"
+            ],
+            "@typings/*": [
+                "./typings/*"
+            ],
+            "@root/*": [
+                "./*"
+            ]
+        }
+    },
+    "include": [
+        "./**/*.ts"
+    ],
+    "exclude": [
+        "**/node_modules/**",
+        "./tests"
+    ]
+}

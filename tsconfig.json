@@ -1,42 +1,20 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2021",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "baseUrl": ".",
     "typeRoots": [
-      "node_modules/@types",
-      "packages/api/typings"
+      "./node_modules/@types",
     ],
     "outDir": "./dist",
     "allowJs": true,
-    "checkJs": false,
-    "baseUrl": ".",
-    "paths": {
-      "@middleware/*": [
-        "packages/api/middleware/*"
-      ],
-      "@models/*": [
-        "packages/api/models/*"
-      ],
-      "@routes/*": [
-        "packages/api/routes/*"
-      ],
-      "@utils/*": [
-        "packages/api/utils/*"
-      ],
-      "@typings/*": [
-        "packages/api/typings/*"
-      ],
-      "@root/*": [
-        "packages/api/*"
-      ]
-    }
+    "checkJs": false
   },
   "include": [
-    "packages/api/**/*.ts"
+    "packages/api"
   ],
   "exclude": [
     "**/node_modules/**",
