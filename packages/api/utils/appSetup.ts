@@ -5,10 +5,12 @@ import logger from '@utils/logger';
 import passportSetup from './passportSetup';
 import { getEnv } from '@root/services/Configuration/env';
 import { databaseService } from '@root/services/bootstrap';
-let session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+const session = require('express-session');
+import mySQLSessionStore from 'express-mysql-session';
 
-const appSetup = (app: express.Application) => {
+const MySQLStore = mySQLSessionStore(session);
+
+const appSetup = (app: express.Application): void => {
   app.locals.dbService = databaseService;
   app.use(express.static('./dist/public'));
   app.use(express.json());

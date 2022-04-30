@@ -4,8 +4,10 @@ import { Jobseeker } from '@typings/User';
 import { formatDate } from '@utils/date';
 import { Schema } from 'express-validator';
 import hashPassword from '@utils/password';
-import { IDatabaseService } from '@root/services/DatabaseService/typings';
-import { QueryType } from '@root/services/DatabaseService/typings';
+import {
+  IDatabaseService,
+  QueryType,
+} from '@root/services/DatabaseService/typings';
 
 export const updateUserSchema: Schema = {
   email: {

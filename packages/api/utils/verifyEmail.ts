@@ -1,3 +1,4 @@
+/* eslint-disable camelcase -- using external library */
 import { Jobseeker } from '@typings/User';
 import sgMail from './sendMail';
 

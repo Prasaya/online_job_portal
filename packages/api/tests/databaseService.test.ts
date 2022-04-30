@@ -10,11 +10,11 @@ describe('databaseService', () => {
     password: getEnv('DB_PASSWORD'),
     database: 'online_job_portal_test',
   };
-  let databaseService = new DatabaseService(config);
+  const databaseService = new DatabaseService(config);
 
   test('if connected', async () => {
-    const pool = await databaseService.getConnectionPool();
-    let connection = await pool.getConnection();
+    const pool = databaseService.getConnectionPool();
+    const connection = await pool.getConnection();
     expect(connection).toBeDefined();
   });
 
@@ -105,6 +105,6 @@ describe('databaseService', () => {
   test('end connection', async () => {
     await databaseService.end();
     const pool = databaseService.getConnectionPool();
-    expect(pool.getConnection()).rejects.toThrow();
+    await expect(pool.getConnection()).rejects.toThrow();
   });
 });

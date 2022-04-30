@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 require('tsconfig-paths/register');
-const app = require('../app');
-const http = require('http');
+import app from '@root/app';
+import http from 'http';
+import logger from '@utils/logger';
 
 const port = parseInt(process.env.PORT || '8080', 10);
 app.set('port', port);
@@ -12,7 +13,9 @@ server.listen(port);
 server.on('listening', () => {
   const addr = server.address();
   const formatted =
-    typeof addr === 'string' ? addr : `${addr.address}:${addr.port}`;
-  console.log(`App: Listening on ${formatted}`);
+    typeof addr === 'string'
+      ? addr
+      : `${addr?.address || ''}:${addr?.port || ''}`;
+  logger.info(`App: Listening on ${formatted}`);
 });
-server.on('error', console.error);
+server.on('error', logger.error);

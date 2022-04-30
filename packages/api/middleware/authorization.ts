@@ -10,11 +10,13 @@ export function roleCallback(cb: (role: Role) => boolean): Handler {
         .json({ message: 'Authorization missing', success: false });
     }
     const userRoles: Role[] = [];
-    req.user.user.basics.roles.forEach(async (roleName) => {
-      const role = await getRoleByName(roleName);
-      if (role) {
-        userRoles.push(role);
-      }
+    req.user.user.basics.roles.forEach((roleName) => {
+      void (async () => {
+        const role = await getRoleByName(roleName);
+        if (role) {
+          userRoles.push(role);
+        }
+      })();
     });
     const isAuthorized = userRoles?.some((r) => cb(r));
     if (isAuthorized) {
