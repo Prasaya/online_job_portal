@@ -4,7 +4,7 @@ module.exports = {
     jest: true,
     node: true,
   },
-  ignorePatterns: ['node_modules', '**/node_modules', 'public'],
+  ignorePatterns: ['node_modules', '**/node_modules', 'public', 'jest.config.ts', '**/*.js'],
   extends: ['eslint:recommended'],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -12,7 +12,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.js', '**/*.ts'],
+      files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint', 'import'],
       extends: [
@@ -23,7 +23,31 @@ module.exports = {
       ],
       parserOptions: {
         project: ['./tsconfig.json'],
+        tsconfigRootDir: './',
       },
+      rules: {
+        'import/no-unresolved': 'error',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        'import/extensions': 'off',
+      },
+      settings: {
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts"]
+        },
+        "import/resolver": {
+          webpack: {
+            config: '../../webpack.config.js'
+          },
+          typescript: {
+            alwaysTryTypes: true,
+            project: [
+              "./tsconfig.json"
+            ]
+          }
+        }
+      }
     },
   ],
   rules: {
