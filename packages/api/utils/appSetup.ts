@@ -5,6 +5,7 @@ import logger from '@utils/logger';
 import passportSetup from './passportSetup';
 import { getEnv } from '@root/services/Configuration/env';
 import { databaseService } from '@root/services/bootstrap';
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- cannot get it to work
 const session = require('express-session');
 import mySQLSessionStore from 'express-mysql-session';
 

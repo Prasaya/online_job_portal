@@ -12,6 +12,21 @@
 				"isDefault": true
 			},
 			"label": "tsc: build - tsconfig.json"
+		},
+		{
+			"type": "shell",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"command": "npx",
+			"args": [
+				"eslint",
+				"."
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/packages/api",
+			},
+			"label": "eslint: lint api folder"
 		}
 	]
 }
